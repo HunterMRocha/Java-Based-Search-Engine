@@ -32,5 +32,5 @@ public class Driver {
 		System.out.printf("Elapsed: %f seconds%n", seconds);
 	}
 
-	/* PROJECT TRPO SET UP */
+	/* PROJECT TRPO SET UP... */
 }
