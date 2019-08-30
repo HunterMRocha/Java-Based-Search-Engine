@@ -32,13 +32,5 @@ public class Driver {
 		System.out.printf("Elapsed: %f seconds%n", seconds);
 	}
 
-	/*
-	 * TODO: Delete this after reading...
-	 *
-	 * Generally, "driver" classes are responsible for setting up and calling other
-	 * classes, usually from a main() method that parses command-line parameters. If
-	 * the driver were only responsible for a single class, we use that class name.
-	 * For example, "PizzaDriver" is what we would name a driver class that just
-	 * sets up and calls the "Pizza" class.
-	 */
+	/* PROJECT TRPO SET UP */
 }
