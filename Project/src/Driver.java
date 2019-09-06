@@ -31,10 +31,4 @@ public class Driver {
 		double seconds = (double) elapsed.toMillis() / Duration.ofSeconds(1).toMillis();
 		System.out.printf("Elapsed: %f seconds%n", seconds);
 	}
-
-	/* PROJECT TRPO SET UP... */
-	/* SANITY CHECK */
-	/* TEST COMMIT  */
-	/* YET ANOTHER TEST */
-	/* wowow  */
 }
