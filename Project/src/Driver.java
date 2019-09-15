@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
@@ -18,12 +19,26 @@ public class Driver {
 	 * inverted index.
 	 *
 	 * @param args flag/value pairs used to start this program
+	 * @throws IOException
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		// store initial start time
 		Instant start = Instant.now();
 
 		// TODO Fill in and modify this method as necessary.
+
+		InvertedIndex invertIndex = new InvertedIndex();
+
+		ArgumentParser argumentParser = new ArgumentParser(args);
+
+		if (argumentParser.hasFlag("-path") && argumentParser.getPath("-path") != null) {
+			invertIndex.addPath(argumentParser.getPath("-path"));
+		}
+
+		if (argumentParser.hasFlag("-index") && argumentParser.getString("-index") != null) {
+			invertIndex.writeIndex(argumentParser.getString("-index"));
+		}
+
 		System.out.println(Arrays.toString(args));
 
 		// calculate time elapsed and output
