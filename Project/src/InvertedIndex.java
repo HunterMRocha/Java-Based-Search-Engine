@@ -21,7 +21,30 @@ public class InvertedIndex {
 	/**
 	 * The data structure that will store our inverted index info.
 	 */
-	private TreeMap<String, TreeMap<String, ArrayList<Integer>>> invertedIndex;
+	public TreeMap<String, TreeMap<String, ArrayList<Integer>>> invertedIndex;
+
+
+	/**
+	 *
+	 */
+	private TreeMap<String, Integer> counts;
+
+
+	/**
+	 * Constructor for the InvertedIndex class, initializes the structure.
+	 */
+	public InvertedIndex() {
+		this.invertedIndex = new TreeMap<>();
+		this.counts = new TreeMap<>();
+	}
+
+
+	/**
+	 * @return returns the inverted index
+	 */
+	public TreeMap<String, TreeMap<String, ArrayList<Integer>>> getStructure(){
+		return (this.invertedIndex);
+	}
 
 	/**
 	 * Checks if invertedIndex has an entry for word
@@ -70,18 +93,11 @@ public class InvertedIndex {
 			}
 
 		} catch (IOException e) {
-			System.out.println("Something went wrong while reading the file!");
+			//System.out.println("Something went wrong while reading the file!");
 		}
 
-
 	}
 
-	/**
-	 * Constructor for the InvertedIndex class, initializes the structure.
-	 */
-	public InvertedIndex() {
-		this.invertedIndex = new TreeMap<>();
-	}
 
 	/**
 	 * @param word
@@ -98,12 +114,22 @@ public class InvertedIndex {
 			positions.add(position);
 			map.put(filename, positions);
 
+
 			this.invertedIndex.put(word, map);
+
+			if (getCounts().get(filename) == null) {
+				this.getCounts().put(filename, 1);
+			} else {
+				this.getCounts().put(filename, getCounts().get(filename)+ 1);
+			}
+
+
 			return true;
 		} else {
 			if (wordEntryContainsFilename(word, filename)) {
 				if (!this.invertedIndex.get(word).get(filename).contains(position)) {
 					this.invertedIndex.get(word).get(filename).add(position);
+					this.getCounts().put(filename, getCounts().get(filename)+ 1);
 					return true;
 				} else {
 					return false;
@@ -112,6 +138,13 @@ public class InvertedIndex {
 				ArrayList<Integer> positions = new ArrayList<>();
 				positions.add(position);
 				this.invertedIndex.get(word).put(filename, positions);
+
+				if (this.getCounts().get(filename) == null) {
+					this.getCounts().put(filename, 1);
+				} else {
+					this.getCounts().put(filename, getCounts().get(filename)+ 1);
+				}
+
 				return true;
 			}
 
@@ -124,5 +157,13 @@ public class InvertedIndex {
 	 */
 	public void writeIndex(String outputFile) throws IOException {
 		SimpleJsonWriter.asInvertedIndex(this.invertedIndex, Path.of(outputFile));
+	}
+
+
+	/**
+	 * @return returns a treemap storing the count info
+	 */
+	public TreeMap<String, Integer> getCounts() {
+		return counts;
 	}
 }
