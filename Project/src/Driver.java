@@ -1,7 +1,11 @@
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.stream.Stream;
 
 /**
  * Class responsible for running this project based on the provided command-line
@@ -20,8 +24,9 @@ public class Driver {
 	 *
 	 * @param args flag/value pairs used to start this program
 	 * @throws IOException
+	 * @throws Exception
 	 */
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException{
 		// store initial start time
 		Instant start = Instant.now();
 
@@ -31,8 +36,20 @@ public class Driver {
 
 		ArgumentParser argumentParser = new ArgumentParser(args);
 
-		if (argumentParser.hasFlag("-path") && argumentParser.getPath("-path") != null) {
-			invertIndex.addPath(argumentParser.getPath("-path"));
+		if (argumentParser.hasFlag("-path") && argumentParser.getPath("-path") != null) {			Path path = argumentParser.getPath("-path");
+
+		try (Stream<Path> subPaths = Files.walk(path)){
+			Iterator<Path> iterator = subPaths.iterator();
+			while(iterator.hasNext()) {
+				var nextPath = iterator.next();
+				if (nextPath.toString().toLowerCase().endsWith(".txt") || nextPath.toString().toLowerCase().endsWith(".text") ){
+					invertIndex.addPath(nextPath);
+				}
+
+			}
+		}
+
+
 		}
 
 		if (argumentParser.hasFlag("-index") && argumentParser.getString("-index") != null) {
