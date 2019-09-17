@@ -214,6 +214,7 @@ public class SimpleJsonWriter {
 	}
 
 	/**
+	 * Writes the invertedIndex provided with a writer.
 	 * @param elements
 	 * @param writer
 	 * @param level
@@ -248,6 +249,7 @@ public class SimpleJsonWriter {
 	}
 
 	/**
+	 * Calls the other invertedIndex method
 	 * @param elements
 	 * @param path
 	 * @throws IOException

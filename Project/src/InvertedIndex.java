@@ -15,7 +15,7 @@ import opennlp.tools.stemmer.snowball.SnowballStemmer;
  */
 public class InvertedIndex {
 	/**
-	 *
+	 * The stemmer that will be used to stem the words.
 	 */
 	private static final SnowballStemmer.ALGORITHM DEFAULT = SnowballStemmer.ALGORITHM.ENGLISH;
 	/**
@@ -23,12 +23,10 @@ public class InvertedIndex {
 	 */
 	public TreeMap<String, TreeMap<String, ArrayList<Integer>>> invertedIndex;
 
-
 	/**
-	 *
+	 * This map will keep track of the wordcounts of files.
 	 */
 	private TreeMap<String, Integer> counts;
-
 
 	/**
 	 * Constructor for the InvertedIndex class, initializes the structure.
@@ -38,11 +36,10 @@ public class InvertedIndex {
 		this.counts = new TreeMap<>();
 	}
 
-
 	/**
 	 * @return returns the inverted index
 	 */
-	public TreeMap<String, TreeMap<String, ArrayList<Integer>>> getStructure(){
+	public TreeMap<String, TreeMap<String, ArrayList<Integer>>> getStructure() {
 		return (this.invertedIndex);
 	}
 
@@ -62,8 +59,8 @@ public class InvertedIndex {
 	}
 
 	/**
-	 * @param word
-	 * @param filename
+	 * @param word the word to look at
+	 * @param filename the filename we want to check for
 	 * @return returns true if a word entry contains a certain file
 	 */
 	private boolean wordEntryContainsFilename(String word, String filename) {
@@ -74,6 +71,7 @@ public class InvertedIndex {
 	}
 
 	/**
+	 * Will read the given file and pass the stemmed words to the add() method
 	 * @param inputFile
 	 * @throws IOException
 	 */
@@ -93,13 +91,13 @@ public class InvertedIndex {
 			}
 
 		} catch (IOException e) {
-			//System.out.println("Something went wrong while reading the file!");
+			// System.out.println("Something went wrong while reading the file!");
 		}
 
 	}
 
-
 	/**
+	 * Updates the invertedIndex with the necessary info like files it appears in and its position
 	 * @param word
 	 * @param filename
 	 * @param position
@@ -114,22 +112,20 @@ public class InvertedIndex {
 			positions.add(position);
 			map.put(filename, positions);
 
-
 			this.invertedIndex.put(word, map);
 
 			if (getCounts().get(filename) == null) {
 				this.getCounts().put(filename, 1);
 			} else {
-				this.getCounts().put(filename, getCounts().get(filename)+ 1);
+				this.getCounts().put(filename, getCounts().get(filename) + 1);
 			}
-
 
 			return true;
 		} else {
 			if (wordEntryContainsFilename(word, filename)) {
 				if (!this.invertedIndex.get(word).get(filename).contains(position)) {
 					this.invertedIndex.get(word).get(filename).add(position);
-					this.getCounts().put(filename, getCounts().get(filename)+ 1);
+					this.getCounts().put(filename, getCounts().get(filename) + 1);
 					return true;
 				} else {
 					return false;
@@ -142,7 +138,7 @@ public class InvertedIndex {
 				if (this.getCounts().get(filename) == null) {
 					this.getCounts().put(filename, 1);
 				} else {
-					this.getCounts().put(filename, getCounts().get(filename)+ 1);
+					this.getCounts().put(filename, getCounts().get(filename) + 1);
 				}
 
 				return true;
@@ -152,6 +148,7 @@ public class InvertedIndex {
 	}
 
 	/**
+	 * Writes the invertedIndex in a pretty Json format to the specified output file
 	 * @param outputFile
 	 * @throws IOException
 	 */
@@ -159,8 +156,8 @@ public class InvertedIndex {
 		SimpleJsonWriter.asInvertedIndex(this.invertedIndex, Path.of(outputFile));
 	}
 
-
 	/**
+	 * Please don't modify her.
 	 * @return returns a treemap storing the count info
 	 */
 	public TreeMap<String, Integer> getCounts() {
