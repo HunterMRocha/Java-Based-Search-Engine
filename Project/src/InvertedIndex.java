@@ -1,9 +1,9 @@
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 /**
  * @author nedimazar
@@ -11,11 +11,10 @@ import java.util.TreeMap;
  */
 public class InvertedIndex {
 
-	// TODO private final TreeMap<String, TreeMap<String, TreeSet<Integer>>> invertedIndex;
 	/**
 	 * The data structure that will store our inverted index info.
 	 */
-	private final TreeMap<String, TreeMap<String, ArrayList<Integer>>> invertedIndex;
+	private final TreeMap<String, TreeMap<String, TreeSet<Integer>>> invertedIndex;
 
 	/**
 	 * This map will keep track of the wordcounts of files.
@@ -39,7 +38,7 @@ public class InvertedIndex {
 	 */
 	public boolean add(String word, String filename, int position) {
 		this.invertedIndex.putIfAbsent(word, new TreeMap<>());
-		this.invertedIndex.get(word).putIfAbsent(filename, new ArrayList<>());
+		this.invertedIndex.get(word).putIfAbsent(filename, new TreeSet<>());
 
 		boolean added = this.invertedIndex.get(word).get(filename).add(position);
 

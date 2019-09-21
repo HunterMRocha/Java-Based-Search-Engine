@@ -5,7 +5,6 @@ import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
@@ -215,14 +214,14 @@ public class SimpleJsonWriter {
 
 	/**
 	 * Writes the invertedIndex provided with a writer.
-	 * @param elements
+	 * @param invertedIndex
 	 * @param writer
 	 * @param level
 	 * @throws IOException
 	 */
-	public static void asInvertedIndex(TreeMap<String, TreeMap<String, ArrayList<Integer>>> elements, Writer writer,
+	public static void asInvertedIndex(TreeMap<String, TreeMap<String, TreeSet<Integer>>> invertedIndex, Writer writer,
 			int level) throws IOException {
-		Iterator<String> iterator = elements.keySet().iterator();
+		Iterator<String> iterator = invertedIndex.keySet().iterator();
 		writer.write("{");
 
 		if (iterator.hasNext()) {
@@ -232,7 +231,7 @@ public class SimpleJsonWriter {
 			quote(key, writer);
 			writer.write(": ");
 
-			asNestedObject(elements.get(key), writer, level + 1);
+			asNestedObject(invertedIndex.get(key), writer, level + 1);
 
 		}
 
@@ -242,7 +241,7 @@ public class SimpleJsonWriter {
 			indent(writer, level + 1);
 			quote(key, writer);
 			writer.write(": ");
-			asNestedObject(elements.get(key), writer, level + 1);
+			asNestedObject(invertedIndex.get(key), writer, level + 1);
 		}
 
 		indent("\n}", writer, level);
@@ -250,14 +249,14 @@ public class SimpleJsonWriter {
 
 	/**
 	 * Calls the other invertedIndex method
-	 * @param elements
+	 * @param invertedIndex
 	 * @param path
 	 * @throws IOException
 	 */
-	public static void asInvertedIndex(TreeMap<String, TreeMap<String, ArrayList<Integer>>> elements, Path path)
+	public static void asInvertedIndex(TreeMap<String, TreeMap<String, TreeSet<Integer>>> invertedIndex, Path path)
 			throws IOException {
 		try (BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
-			asInvertedIndex(elements, writer, 0);
+			asInvertedIndex(invertedIndex, writer, 0);
 
 		}
 	}
