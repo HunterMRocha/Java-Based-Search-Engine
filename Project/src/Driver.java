@@ -32,7 +32,6 @@ public class Driver {
 
 		if (argumentParser.hasFlag("-path") && argumentParser.getPath("-path") != null) {
 			Path path = argumentParser.getPath("-path");
-
 			builder.traversePath(path);
 		}
 
