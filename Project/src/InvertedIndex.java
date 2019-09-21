@@ -4,7 +4,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.TreeMap;
 
 import opennlp.tools.stemmer.Stemmer;
@@ -19,7 +18,7 @@ public class InvertedIndex {
 	 * The stemmer that will be used to stem the words.
 	 */
 	private static final SnowballStemmer.ALGORITHM DEFAULT = SnowballStemmer.ALGORITHM.ENGLISH; // TODO Move to the InvertedIndexBuilder class
-	
+
 	// TODO private final TreeMap<String, TreeMap<String, TreeSet<Integer>>> invertedIndex;
 	/**
 	 * The data structure that will store our inverted index info.
@@ -45,33 +44,6 @@ public class InvertedIndex {
 	 */
 	public TreeMap<String, TreeMap<String, ArrayList<Integer>>> getStructure() {
 		return (this.invertedIndex);
-	}
-
-	/**
-	 * Checks if invertedIndex has an entry for word
-	 *
-	 * @param word The word we are checking
-	 * @return Returns wether ot not the invertedIndex contains a word.
-	 */
-	private boolean containsWord(String word) {
-
-		if (this.invertedIndex.keySet() != null) {
-			return this.invertedIndex.keySet().contains(word);
-		}
-
-		return false;
-	}
-
-	/**
-	 * @param word the word to look at
-	 * @param filename the filename we want to check for
-	 * @return returns true if a word entry contains a certain file
-	 */
-	private boolean wordEntryContainsFilename(String word, String filename) {
-		if (this.invertedIndex.get(word) != null) {
-			return (this.invertedIndex.get(word).get(filename) != null);
-		}
-		return false;
 	}
 
 	/**
@@ -109,62 +81,14 @@ public class InvertedIndex {
 	 */
 	public boolean add(String word, String filename, int position) {
 
-		if (!this.containsWord(word)) {
-
-			TreeMap<String, ArrayList<Integer>> map = new TreeMap<>();
-			ArrayList<Integer> positions = new ArrayList<>();
-			positions.add(position);
-			map.put(filename, positions);
-
-			this.invertedIndex.put(word, map);
-
-			if (getCounts().get(filename) == null) {
-				this.getCounts().put(filename, 1);
-			} else {
-				this.getCounts().put(filename, getCounts().get(filename) + 1);
-			}
-
-			return true;
-		} else {
-			if (wordEntryContainsFilename(word, filename)) {
-				if (!this.invertedIndex.get(word).get(filename).contains(position)) {
-					this.invertedIndex.get(word).get(filename).add(position);
-					this.getCounts().put(filename, getCounts().get(filename) + 1);
-					return true;
-				} else {
-					return false;
-				}
-			} else {
-				ArrayList<Integer> positions = new ArrayList<>();
-				positions.add(position);
-				this.invertedIndex.get(word).put(filename, positions);
-
-				if (this.getCounts().get(filename) == null) {
-					this.getCounts().put(filename, 1);
-				} else {
-					this.getCounts().put(filename, getCounts().get(filename) + 1);
-				}
-
-				return true;
-			}
-
-		}
-		
-		/* TODO Try to refactor like this...
-		if (this.invertedIndex.get(word) == null) {
-			this.invertedIndex.put(word, new TreeMap<>());
-		}
-		
-		if (this.invertedIndex.get(word).get(filename) == null) {
-			this.invertedIndex.get(word).put(filename, new ArrayList<>());
-		}
-		
-		return this.invertedIndex.get(word).get(filename).add(position);
-		
 		this.invertedIndex.putIfAbsent(word, new TreeMap<>());
 		this.invertedIndex.get(word).putIfAbsent(filename, new ArrayList<>());
-		return this.invertedIndex.get(word).get(filename).add(position);
-		*/
+		boolean added = this.invertedIndex.get(word).get(filename).add(position);
+
+		this.getCounts().putIfAbsent(filename, 0);
+		this.getCounts().put(filename, getCounts().get(filename) + 1);
+
+		return  added;
 	}
 
 	/**
@@ -182,7 +106,7 @@ public class InvertedIndex {
 	 */
 	public TreeMap<String, Integer> getCounts() { // TODO public Map<String, Integer> getCounts()
 		return counts;
-		
+
 		// TODO return Collections.unmodifiableMap(this.counts);
 	}
 }
