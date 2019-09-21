@@ -59,7 +59,6 @@ public class SimpleJsonWriter {
 	 * @see #asArray(Collection, Writer, int)
 	 */
 	public static void asArray(Collection<Integer> elements, Path path) throws IOException {
-		// THIS CODE IS PROVIDED FOR YOU; DO NOT MODIFY
 		try (BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
 			asArray(elements, writer, 0);
 		}
@@ -74,7 +73,6 @@ public class SimpleJsonWriter {
 	 * @see #asArray(Collection, Writer, int)
 	 */
 	public static String asArray(Collection<Integer> elements) {
-		// THIS CODE IS PROVIDED FOR YOU; DO NOT MODIFY
 		try {
 			StringWriter writer = new StringWriter();
 			asArray(elements, writer, 0);
@@ -120,7 +118,6 @@ public class SimpleJsonWriter {
 	 * @see #asObject(Map, Writer, int)
 	 */
 	public static void asObject(Map<String, Integer> elements, Path path) throws IOException {
-		// THIS CODE IS PROVIDED FOR YOU; DO NOT MODIFY
 		try (BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
 			asObject(elements, writer, 0);
 		}
@@ -135,7 +132,6 @@ public class SimpleJsonWriter {
 	 * @see #asObject(Map, Writer, int)
 	 */
 	public static String asObject(Map<String, Integer> elements) {
-		// THIS CODE IS PROVIDED FOR YOU; DO NOT MODIFY
 		try {
 			StringWriter writer = new StringWriter();
 			asObject(elements, writer, 0);
@@ -157,7 +153,6 @@ public class SimpleJsonWriter {
 	 */
 	public static void asNestedObject(Map<String, ? extends Collection<Integer>> elements, Writer writer, int level)
 			throws IOException {
-		// indent(writer, level);
 		writer.write("{\n");
 
 		int counter = 0;
@@ -187,7 +182,6 @@ public class SimpleJsonWriter {
 	 */
 	public static void asNestedObject(Map<String, ? extends Collection<Integer>> elements, Path path)
 			throws IOException {
-		// THIS CODE IS PROVIDED FOR YOU; DO NOT MODIFY
 		try (BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
 			asNestedObject(elements, writer, 0);
 		}
@@ -202,7 +196,6 @@ public class SimpleJsonWriter {
 	 * @see #asNestedObject(Map, Writer, int)
 	 */
 	public static String asNestedObject(Map<String, ? extends Collection<Integer>> elements) {
-		// THIS CODE IS PROVIDED FOR YOU; DO NOT MODIFY
 		try {
 			StringWriter writer = new StringWriter();
 			asNestedObject(elements, writer, 0);
@@ -269,7 +262,6 @@ public class SimpleJsonWriter {
 	 * @throws IOException
 	 */
 	public static void indent(Writer writer, int times) throws IOException {
-		// THIS CODE IS PROVIDED FOR YOU; DO NOT MODIFY
 		for (int i = 0; i < times; i++) {
 			writer.write('\t');
 		}
@@ -287,7 +279,6 @@ public class SimpleJsonWriter {
 	 * @see #indent(Writer, int)
 	 */
 	public static void indent(Integer element, Writer writer, int times) throws IOException {
-		// THIS CODE IS PROVIDED FOR YOU; DO NOT MODIFY
 		indent(element.toString(), writer, times);
 	}
 
@@ -302,7 +293,6 @@ public class SimpleJsonWriter {
 	 * @see #indent(Writer, int)
 	 */
 	public static void indent(String element, Writer writer, int times) throws IOException {
-		// THIS CODE IS PROVIDED FOR YOU; DO NOT MODIFY
 		indent(writer, times);
 		writer.write(element);
 	}
@@ -315,7 +305,6 @@ public class SimpleJsonWriter {
 	 * @throws IOException
 	 */
 	public static void quote(String element, Writer writer) throws IOException {
-		// THIS CODE IS PROVIDED FOR YOU; DO NOT MODIFY
 		writer.write('"');
 		writer.write(element);
 		writer.write('"');
@@ -334,7 +323,6 @@ public class SimpleJsonWriter {
 	 * @see #quote(String, Writer)
 	 */
 	public static void quote(String element, Writer writer, int times) throws IOException {
-		// THIS CODE IS PROVIDED FOR YOU; DO NOT MODIFY
 		indent(writer, times);
 		quote(element, writer);
 	}
@@ -345,19 +333,6 @@ public class SimpleJsonWriter {
 	 * @param args unused
 	 */
 	public static void main(String[] args) {
-		// MODIFY AS NECESSARY TO DEBUG YOUR CODE
 
-		TreeSet<Integer> elements = new TreeSet<>();
-		System.out.println("Empty:");
-		System.out.println(asArray(elements));
-
-		elements.add(65);
-		System.out.println("\nSingle:");
-		System.out.println(asArray(elements));
-
-		elements.add(66);
-		elements.add(67);
-		System.out.println("\nSimple:");
-		System.out.println(asArray(elements));
 	}
 }

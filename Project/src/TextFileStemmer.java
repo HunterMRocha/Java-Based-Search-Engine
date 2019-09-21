@@ -35,7 +35,6 @@ public class TextFileStemmer {
 	 * @see #uniqueStems(String, Stemmer)
 	 */
 	public static TreeSet<String> uniqueStems(String line) {
-		// THIS IS PROVIDED FOR YOU; NO NEED TO MODIFY
 		return uniqueStems(line, new SnowballStemmer(DEFAULT));
 	}
 
@@ -51,7 +50,6 @@ public class TextFileStemmer {
 	 * @see TextParser#parse(String)
 	 */
 	public static TreeSet<String> uniqueStems(String line, Stemmer stemmer) {
-
 		TreeSet<String> stemmed = new TreeSet<>();
 
 		for (String word : TextParser.parse(line)) {
@@ -73,7 +71,6 @@ public class TextFileStemmer {
 	 * @see TextParser#parse(String)
 	 */
 	public static TreeSet<String> uniqueStems(Path inputFile) throws IOException {
-
 		TreeSet<String> stemmed = new TreeSet<>();
 
 		try {
@@ -90,8 +87,6 @@ public class TextFileStemmer {
 		}
 		return stemmed;
 	}
-
-	// throw new UnsupportedOperationException("Method not yet implemented.");
 
 	/**
 	 * A simple main method that demonstrates this class.
