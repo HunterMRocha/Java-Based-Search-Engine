@@ -53,7 +53,7 @@ public class InvertedIndexBuilder {
 			}
 
 		} catch (IOException e) {
-			System.out.println("Something went wrong while reading following file: " + inputFile.toString());
+			System.out.println("Something went wrong while reading the following file: " + inputFile.toString());
 		}
 	}
 
