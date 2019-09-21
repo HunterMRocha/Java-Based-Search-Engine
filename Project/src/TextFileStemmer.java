@@ -59,8 +59,6 @@ public class TextFileStemmer {
 		}
 
 		return stemmed;
-
-		// throw new UnsupportedOperationException("Method not yet implemented.");
 	}
 
 	/**
