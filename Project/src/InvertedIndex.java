@@ -4,6 +4,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.TreeMap;
 
 import opennlp.tools.stemmer.Stemmer;
@@ -17,7 +18,9 @@ public class InvertedIndex {
 	/**
 	 * The stemmer that will be used to stem the words.
 	 */
-	private static final SnowballStemmer.ALGORITHM DEFAULT = SnowballStemmer.ALGORITHM.ENGLISH;
+	private static final SnowballStemmer.ALGORITHM DEFAULT = SnowballStemmer.ALGORITHM.ENGLISH; // TODO Move to the InvertedIndexBuilder class
+	
+	// TODO private final TreeMap<String, TreeMap<String, TreeSet<Integer>>> invertedIndex;
 	/**
 	 * The data structure that will store our inverted index info.
 	 */
@@ -26,7 +29,7 @@ public class InvertedIndex {
 	/**
 	 * This map will keep track of the wordcounts of files.
 	 */
-	private TreeMap<String, Integer> counts;
+	private TreeMap<String, Integer> counts; // TODO private final
 
 	/**
 	 * Constructor for the InvertedIndex class, initializes the structure.
@@ -36,6 +39,7 @@ public class InvertedIndex {
 		this.counts = new TreeMap<>();
 	}
 
+	// TODO Remove this method that breaks encapsulation
 	/**
 	 * @return returns the inverted index
 	 */
@@ -145,6 +149,22 @@ public class InvertedIndex {
 			}
 
 		}
+		
+		/* TODO Try to refactor like this...
+		if (this.invertedIndex.get(word) == null) {
+			this.invertedIndex.put(word, new TreeMap<>());
+		}
+		
+		if (this.invertedIndex.get(word).get(filename) == null) {
+			this.invertedIndex.get(word).put(filename, new ArrayList<>());
+		}
+		
+		return this.invertedIndex.get(word).get(filename).add(position);
+		
+		this.invertedIndex.putIfAbsent(word, new TreeMap<>());
+		this.invertedIndex.get(word).putIfAbsent(filename, new ArrayList<>());
+		return this.invertedIndex.get(word).get(filename).add(position);
+		*/
 	}
 
 	/**
@@ -152,7 +172,7 @@ public class InvertedIndex {
 	 * @param outputFile
 	 * @throws IOException
 	 */
-	public void writeIndex(String outputFile) throws IOException {
+	public void writeIndex(String outputFile) throws IOException { // TODO writeIndex(Path outputFile)
 		SimpleJsonWriter.asInvertedIndex(this.invertedIndex, Path.of(outputFile));
 	}
 
@@ -160,7 +180,9 @@ public class InvertedIndex {
 	 * Please don't modify her.
 	 * @return returns a treemap storing the count info
 	 */
-	public TreeMap<String, Integer> getCounts() {
+	public TreeMap<String, Integer> getCounts() { // TODO public Map<String, Integer> getCounts()
 		return counts;
+		
+		// TODO return Collections.unmodifiableMap(this.counts);
 	}
 }
