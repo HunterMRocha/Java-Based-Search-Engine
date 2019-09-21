@@ -12,7 +12,7 @@ import java.util.TreeSet;
 public class InvertedIndex {
 
 	/**
-	 * The data structure that will store our inverted index info.
+	 * The data structure that will store the inverted index info.
 	 */
 	private final TreeMap<String, TreeMap<String, TreeSet<Integer>>> invertedIndex;
 
