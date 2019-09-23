@@ -80,7 +80,7 @@ public class TextFileStemmer {
 				stemmed.addAll(uniqueStems(line));
 			}
 
-		} catch (IOException e) {
+		} catch (IOException e) { // TODO Remove catch blocks
 			System.out.printf("Error reading file: %s\n", e);
 		} catch (Exception e) {
 			System.out.printf("Something went wrong: %s", e);

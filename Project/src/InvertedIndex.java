@@ -63,4 +63,10 @@ public class InvertedIndex {
 	public Map<String, Integer> getUnmodifiableCounts() {
 		return Collections.unmodifiableMap(this.counts);
 	}
+	
+	// TODO Need more functionality
+	/*
+	 * TODO hasSomething methods... hasWord(String word), hasLocation(String word, String location)
+	 * and safe getter methods too.
+	 */
 }

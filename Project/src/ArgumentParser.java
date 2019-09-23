@@ -67,7 +67,6 @@ public class ArgumentParser {
 		try {
 			return (arg.startsWith("-") && arg.charAt(1) != 0);
 		} catch (Exception e) {
-
 			return false;
 		}
 	}
@@ -159,7 +158,7 @@ public class ArgumentParser {
 	public Path getPath(String flag) {
 		String value = this.map.get(flag);
 		if (value != null) {
-			return Paths.get(value);
+			return Paths.get(value); // TODO Path.of(...)
 		} else {
 			return null;
 		}
