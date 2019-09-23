@@ -34,9 +34,9 @@ public class InvertedIndexBuilder {
 	}
 
 	/**
-	 * TODO Actually fill in your Javadoc descriptions
-	 * 
-	 * @param inputFile TODO describe this
+	 * This function will add the given file to the inverted ndex structure.
+	 *
+	 * @param inputFile The file that will be added into the structure
 	 * @throws IOException
 	 */
 	public void addPath(Path inputFile) throws IOException {
@@ -44,14 +44,13 @@ public class InvertedIndexBuilder {
 
 		try (BufferedReader reader = Files.newBufferedReader(inputFile, StandardCharsets.UTF_8);) {
 			String line = reader.readLine();
-			// TODO String location = inputFile.toString(); save this result and reuse in the add(...)
+			String location = inputFile.toString();
 			int i = 0;
 			while (line != null) {
 				String[] parsed = TextParser.parse(line);
 				for (String word : parsed) {
-					// TODO String stemmed = stemmer.stem(word).toString();
-					String stemmed = (String) stemmer.stem(word.toString());
-					this.invertedIndex.add(stemmed, inputFile.toString(), ++i);
+					String stemmed = stemmer.stem(word).toString();
+					this.invertedIndex.add(stemmed, location, ++i);
 				}
 				line = reader.readLine();
 			}
@@ -60,12 +59,12 @@ public class InvertedIndexBuilder {
 			System.out.println("Something went wrong while reading the following file: " + inputFile.toString());
 		}
 	}
-	
+
 	// TOOD Make a public static boolean isTextFile(Path path) check exception and that it is a Files.isRegularFile(path) or !Files.isDirectory(path)
 
 	/**
-	 * TODO Description
-	 * 
+	 * Walks through a path and adds the contents of each file into the data structure
+	 *
 	 * @param path Path to be added to the Inverted Index
 	 */
 	public void traversePath(Path path) {

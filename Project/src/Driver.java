@@ -16,7 +16,7 @@ public class Driver {
 	 * Make sure Driver.main does not throw any exceptions... should catch and output
 	 * a user-friendly informative message instead.
 	 */
-	
+
 	/**
 	 * Initializes the classes necessary based on the provided command-line
 	 * arguments. This includes (but is not limited to) how to build or search an
@@ -25,7 +25,7 @@ public class Driver {
 	 * @param args flag/value pairs used to start this program
 	 * @throws IOException
 	 */
-	public static void main(String[] args) throws IOException{
+	public static void main(String[] args) {
 		/* Store initial start time */
 		Instant start = Instant.now();
 
@@ -41,15 +41,21 @@ public class Driver {
 		}
 
 		if (argumentParser.hasFlag("-index")) {
-			// TODO Path path = argumentParser.getPath("-index", Path.of("index.json"));
-			invertIndex.writeIndex((argumentParser.getPath("-index") != null) ?
-					argumentParser.getPath("-index")
-					: Path.of("index.json"));
+			Path path = argumentParser.getPath("-index", Path.of("index.json"));
+			try {
+				invertIndex.writeIndex(path);
+			} catch (IOException e) {
+				System.out.println("There was an issue while writing to file: " + path.toString());
+			}
 		}
 
 		if(argumentParser.hasFlag("-counts")) {
-		// TODO Path path = argumentParser.getPath("-counts", Path.of("counts.json"));
-			SimpleJsonWriter.asObject(invertIndex.getUnmodifiableCounts(), Path.of("actual/counts.json"));
+			Path path = argumentParser.getPath("-counts", Path.of("counts.json"));
+			try {
+				SimpleJsonWriter.asObject(invertIndex.getUnmodifiableCounts(), path);
+			} catch (IOException e) {
+				System.out.println("There was an issue while writing to file: " + path.toString());
+			}
 		}
 
 		/* Calculate time elapsed and output */
