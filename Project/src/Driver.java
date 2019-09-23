@@ -12,7 +12,7 @@ import java.time.Instant;
  * @version Fall 2019
  */
 public class Driver {
-	/* TODO Fix exception handling
+	/*
 	 * Make sure Driver.main does not throw any exceptions... should catch and output
 	 * a user-friendly informative message instead.
 	 */
@@ -23,7 +23,6 @@ public class Driver {
 	 * inverted index.
 	 *
 	 * @param args flag/value pairs used to start this program
-	 * @throws IOException
 	 */
 	public static void main(String[] args) {
 		/* Store initial start time */

@@ -1,5 +1,4 @@
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -158,7 +157,7 @@ public class ArgumentParser {
 	public Path getPath(String flag) {
 		String value = this.map.get(flag);
 		if (value != null) {
-			return Paths.get(value); // TODO Path.of(...)
+			return Path.of(value);
 		} else {
 			return null;
 		}
