@@ -11,6 +11,15 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+/*
+ * TODO Improve class... try to use the iterator approach so you do not need any counter variables
+ * or if statements within a loop, and call your other methods...
+ * 
+ * asNestedObject should call asArray for the inner collections
+ * 
+ * Ask for help on Piazza if you run into any issue!
+ */
+
 /**
  * Outputs several simple data structures in "pretty" JSON format where newlines
  * are used to separate elements and nested elements are indented.

@@ -12,6 +12,11 @@ import java.time.Instant;
  * @version Fall 2019
  */
 public class Driver {
+	/* TODO Fix exception handling
+	 * Make sure Driver.main does not throw any exceptions... should catch and output
+	 * a user-friendly informative message instead.
+	 */
+	
 	/**
 	 * Initializes the classes necessary based on the provided command-line
 	 * arguments. This includes (but is not limited to) how to build or search an
@@ -36,12 +41,14 @@ public class Driver {
 		}
 
 		if (argumentParser.hasFlag("-index")) {
+			// TODO Path path = argumentParser.getPath("-index", Path.of("index.json"));
 			invertIndex.writeIndex((argumentParser.getPath("-index") != null) ?
 					argumentParser.getPath("-index")
 					: Path.of("index.json"));
 		}
 
 		if(argumentParser.hasFlag("-counts")) {
+		// TODO Path path = argumentParser.getPath("-counts", Path.of("counts.json"));
 			SimpleJsonWriter.asObject(invertIndex.getUnmodifiableCounts(), Path.of("actual/counts.json"));
 		}
 
