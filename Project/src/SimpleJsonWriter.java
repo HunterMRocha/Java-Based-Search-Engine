@@ -14,9 +14,9 @@ import java.util.TreeSet;
 /*
  * TODO Improve class... try to use the iterator approach so you do not need any counter variables
  * or if statements within a loop, and call your other methods...
- * 
+ *
  * asNestedObject should call asArray for the inner collections
- * 
+ *
  * Ask for help on Piazza if you run into any issue!
  */
 
@@ -42,18 +42,23 @@ public class SimpleJsonWriter {
 	 * @throws IOException
 	 *
 	 */
-	public static void asArray(Collection<Integer> elements, Writer writer, int level) throws IOException {
+	public static void asArray(Collection<Integer> elements, Writer writer, int level) throws IOException{
 		writer.write("[\n");
 
-		int counter = 0;
-		int size = elements.size();
+		Iterator<Integer> integers = elements.iterator();
 
-		for (Integer number : elements) {
-			indent(writer, level + 1);
-			writer.write(number.toString() + ((counter == size - 1) ? "\n" : ",\n"));
-			counter++;
+		if (integers.hasNext()) {
+			indent(writer, level +1);
+			writer.write(integers.next().toString());
 		}
 
+		while (integers.hasNext()) {
+			writer.write(",\n");
+			indent(writer, level +1);
+			writer.write(integers.next().toString());
+		}
+
+		writer.write("\n");
 		indent(writer, level);
 		writer.write("]");
 	}
