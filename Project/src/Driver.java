@@ -23,6 +23,7 @@ public class Driver {
 	 * inverted index.
 	 *
 	 * @param args flag/value pairs used to start this program
+	 *
 	 */
 	public static void main(String[] args) {
 		/* Store initial start time */
@@ -36,7 +37,11 @@ public class Driver {
 
 		if (argumentParser.hasFlag("-path") && argumentParser.getPath("-path") != null) {
 			Path path = argumentParser.getPath("-path");
-			builder.traversePath(path);
+			try {
+				builder.traversePath(path);
+			} catch (IOException e) {
+				System.out.println("Path can not be traversed: " + path.toString());
+			}
 		}
 
 		if (argumentParser.hasFlag("-index")) {

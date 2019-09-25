@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -30,7 +31,9 @@ public class InvertedIndex {
 	}
 
 	/**
-	 * Updates the invertedIndex with the necessary info like files it appears in and its position
+	 * Updates the invertedIndex with the necessary info like files it appears in
+	 * and its position
+	 *
 	 * @param word
 	 * @param filename
 	 * @param position
@@ -45,11 +48,12 @@ public class InvertedIndex {
 		this.counts.putIfAbsent(filename, 0);
 		this.counts.put(filename, counts.get(filename) + 1);
 
-		return  added;
+		return added;
 	}
 
 	/**
 	 * Writes the invertedIndex in a pretty Json format to the specified output file
+	 *
 	 * @param outputFile
 	 * @throws IOException
 	 */
@@ -63,10 +67,58 @@ public class InvertedIndex {
 	public Map<String, Integer> getUnmodifiableCounts() {
 		return Collections.unmodifiableMap(this.counts);
 	}
-	
-	// TODO Need more functionality
-	/*
-	 * TODO hasSomething methods... hasWord(String word), hasLocation(String word, String location)
-	 * and safe getter methods too.
+
+	/**
+	 * Checks if there is an entry for the word passed
+	 *
+	 * @param word word to look for
+	 * @return true if the word is stored false if not
 	 */
+	public boolean hasWord(String word) {
+		return this.invertedIndex.containsKey(word);
+	}
+
+	/**
+	 * This function checks if a given word entry contains a given location
+	 *
+	 * @param word     word entry to look in
+	 * @param location location we are looking for
+	 * @return true if the word entry exists snd contains an entry for the location
+	 */
+	public boolean hasLocation(String word, String location) {
+		if (hasWord(word)) {
+			return this.invertedIndex.get(word).keySet().contains(location);
+		}
+
+		return false;
+	}
+
+	/**
+	 * Returns the entries for a word as an unmodifiable map
+	 *
+	 * @param word the word we want to get the info about
+	 * @return returns a map of filenames to a treeset of locations (unmodifiable)
+	 */
+	public Map<String, TreeSet<Integer>> getWord(String word) {
+		if (this.invertedIndex.get(word) != null) {
+			return Collections.unmodifiableMap(this.invertedIndex.get(word));
+		} else {
+			return Collections.emptyMap();
+		}
+	}
+
+	/**
+	 * Returns a treeset of locations for the given word-file pair
+	 *
+	 * @param word word to look for
+	 * @param file file to get positions from
+	 * @return returns the found structure in unmodifiable form
+	 */
+	public Set<Object> getLocationsInFile(String word, String file){
+		if (getWord(word) != Collections.EMPTY_MAP) {
+			return Collections.unmodifiableSet(getWord(word).get(file));
+		} else {
+			return Collections.emptySet();
+		}
+	}
 }

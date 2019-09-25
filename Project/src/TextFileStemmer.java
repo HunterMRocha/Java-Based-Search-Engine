@@ -73,17 +73,11 @@ public class TextFileStemmer {
 	public static TreeSet<String> uniqueStems(Path inputFile) throws IOException {
 		TreeSet<String> stemmed = new TreeSet<>();
 
-		try {
-			List<String> lines = Files.readAllLines(inputFile, StandardCharsets.UTF_8);
 
-			for (String line : lines) {
-				stemmed.addAll(uniqueStems(line));
-			}
+		List<String> lines = Files.readAllLines(inputFile, StandardCharsets.UTF_8);
 
-		} catch (IOException e) { // TODO Remove catch blocks
-			System.out.printf("Error reading file: %s\n", e);
-		} catch (Exception e) {
-			System.out.printf("Something went wrong: %s", e);
+		for (String line : lines) {
+			stemmed.addAll(uniqueStems(line));
 		}
 		return stemmed;
 	}
