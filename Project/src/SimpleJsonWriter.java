@@ -180,21 +180,26 @@ public class SimpleJsonWriter {
 	public static void asNestedObject(Map<String, ? extends Collection<Integer>> elements, Writer writer, int level)
 			throws IOException {
 		writer.write("{\n");
+		Iterator<String> keys = elements.keySet().iterator();
 
-		int counter = 0;
-		int keySetSize = elements.keySet().size();
-
-		for (String setname : elements.keySet()) {
+		if (keys.hasNext()) {
+			String next = keys.next();
 			indent(writer, level + 1);
-			quote(setname, writer);
+			quote(next, writer);
 			writer.write(": ");
-			asArray(elements.get(setname), writer, level + 1);
-			writer.write((counter < keySetSize - 1) ? ",\n" : "\n");
-			counter++;
+			asArray(elements.get(next), writer, level + 1);
 		}
 
-		indent(writer, level);
-		writer.write("}");
+		while (keys.hasNext()) {
+			String next = keys.next();
+			writer.write(",\n");
+			indent(writer, level + 1);
+			quote(next, writer);
+			writer.write(": ");
+			asArray(elements.get(next), writer, level + 1);
+		}
+
+		writer.write("\n}");
 	}
 
 	/**
