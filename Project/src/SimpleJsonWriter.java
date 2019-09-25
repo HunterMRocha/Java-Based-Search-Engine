@@ -104,22 +104,34 @@ public class SimpleJsonWriter {
 	 * @param level    the initial indent level
 	 * @throws IOException
 	 */
-	public static void asObject(Map<String, Integer> elements, Writer writer, int level) throws IOException {
-		Iterator<Map.Entry<String, Integer>> map = elements.entrySet().iterator();
-
+	public static void asObject(Map<String, Integer> elements, Writer writer, int level) throws IOException{
 		writer.write("{\n");
 
-		while (map.hasNext()) {
-			Map.Entry<String, Integer> entry = map.next();
+		Iterator<Map.Entry<String, Integer>> entries = elements.entrySet().iterator();
+
+		if (entries.hasNext()) {
+			Map.Entry<String, Integer> entry = entries.next();
 			String key = entry.getKey();
-			Integer value = entry.getValue();
+			String value = entry.getValue().toString();
 
 			indent(writer, level + 1);
 			quote(key, writer);
-			writer.write(": " + value.toString() + (map.hasNext() ? ",\n" : "\n"));
+			writer.write(": " + value);
 		}
 
-		writer.write("}\n");
+		while (entries.hasNext()) {
+			Map.Entry<String, Integer> entry = entries.next();
+			String key = entry.getKey();
+			String value = entry.getValue().toString();
+
+			writer.write(",\n");
+
+			indent(writer, level + 1);
+			quote(key, writer);
+			writer.write(": " + value);
+		}
+
+		writer.write("\n}\n");
 	}
 
 	/**
