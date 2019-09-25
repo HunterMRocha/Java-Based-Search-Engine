@@ -9,6 +9,7 @@ import java.util.TreeSet;
 /**
  * @author nedimazar
  *
+ *
  */
 public class InvertedIndex {
 
