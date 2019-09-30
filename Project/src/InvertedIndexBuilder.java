@@ -10,8 +10,8 @@ import opennlp.tools.stemmer.Stemmer;
 import opennlp.tools.stemmer.snowball.SnowballStemmer;
 
 /**
- * TODO Describe the class overall here.
- * 
+ * This builder class will initialize an inverted index with a provided path.
+ *
  * @author nedimazar
  */
 public class InvertedIndexBuilder {
@@ -42,19 +42,19 @@ public class InvertedIndexBuilder {
 	public void addPath(Path inputFile) throws IOException {
 		Stemmer stemmer = new SnowballStemmer(DEFAULT);
 
-		// TODO Must use try-with-resources here (do not need a catch bock)
-		BufferedReader reader = Files.newBufferedReader(inputFile, StandardCharsets.UTF_8);
-		String line = reader.readLine();
-		String location = inputFile.toString();
-		int i = 0;
-		
-		while (line != null) {
-			String[] parsed = TextParser.parse(line);
-			for (String word : parsed) {
-				String stemmed = stemmer.stem(word).toString();
-				this.invertedIndex.add(stemmed, location, ++i);
+		try (BufferedReader reader = Files.newBufferedReader(inputFile, StandardCharsets.UTF_8);){
+			String line = reader.readLine();
+			String location = inputFile.toString();
+			int i = 0;
+
+			while (line != null) {
+				String[] parsed = TextParser.parse(line);
+				for (String word : parsed) {
+					String stemmed = stemmer.stem(word).toString();
+					this.invertedIndex.add(stemmed, location, ++i);
+				}
+				line = reader.readLine();
 			}
-			line = reader.readLine();
 		}
 	}
 
@@ -65,16 +65,10 @@ public class InvertedIndexBuilder {
 	 * @return returns true if file is a text file false if not
 	 */
 	public static boolean isTextFile(Path path) {
-		// TODO Rather than call toString() and toLowerCase() twice, save that result and reuse.
-		/*
-		 * TODO For example...
-		 * String lower = path.toString().toLowerCase();
-		 * return lower.endsWith(.txt)...
-		 */
-		return (path.toString().toLowerCase().endsWith(".txt")
-				|| path.toString().toLowerCase().endsWith(".text")
+		String lower = path.toString().toLowerCase();
+		return (lower.endsWith(".txt")
+				|| lower.endsWith(".text")
 				&& Files.isRegularFile(path));
-
 	}
 
 	/**
@@ -86,18 +80,18 @@ public class InvertedIndexBuilder {
 	public void traversePath(Path path) throws IOException {
 		/*
 		 * TODO Streams and lambda expressions do not work great when (a) you have
-		 * exceptions and (b) you are modifying data. 
-		 * 
+		 * exceptions and (b) you are modifying data.
+		 *
 		 * I suggest breaking this up so you have a method dedicated to giving you
 		 * all of the text files, and use that here and just loop to add each file.
 		 * This will also help when you get to multithreading.
-		 * 
+		 *
 		 * public static List<Path> getTextFiles(Path path) ...
-		 * 
+		 *
 		 * for (Path current : getTextFiles(path)) {
 		 * 		addPath(current);
 		 * }
-		 * 
+		 *
 		 * (It is a little bit slower, since there is a delay between when you know
 		 * about a text file and when you add that file to the index. But this will
 		 * help us break up the problem for multithreading later on.)

@@ -348,13 +348,5 @@ public class SimpleJsonWriter {
 		quote(element, writer);
 	}
 
-	// TODO Can go ahead and remove this main method since you no longer need it.
-	/**
-	 * A simple main method that demonstrates this class.
-	 *
-	 * @param args unused
-	 */
-	public static void main(String[] args) {
 
-	}
 }
