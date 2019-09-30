@@ -49,6 +49,7 @@ public class Driver {
 			try {
 				invertIndex.writeIndex(path);
 			} catch (IOException e) {
+				// TODO Make this a different message than -counts... e.g. There was an issue while writing the inverted index to file vs. writing the word counts to file
 				System.out.println("There was an issue while writing to file: " + path.toString());
 			}
 		}
