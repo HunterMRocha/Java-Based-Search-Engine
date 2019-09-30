@@ -272,7 +272,6 @@ public class SimpleJsonWriter {
 			throws IOException {
 		try (BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
 			asInvertedIndex(invertedIndex, writer, 0);
-
 		}
 	}
 
@@ -349,6 +348,7 @@ public class SimpleJsonWriter {
 		quote(element, writer);
 	}
 
+	// TODO Can go ahead and remove this main method since you no longer need it.
 	/**
 	 * A simple main method that demonstrates this class.
 	 *

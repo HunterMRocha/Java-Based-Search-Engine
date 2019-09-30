@@ -7,9 +7,9 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 /**
+ * TODO Describe the class here.
+ * 
  * @author nedimazar
- *
- *
  */
 public class InvertedIndex {
 
@@ -46,6 +46,7 @@ public class InvertedIndex {
 
 		boolean added = this.invertedIndex.get(word).get(filename).add(position);
 
+		// TODO Only increase counts if added is true! (Do not increase the count if this was a duplicate entry.)
 		this.counts.putIfAbsent(filename, 0);
 		this.counts.put(filename, counts.get(filename) + 1);
 
@@ -87,13 +88,23 @@ public class InvertedIndex {
 	 * @return true if the word entry exists snd contains an entry for the location
 	 */
 	public boolean hasLocation(String word, String location) {
-		if (hasWord(word)) {
+		if (hasWord(word)) { // TODO I suggest you just access the index directly here... makes it easier to handle multithreading later on
+			// TODO return this.invertedIndex.get(word).containsKey(location);
 			return this.invertedIndex.get(word).keySet().contains(location);
 		}
 
 		return false;
 	}
 
+	/*
+	 * TODO Unfortunately, the getWord() method below breaks encapsulation because
+	 * it returns a NESTED data structure. You'll need to remove and replace this
+	 * functionality wtih something else. Maybe...
+	 * 
+	 * public Set<String> getLocations(String word) that just returns the keyset of locations
+	 * 
+	 * ... the user can then use getLocations to fetch the individual position sets later if needed
+	 */
 	/**
 	 * Returns the entries for a word as an unmodifiable map
 	 *
@@ -116,7 +127,7 @@ public class InvertedIndex {
 	 * @return returns the found structure in unmodifiable form
 	 */
 	public Set<Object> getLocationsInFile(String word, String file){
-		if (getWord(word) != Collections.EMPTY_MAP) {
+		if (getWord(word) != Collections.EMPTY_MAP) { // TODO Again access index directly... test if the word and file exist.... if invertedIndex.containsKey(word) && invertedIndex.get(word).containsKey(file)
 			return Collections.unmodifiableSet(getWord(word).get(file));
 		} else {
 			return Collections.emptySet();

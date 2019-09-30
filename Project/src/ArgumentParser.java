@@ -44,7 +44,7 @@ public class ArgumentParser {
 	public void parse(String[] args) {
 		for (int i = 0; i < args.length; i++) {
 
-			boolean hasValue = (i + 1 < args.length && isValue(args[i + 1]));
+			boolean hasValue = (i + 1 < args.length && isValue(args[i + 1])); // TODO Move this inside the if block, won't need to determine unless the if block is true
 			if (isFlag(args[i])) {
 				this.map.put(args[i], hasValue ? args[i + 1] : null);
 			}

@@ -72,8 +72,6 @@ public class TextFileStemmer {
 	 */
 	public static TreeSet<String> uniqueStems(Path inputFile) throws IOException {
 		TreeSet<String> stemmed = new TreeSet<>();
-
-
 		List<String> lines = Files.readAllLines(inputFile, StandardCharsets.UTF_8);
 
 		for (String line : lines) {
@@ -82,6 +80,7 @@ public class TextFileStemmer {
 		return stemmed;
 	}
 
+	// TODO Go ahead and remove the main method since you no longer need it.
 	/**
 	 * A simple main method that demonstrates this class.
 	 *
