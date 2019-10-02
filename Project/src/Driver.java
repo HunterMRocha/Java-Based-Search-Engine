@@ -62,6 +62,11 @@ public class Driver {
 			}
 		}
 
+		if(argumentParser.hasFlag("-query") && argumentParser.getPath("-path") != null) {
+
+
+		}
+
 		/* Calculate time elapsed and output */
 		Duration elapsed = Duration.between(start, Instant.now());
 		double seconds = (double) elapsed.toMillis() / Duration.ofSeconds(1).toMillis();
