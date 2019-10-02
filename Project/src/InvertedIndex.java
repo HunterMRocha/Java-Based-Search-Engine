@@ -97,29 +97,6 @@ public class InvertedIndex {
 		return false;
 	}
 
-	/*
-	 * TODO Unfortunately, the getWord() method below breaks encapsulation because
-	 * it returns a NESTED data structure. You'll need to remove and replace this
-	 * functionality wtih something else. Maybe...
-	 *
-	 * public Set<String> getLocations(String word) that just returns the keyset of locations
-	 *
-	 * ... the user can then use getLocations to fetch the individual position sets later if needed
-	 */
-	/**
-	 * Returns the entries for a word as an unmodifiable map
-	 *
-	 * @param word the word we want to get the info about
-	 * @return returns a map of filenames to a treeset of locations (unmodifiable)
-	 */
-	public Map<String, TreeSet<Integer>> getWord(String word) {
-		if (this.invertedIndex.get(word) != null) {
-			return Collections.unmodifiableMap(this.invertedIndex.get(word));
-		} else {
-			return Collections.emptyMap();
-		}
-	}
-
 	/**
 	 * Returns a treeset of locations for the given word-file pair
 	 *
