@@ -2,7 +2,6 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -95,20 +94,5 @@ public class InvertedIndex {
 			return this.invertedIndex.get(word).containsKey(location);
 		}
 		return false;
-	}
-
-	/**
-	 * Returns a treeset of locations for the given word-file pair
-	 *
-	 * @param word word to look for
-	 * @param file file to get positions from
-	 * @return returns the found structure in unmodifiable form
-	 */
-	public Set<Object> getLocationsInFile(String word, String file){
-		if (invertedIndex.containsKey(word) && invertedIndex.get(word).containsKey(file)) {
-			return Collections.unmodifiableSet(getWord(word).get(file));
-		} else {
-			return Collections.emptySet();
-		}
 	}
 }
