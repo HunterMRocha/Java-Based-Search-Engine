@@ -29,11 +29,11 @@ public class Driver {
 		/* Store initial start time */
 		Instant start = Instant.now();
 
-		InvertedIndex invertIndex = new InvertedIndex();
+		InvertedIndex invertedIndex = new InvertedIndex();
 
 		ArgumentParser argumentParser = new ArgumentParser(args);
 
-		InvertedIndexBuilder builder = new InvertedIndexBuilder(invertIndex);
+		InvertedIndexBuilder builder = new InvertedIndexBuilder(invertedIndex);
 
 		if (argumentParser.hasFlag("-path") && argumentParser.getPath("-path") != null) {
 			Path path = argumentParser.getPath("-path");
@@ -47,7 +47,7 @@ public class Driver {
 		if (argumentParser.hasFlag("-index")) {
 			Path path = argumentParser.getPath("-index", Path.of("index.json"));
 			try {
-				invertIndex.writeIndex(path);
+				invertedIndex.writeIndex(path);
 			} catch (IOException e) {
 				System.out.println("There was an issue while writing inverted index to file: " + path.toString());
 			}
@@ -56,14 +56,24 @@ public class Driver {
 		if(argumentParser.hasFlag("-counts")) {
 			Path path = argumentParser.getPath("-counts", Path.of("counts.json"));
 			try {
-				SimpleJsonWriter.asObject(invertIndex.getUnmodifiableCounts(), path);
+				SimpleJsonWriter.asObject(invertedIndex.getUnmodifiableCounts(), path);
 			} catch (IOException e) {
 				System.out.println("There was an issue while writing counts info to file: " + path.toString());
 			}
 		}
 
-		if(argumentParser.hasFlag("-query") && argumentParser.getPath("-path") != null) {
+		if(argumentParser.hasFlag("-query") && argumentParser.getPath("-query") != null) {
+			Path queryPath = argumentParser.getPath("-query");
+			try {
+				QueryBuilder queryBuilder = new QueryBuilder(invertedIndex, queryPath);
+				queryBuilder.makeQueries();
 
+
+			} catch (IOException e) {
+				System.out.println("There was an issue while reading the query file: " + queryPath.toString());
+			} catch (Exception r ) {
+				r.printStackTrace();
+			}
 
 		}
 
