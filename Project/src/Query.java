@@ -1,4 +1,3 @@
-import java.util.Iterator;
 import java.util.TreeSet;
 
 
@@ -41,18 +40,7 @@ public class Query implements Comparable<Query>{
 
 	@Override
 	public String toString() {
-		String out = "";
-		Iterator<String> i = this.words.iterator();
-
-		if (i.hasNext()) {
-			out += i.next();
-		}
-
-		while (i.hasNext()) {
-			out += " " + i.next();
-		}
-
-		return out;
+		return String.join(" ", this.words);
 	}
 
 
