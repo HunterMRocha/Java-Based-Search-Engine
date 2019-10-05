@@ -4,6 +4,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import opennlp.tools.stemmer.Stemmer;
 import opennlp.tools.stemmer.snowball.SnowballStemmer;
@@ -23,7 +24,7 @@ public class QueryBuilder {
 	/**
 	 * The set that will hold cleaned up queries.
 	 */
-	private TreeMap<Query, Integer> querySet;
+	private TreeMap<Query, TreeSet<Result>> querySet;
 
 	/**
 	 * This is the path to the file containing the queries.
@@ -51,7 +52,6 @@ public class QueryBuilder {
 		/* TODO Remove these statements used to ignore the warnings. */
 		//System.out.println(this.queryPath.toString());
 		//System.out.println(this.querySet);
-		System.out.println(this.invertedIndex.toString());
 		//System.out.println(DEFAULT);
 
 	}
@@ -78,11 +78,15 @@ public class QueryBuilder {
 				}
 
 				if (put.size() != 0) {
-					this.querySet.put(put, 0);
+					this.querySet.put(put, invertedIndex.getResults(put));
 				}
 			}
+
+
+
 			System.out.println("SET: " + this.querySet.keySet());
 		}
+
 	}
 
 

@@ -6,37 +6,83 @@
  *
  */
 public class Result implements Comparable<Result>{
-	/**
-	 * The inverted index which the searches will be conducted on.
-	 */
-	private InvertedIndex invertedIndex;
-
 
 	/**
-	 *
+	 * This will hold the location of the search result.
 	 */
 	private String location;
 	/**
-	 *
+	 * This will hold the count of matches.
 	 */
 	private int count;
 	/**
-	 *
+	 * This will hold the scoire of the search result.
 	 */
 	private float score;
 
 	/**
 	 * Constructor for Result object.
 	 *
-	 * @param invertedIndex the inverted index searches will be conducted on.
 	 */
-	public Result(InvertedIndex invertedIndex) {
-		this.invertedIndex = invertedIndex;
+	public Result() {
 		this.location = "";
 		this.count = 0;
 		this.score = 0;
-		/** TODO Get rid of this ignore statement. */
-		this.invertedIndex.hashCode();
+	}
+
+	/**
+	 * Sets the location data member.
+	 *
+	 * @param location
+	 */
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	/**
+	 * Sets the count data member.
+	 *
+	 * @param count
+	 */
+	public void setCount(int count) {
+		this.count = count;
+	}
+
+	/**
+	 * Sets the score data member.
+	 *
+	 * @param score
+	 */
+	public void setScore(float score) {
+		this.score = score;
+	}
+
+	/**
+	 * Getter for the count data member.
+	 *
+	 * @return the count data member
+	 */
+	public int getCount() {
+		return this.count;
+	}
+
+	/**
+	 * Getter for the score data member.
+	 *
+	 * @return the score
+	 */
+	public float getScore() {
+		return this.score;
+	}
+
+	/**
+	 * Chescks if another Results location is the same as this ones.
+	 *
+	 * @param other
+	 * @return true if same;
+	 */
+	public boolean sameLocation(Result other) {
+		return this.location.compareTo(other.location) == 0;
 	}
 
 	/**
@@ -98,8 +144,6 @@ public class Result implements Comparable<Result>{
 
 		System.out.println(r.compareTo(r2));
 		System.out.println(r2.compareTo(r));
-
-
 	}
 
 }

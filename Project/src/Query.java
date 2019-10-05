@@ -1,3 +1,5 @@
+import java.util.Collections;
+import java.util.Set;
 import java.util.TreeSet;
 
 
@@ -17,6 +19,15 @@ public class Query implements Comparable<Query>{
 	 */
 	public Query() {
 		this.words = new TreeSet<>();
+	}
+
+	/**
+	 * A getter method for the words of a query.
+	 *
+	 * @return An unmodifiable set of the words.
+	 */
+	public Set<String> getWords() {
+		return Collections.unmodifiableSet(this.words);
 	}
 
 	/**
