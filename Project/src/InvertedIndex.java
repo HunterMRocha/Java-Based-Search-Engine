@@ -105,7 +105,6 @@ public class InvertedIndex {
 	public TreeSet<Result> makeResult(String word) {
 		TreeSet<Result> results = new TreeSet<>();
 
-
 		if (this.hasWord(word)) {
 			var files = this.invertedIndex.get(word).keySet();
 			for (String file : files) {

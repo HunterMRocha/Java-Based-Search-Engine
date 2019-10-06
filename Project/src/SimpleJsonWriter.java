@@ -247,7 +247,6 @@ public class SimpleJsonWriter {
 			writer.write(": ");
 
 			asNestedObject(invertedIndex.get(key), writer, level + 1);
-
 		}
 
 		while (iterator.hasNext()) {

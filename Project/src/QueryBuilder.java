@@ -85,6 +85,9 @@ public class QueryBuilder {
 
 
 			System.out.println("SET: " + this.querySet.keySet());
+			System.out.println("SET String: " + this.querySet.toString());
+
+
 		}
 
 	}
