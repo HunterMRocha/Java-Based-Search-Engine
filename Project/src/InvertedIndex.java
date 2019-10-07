@@ -164,7 +164,7 @@ public class InvertedIndex {
 
 
 		results = mergeDuplicates(results);
-		System.out.println(results);
+		//System.out.println(results);
 
 
 		return results;

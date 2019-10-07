@@ -78,6 +78,8 @@ public class QueryBuilder {
 				}
 
 				if (put.size() != 0) {
+					TreeSet<Result> results = invertedIndex.getResults(put);
+					System.out.println("Queries: " + put + ", Results: " + results);
 					this.querySet.put(put, invertedIndex.getResults(put));
 				}
 			}
@@ -85,9 +87,7 @@ public class QueryBuilder {
 
 
 			System.out.println("SET: " + this.querySet.keySet());
-			System.out.println("SET String: " + this.querySet.toString());
-
-
+			//System.out.println("SET String: " + this.querySet.toString());
 		}
 
 	}
