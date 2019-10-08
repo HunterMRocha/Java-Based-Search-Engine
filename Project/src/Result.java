@@ -109,9 +109,21 @@ public class Result implements Comparable<Result>{
 		out += "\"" + this.count + "\",\n";
 
 		out += "\"score\": ";
-		out += "\"" + this.score + "\"\n";
+		out += "\"" + this.score + "\"";
 
 		return out;
+	}
+
+	public String getWhereString() {
+		return ("\"where\": " + "\"" + this.location + "\",");
+	}
+
+	public String getCountString() {
+		return ("\"count\": " + this.count + ",");
+	}
+
+	public String getScoreString() {
+		return ("\"score\": " + String.format("%.8f", this.score));
 	}
 
 	@Override

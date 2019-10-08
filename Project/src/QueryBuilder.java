@@ -3,6 +3,8 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collections;
+import java.util.Map;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -57,6 +59,15 @@ public class QueryBuilder {
 	}
 
 	/**
+	 * Getter for our querySet data structure.
+	 *
+	 * @return the map
+	 */
+	public Map<Query, TreeSet<Result>> getQuerySet() {
+		return Collections.unmodifiableMap(this.querySet);
+	}
+
+	/**
 	 * This function will open the query file, clean and stem the queries, and store them in a TreeSet.
 	 * @throws IOException
 	 */
@@ -79,15 +90,11 @@ public class QueryBuilder {
 
 				if (put.size() != 0) {
 					TreeSet<Result> results = invertedIndex.getResults(put);
-					System.out.println("Queries: " + put + ", Results: " + results);
 					this.querySet.put(put, invertedIndex.getResults(put));
 				}
 			}
 
-
-
 			System.out.println("SET: " + this.querySet.keySet());
-			//System.out.println("SET String: " + this.querySet.toString());
 		}
 
 	}

@@ -30,6 +30,10 @@ public class InvertedIndex {
 		this.counts = new TreeMap<>();
 	}
 
+	public TreeMap<String, TreeMap<String, TreeSet<Integer>>> getStructure(){
+		return this.invertedIndex;
+	}
+
 	/**
 	 * Updates the invertedIndex with the necessary info like files it appears in
 	 * and its position
@@ -40,6 +44,7 @@ public class InvertedIndex {
 	 * @return returns true if the data structure was modified as a result of add()
 	 */
 	public boolean add(String word, String filename, int position) {
+		//System.out.println("ADDED: " + word + ", " + filename + ", " + position);
 		this.invertedIndex.putIfAbsent(word, new TreeMap<>());
 		this.invertedIndex.get(word).putIfAbsent(filename, new TreeSet<>());
 
@@ -110,7 +115,7 @@ public class InvertedIndex {
 			for (String file : files) {
 				Result result = new Result();
 				result.setLocation(file);
-				result.setCount(counts.get(file));
+				result.setCount(this.invertedIndex.get(word).get(file).size());
 				result.setScore((float) result.getCount() / counts.get(file));
 
 				results.add(result);
@@ -133,6 +138,7 @@ public class InvertedIndex {
 			for (Result mergedResult : merged) {
 				if (mergedResult.sameLocation(result)) {
 					mergedResult.setScore(mergedResult.getScore() + result.getScore());
+					mergedResult.setCount(mergedResult.getCount() + result.getCount());
 					mergeHappened = true;
 				}
 			}
@@ -164,7 +170,6 @@ public class InvertedIndex {
 
 
 		results = mergeDuplicates(results);
-		//System.out.println(results);
 
 
 		return results;

@@ -68,12 +68,23 @@ public class Driver {
 				QueryBuilder queryBuilder = new QueryBuilder(invertedIndex, queryPath);
 				queryBuilder.makeQueries();
 
+				if (argumentParser.hasFlag("-results")) {
+					Path path = argumentParser.getPath("-results");
+
+					if (path == null) {
+						path = Path.of("results.json");
+					}
+
+					SimpleJsonWriter.asQuery(queryBuilder.getQuerySet(), path);
+				}
 
 			} catch (IOException e) {
 				System.out.println("There was an issue while reading the query file: " + queryPath.toString());
 			} catch (Exception r ) {
 				r.printStackTrace();
 			}
+
+
 
 		}
 

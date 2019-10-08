@@ -347,5 +347,131 @@ public class SimpleJsonWriter {
 		quote(element, writer);
 	}
 
+	public static void asQuery(Map<Query, TreeSet<Result>> querySet, Path path, Writer writer, int level) throws IOException {
+		System.out.println("WOWOWOWOWOWOWO");
+		writer.write("{\n");
+		var iterator = querySet.keySet().iterator();
+
+		if (iterator.hasNext()) {
+			Query nextQuery = iterator.next();
+			indent(writer, level +1);
+
+			writer.write("\"" + nextQuery.toString() + "\": [\n");
+
+			indent(writer, level + 1);
+
+
+			var innerIterator = querySet.get(nextQuery).iterator();
+
+			if (innerIterator.hasNext()) {
+				indent(writer, level + 1);
+				writer.write("{\n");
+				indent(writer, level + 3);
+				var nexto = innerIterator.next();
+				writer.write(nexto.getWhereString() + "\n");
+				indent(writer, level + 3);
+				writer.write(nexto.getCountString() + "\n");
+				indent(writer, level + 3);
+				writer.write(nexto.getScoreString() + "\n");
+				indent(writer, level + 2);
+
+				writer.write("}");
+				indent(writer, level );
+			}
+
+			while (innerIterator.hasNext()) {
+				writer.write(",\n");
+				indent(writer, level + 2);
+				writer.write("{\n");
+				indent(writer, level + 3);
+				var nexto = innerIterator.next();
+				writer.write(nexto.getWhereString() + "\n");
+				indent(writer, level + 3);
+				writer.write(nexto.getCountString() + "\n");
+				indent(writer, level + 3);
+				writer.write(nexto.getScoreString() + "\n");
+				indent(writer, level + 2);
+
+				writer.write("}");
+				indent(writer, level);
+			}
+			writer.write("\n");
+			indent(writer, level + 1);
+			writer.write("]");
+			indent(writer, level);
+
+		}
+
+		while (iterator.hasNext()) {
+			Query nextQuery = iterator.next();
+			writer.write(",\n");
+			indent(writer, level +1);
+
+			writer.write("\"" + nextQuery.toString() + "\": [");
+
+			indent(writer, level + 1);
+
+
+			var innerIterator = querySet.get(nextQuery).iterator();
+
+			boolean bob = true;
+			if (innerIterator.hasNext()) {
+				writer.write("\n");
+				bob = false;
+				indent(writer, level + 1);
+				writer.write("\t{\n");
+				indent(writer, level + 3);
+				var nexto = innerIterator.next();
+				writer.write(nexto.getWhereString() + "\n");
+				indent(writer, level + 3);
+				writer.write(nexto.getCountString() + "\n");
+				indent(writer, level + 3);
+				writer.write(nexto.getScoreString() + "\n");
+				indent(writer, level + 2);
+
+				writer.write("}");
+				indent(writer, level);
+			}
+
+			while (innerIterator.hasNext()) {
+				writer.write(",\n");
+				indent(writer, level + 2);
+				writer.write("{\n");
+				indent(writer, level + 3);
+				var nexto = innerIterator.next();
+				writer.write(nexto.getWhereString() + "\n");
+				indent(writer, level + 3);
+				writer.write(nexto.getCountString() + "\n");
+				indent(writer, level + 3);
+				writer.write(nexto.getScoreString() + "\n");
+				indent(writer, level + 2);
+
+				writer.write("}");
+				indent(writer, level);
+			}
+
+			if(!bob) {indent(writer, level +1);}
+			writer.write("\n\t]");
+			indent(writer, level);
+		}
+		writer.write("\n}");
+
+	}
+
+	/**
+	 * Overloads asQuery
+	 *
+	 * @param querySet
+	 * @param path
+	 * @throws IOException
+	 */
+	public static void asQuery(Map<Query, TreeSet<Result>> querySet, Path path)
+			throws IOException {
+		try (BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
+			System.out.println("PATHTHTH" + path.toString());
+			asQuery(querySet, path, writer, 0);
+		}
+	}
+
 
 }
