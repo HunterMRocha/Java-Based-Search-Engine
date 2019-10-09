@@ -385,37 +385,13 @@ public class SimpleJsonWriter {
 			var innerIterator = querySet.get(nextQuery).iterator();
 
 			if (innerIterator.hasNext()) {
-				writer.write("\n");
-				indent(writer, level + 1);
-				writer.write("\t{\n");
-				indent(writer, level + 3);
-				var nexto = innerIterator.next();
-				writer.write(nexto.getWhereString() + "\n");
-				indent(writer, level + 3);
-				writer.write(nexto.getCountString() + "\n");
-				indent(writer, level + 3);
-				writer.write(nexto.getScoreString() + "\n");
-				indent(writer, level + 2);
+				withExtraTab(innerIterator, writer, level);
 
-				writer.write("}");
-				indent(writer, level );
 			}
 
 			while (innerIterator.hasNext()) {
-				writer.write(",\n");
-				indent(writer, level + 2);
-				writer.write("{\n");
-				indent(writer, level + 3);
-				var nexto = innerIterator.next();
-				writer.write(nexto.getWhereString() + "\n");
-				indent(writer, level + 3);
-				writer.write(nexto.getCountString() + "\n");
-				indent(writer, level + 3);
-				writer.write(nexto.getScoreString() + "\n");
-				indent(writer, level + 2);
+				withoutTab(innerIterator, writer, level);
 
-				writer.write("}");
-				indent(writer, level);
 			}
 			writer.write("\n");
 			indent(writer, level + 1);
@@ -438,38 +414,11 @@ public class SimpleJsonWriter {
 
 			boolean bob = true;
 			if (innerIterator.hasNext()) {
-				writer.write("\n");
-				bob = false;
-				indent(writer, level + 1);
-				writer.write("\t{\n");
-				indent(writer, level + 3);
-				var nexto = innerIterator.next();
-				writer.write(nexto.getWhereString() + "\n");
-				indent(writer, level + 3);
-				writer.write(nexto.getCountString() + "\n");
-				indent(writer, level + 3);
-				writer.write(nexto.getScoreString() + "\n");
-				indent(writer, level + 2);
-
-				writer.write("}");
-				indent(writer, level);
+				withExtraTab(innerIterator, writer, level);
 			}
 
 			while (innerIterator.hasNext()) {
-				writer.write(",\n");
-				indent(writer, level + 2);
-				writer.write("{\n");
-				indent(writer, level + 3);
-				var nexto = innerIterator.next();
-				writer.write(nexto.getWhereString() + "\n");
-				indent(writer, level + 3);
-				writer.write(nexto.getCountString() + "\n");
-				indent(writer, level + 3);
-				writer.write(nexto.getScoreString() + "\n");
-				indent(writer, level + 2);
-
-				writer.write("}");
-				indent(writer, level);
+				withoutTab(innerIterator, writer, level);
 			}
 
 			if(!bob) {indent(writer, level +1);}
@@ -477,6 +426,58 @@ public class SimpleJsonWriter {
 			indent(writer, level);
 		}
 		writer.write("\n}");
+
+	}
+
+	/**
+	 * A helper method for writing as Query.
+	 *
+	 * @param innerIterator
+	 * @param writer
+	 * @param level
+	 * @throws IOException
+	 */
+	private static void withoutTab(Iterator<Result> innerIterator, Writer writer, int level) throws IOException {
+		writer.write(",\n");
+		indent(writer, level + 2);
+		writer.write("{\n");
+		indent(writer, level + 3);
+		var nexto = innerIterator.next();
+		writer.write(nexto.getWhereString() + "\n");
+		indent(writer, level + 3);
+		writer.write(nexto.getCountString() + "\n");
+		indent(writer, level + 3);
+		writer.write(nexto.getScoreString() + "\n");
+		indent(writer, level + 2);
+
+		writer.write("}");
+		indent(writer, level);
+
+	}
+
+	/**
+	 * A helper method for writing as Query.
+	 *
+	 * @param innerIterator
+	 * @param writer
+	 * @param level
+	 * @throws IOException
+	 */
+	private static void withExtraTab(Iterator<Result> innerIterator, Writer writer, int level) throws IOException {
+		writer.write("\n");
+		indent(writer, level + 1);
+		writer.write("\t{\n");
+		indent(writer, level + 3);
+		var nexto = innerIterator.next();
+		writer.write(nexto.getWhereString() + "\n");
+		indent(writer, level + 3);
+		writer.write(nexto.getCountString() + "\n");
+		indent(writer, level + 3);
+		writer.write(nexto.getScoreString() + "\n");
+		indent(writer, level + 2);
+
+		writer.write("}");
+		indent(writer, level );
 
 	}
 
