@@ -1,3 +1,4 @@
+import java.util.Comparator;
 
 /**
  * Class that holds the result of a search. Every Query has a result pair.
@@ -137,36 +138,13 @@ public class Result implements Comparable<Result>{
 		return ("\"score\": " + String.format("%.8f", this.score));
 	}
 
+
 	@Override
 	public int compareTo(Result o) {
-		double scoreDiff = this.score - o.score;
-
-		if(scoreDiff != 0) {
-			return scoreDiff > 0 ? -1 : 1;
-		} else {
-			int countDiff = this.count - o.count;
-
-			if(countDiff != 0) {
-				return countDiff> 0 ? -1 : 1;
-			} else {
-				return (this.location.toLowerCase().compareTo(o.location.toLowerCase()));
-			}
-		}
-	}
-
-	/**
-	 * Simple main method for debugging.
-	 *
-	 * @param args Commandline arguments.
-	 */
-	public static void main (String args[]) {
-		Result r = new Result("heRe", 10, (float) 1.24);
-		Result r2 = new Result("here", 10, (float) 1.25);
-
-
-
-		System.out.println(r.compareTo(r2));
-		System.out.println(r2.compareTo(r));
+		return Comparator.comparing(Result::getScore, Comparator.reverseOrder())
+				.thenComparing(Result::getCount, Comparator.reverseOrder())
+				.thenComparing(Result::getWhereString)
+				.compare(this, o);
 	}
 
 }
