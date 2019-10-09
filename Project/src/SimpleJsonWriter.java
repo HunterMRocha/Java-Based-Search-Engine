@@ -5,6 +5,7 @@ import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
@@ -347,8 +348,28 @@ public class SimpleJsonWriter {
 		quote(element, writer);
 	}
 
-	public static void asQuery(Map<Query, TreeSet<Result>> querySet, Path path, Writer writer, int level) throws IOException {
-		System.out.println("WOWOWOWOWOWOWO");
+	/**
+	 * This beast will write the Query-Result pairs to a file.
+	 *
+	 * @param querySet Set of queries that will be written.
+	 * @param path The path where it will be written.
+	 * @param writer The writer to use.
+	 * @param level How many initial indentations.
+	 * @throws IOException Could happen!
+	 */
+	public static void asQuery(Map<Query, ArrayList<Result>> querySet, Path path, Writer writer, int level) throws IOException {
+		Map<Query, ArrayList<Result>> temp = new TreeMap<>();
+
+		for (Query q : querySet.keySet()) {
+			ArrayList<Result> innerTemp = new ArrayList<>();
+			innerTemp.addAll(querySet.get(q));
+			temp.put(q, innerTemp);
+		}
+
+		querySet = temp;
+
+
+
 		writer.write("{\n");
 		var iterator = querySet.keySet().iterator();
 
@@ -356,7 +377,7 @@ public class SimpleJsonWriter {
 			Query nextQuery = iterator.next();
 			indent(writer, level +1);
 
-			writer.write("\"" + nextQuery.toString() + "\": [\n");
+			writer.write("\"" + nextQuery.toString() + "\": [");
 
 			indent(writer, level + 1);
 
@@ -364,8 +385,9 @@ public class SimpleJsonWriter {
 			var innerIterator = querySet.get(nextQuery).iterator();
 
 			if (innerIterator.hasNext()) {
+				writer.write("\n");
 				indent(writer, level + 1);
-				writer.write("{\n");
+				writer.write("\t{\n");
 				indent(writer, level + 3);
 				var nexto = innerIterator.next();
 				writer.write(nexto.getWhereString() + "\n");
@@ -465,7 +487,7 @@ public class SimpleJsonWriter {
 	 * @param path
 	 * @throws IOException
 	 */
-	public static void asQuery(Map<Query, TreeSet<Result>> querySet, Path path)
+	public static void asQuery(Map<Query, ArrayList<Result>> querySet, Path path)
 			throws IOException {
 		try (BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
 			System.out.println("PATHTHTH" + path.toString());

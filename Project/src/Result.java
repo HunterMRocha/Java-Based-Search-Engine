@@ -18,7 +18,7 @@ public class Result implements Comparable<Result>{
 	/**
 	 * This will hold the scoire of the search result.
 	 */
-	private float score;
+	private double score;
 
 	/**
 	 * Constructor for Result object.
@@ -53,7 +53,7 @@ public class Result implements Comparable<Result>{
 	 *
 	 * @param score
 	 */
-	public void setScore(float score) {
+	public void setScore(double score) {
 		this.score = score;
 	}
 
@@ -71,7 +71,7 @@ public class Result implements Comparable<Result>{
 	 *
 	 * @return the score
 	 */
-	public float getScore() {
+	public double getScore() {
 		return this.score;
 	}
 
@@ -92,7 +92,7 @@ public class Result implements Comparable<Result>{
 	 * @param count set
 	 * @param score set
 	 */
-	public Result(String location, int count, float score) {
+	public Result(String location, int count, double score) {
 		this.location = location;
 		this.count = count;
 		this.score = score;
@@ -114,29 +114,38 @@ public class Result implements Comparable<Result>{
 		return out;
 	}
 
+	/**
+	 * @return A formatted string that represents location.
+	 */
 	public String getWhereString() {
 		return ("\"where\": " + "\"" + this.location + "\",");
 	}
 
+	/**
+	 * @return A formatted string that represents count.
+	 */
 	public String getCountString() {
 		return ("\"count\": " + this.count + ",");
 	}
 
+	/**
+	 * @return A formatted string that represents score.
+	 */
 	public String getScoreString() {
 		return ("\"score\": " + String.format("%.8f", this.score));
 	}
 
 	@Override
 	public int compareTo(Result o) {
-		float scoreDiff = this.score - o.score;
+		double scoreDiff = this.score - o.score;
 
 		if(scoreDiff != 0) {
-			return scoreDiff > 0 ? 1 : -1;
+			return scoreDiff > 0 ? -1 : 1;
 		} else {
 			int countDiff = this.count - o.count;
 
 			if(countDiff != 0) {
-				return countDiff;
+				return countDiff > 0 ? -1 : 1;
 			} else {
 				return this.location.toLowerCase().compareTo(o.location.toLowerCase());
 			}
@@ -149,8 +158,8 @@ public class Result implements Comparable<Result>{
 	 * @param args Commandline arguments.
 	 */
 	public static void main (String args[]) {
-		Result r = new Result("heRe", 10, (float) 1.24);
-		Result r2 = new Result("here", 10, (float) 1.25);
+		Result r = new Result("here", 10, 1.26);
+		Result r2 = new Result("here", 10, 1.24);
 
 
 

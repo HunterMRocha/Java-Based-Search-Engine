@@ -3,10 +3,10 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.TreeSet;
 
 import opennlp.tools.stemmer.Stemmer;
 import opennlp.tools.stemmer.snowball.SnowballStemmer;
@@ -26,7 +26,7 @@ public class QueryBuilder {
 	/**
 	 * The set that will hold cleaned up queries.
 	 */
-	private TreeMap<Query, TreeSet<Result>> querySet;
+	private TreeMap<Query, ArrayList<Result>> querySet;
 
 	/**
 	 * This is the path to the file containing the queries.
@@ -50,12 +50,6 @@ public class QueryBuilder {
 		this.invertedIndex = invertedIndex;
 		this.querySet = new TreeMap<>();
 		this.queryPath = queryPath;
-
-		/* TODO Remove these statements used to ignore the warnings. */
-		//System.out.println(this.queryPath.toString());
-		//System.out.println(this.querySet);
-		//System.out.println(DEFAULT);
-
 	}
 
 	/**
@@ -63,7 +57,7 @@ public class QueryBuilder {
 	 *
 	 * @return the map
 	 */
-	public Map<Query, TreeSet<Result>> getQuerySet() {
+	public Map<Query, ArrayList<Result>> getQuerySet() {
 		return Collections.unmodifiableMap(this.querySet);
 	}
 
@@ -89,14 +83,19 @@ public class QueryBuilder {
 				}
 
 				if (put.size() != 0) {
-					TreeSet<Result> results = invertedIndex.getResults(put);
-					this.querySet.put(put, invertedIndex.getResults(put));
+					this.querySet.put(put, null);
 				}
 			}
-
-			System.out.println("SET: " + this.querySet.keySet());
 		}
+	}
 
+	/**
+	 * This function will trigger an exact search on the queries.
+	 */
+	public void exactSearch() {
+		for (Query query : this.querySet.keySet()) {
+			this.querySet.put(query, this.invertedIndex.getResults(query));
+		}
 	}
 
 

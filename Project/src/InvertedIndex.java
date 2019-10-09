@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
@@ -30,9 +31,6 @@ public class InvertedIndex {
 		this.counts = new TreeMap<>();
 	}
 
-	public TreeMap<String, TreeMap<String, TreeSet<Integer>>> getStructure(){
-		return this.invertedIndex;
-	}
 
 	/**
 	 * Updates the invertedIndex with the necessary info like files it appears in
@@ -50,10 +48,11 @@ public class InvertedIndex {
 
 		boolean added = this.invertedIndex.get(word).get(filename).add(position);
 
-		this.counts.putIfAbsent(filename, 0);
+		this.counts.putIfAbsent(filename, position);
 
-		if (added) {
-			this.counts.put(filename, counts.get(filename) + 1);
+
+		if (position > counts.get(filename)) {
+			this.counts.put(filename, position);
 		}
 
 
@@ -107,8 +106,8 @@ public class InvertedIndex {
 	 * @param word
 	 * @return treeset of words.
 	 */
-	public TreeSet<Result> makeResult(String word) {
-		TreeSet<Result> results = new TreeSet<>();
+	public ArrayList<Result> makeResult(String word) {
+		ArrayList<Result> results = new ArrayList<>();
 
 		if (this.hasWord(word)) {
 			var files = this.invertedIndex.get(word).keySet();
@@ -116,7 +115,7 @@ public class InvertedIndex {
 				Result result = new Result();
 				result.setLocation(file);
 				result.setCount(this.invertedIndex.get(word).get(file).size());
-				result.setScore((float) result.getCount() / counts.get(file));
+				result.setScore((double) result.getCount() / counts.get(file));
 
 				results.add(result);
 			}
@@ -130,8 +129,8 @@ public class InvertedIndex {
 	 * @param initial
 	 * @return a merged TreeSet of Results.
 	 */
-	private TreeSet<Result> mergeDuplicates(TreeSet<Result> initial){
-		TreeSet<Result> merged = new TreeSet<>();
+	private ArrayList<Result> mergeDuplicates(ArrayList<Result> initial){
+		ArrayList<Result> merged = new ArrayList<>();
 
 		for (Result result : initial) {
 			boolean mergeHappened = false;
@@ -155,12 +154,12 @@ public class InvertedIndex {
 	 * @param query Current query.
 	 * @return A set of Results associated to a query.
 	 */
-	public TreeSet<Result> getResults(Query query){
-		TreeSet<Result> results = new TreeSet<>();
+	public ArrayList<Result> getResults(Query query){
+		ArrayList<Result> results = new ArrayList<>();
 
 		for (String word : query.getWords()) {
 
-			TreeSet<Result> r = makeResult(word);
+			ArrayList<Result> r = makeResult(word);
 
 			for (Result q : r) {
 				results.add(q);
@@ -170,8 +169,7 @@ public class InvertedIndex {
 
 
 		results = mergeDuplicates(results);
-
-
+		Collections.sort(results);
 		return results;
 	}
 }
