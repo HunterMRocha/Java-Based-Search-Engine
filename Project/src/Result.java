@@ -31,6 +31,19 @@ public class Result implements Comparable<Result>{
 	}
 
 	/**
+	 * Debug constructor.
+	 *
+	 * @param location set
+	 * @param count set
+	 * @param score set
+	 */
+	public Result(String location, int count, double score) {
+		this.location = location;
+		this.count = count;
+		this.score = score;
+	}
+
+	/**
 	 * Sets the location data member.
 	 *
 	 * @param location
@@ -85,18 +98,7 @@ public class Result implements Comparable<Result>{
 		return this.location.compareTo(other.location) == 0;
 	}
 
-	/**
-	 * Debug constructor.
-	 *
-	 * @param location set
-	 * @param count set
-	 * @param score set
-	 */
-	public Result(String location, int count, float score) {
-		this.location = location;
-		this.count = count;
-		this.score = score;
-	}
+
 
 	@Override
 	public String toString() {
@@ -114,14 +116,23 @@ public class Result implements Comparable<Result>{
 		return out;
 	}
 
+	/**
+	 * @return A formatted string ready to write.
+	 */
 	public String getWhereString() {
 		return ("\"where\": " + "\"" + this.location + "\",");
 	}
 
+	/**
+	 * @return A formatted string ready to write.
+	 */
 	public String getCountString() {
 		return ("\"count\": " + this.count + ",");
 	}
 
+	/**
+	 * @return A formatted string ready to write.
+	 */
 	public String getScoreString() {
 		return ("\"score\": " + String.format("%.8f", this.score));
 	}
@@ -142,6 +153,14 @@ public class Result implements Comparable<Result>{
 			}
 		}
 	}
+
+	//	@Override
+	//	public int compareTo(Result o) {
+	//		double thisNumber = 100 * this.score + 10 * this.count;
+	//		double otherNumber = 100 * o.score + 10 * o.count;
+	//
+	//		return thisNumber >= otherNumber ?  this.location.toLowerCase().compareTo(o.location.toLowerCase()) == 0 ?  0 : -1 : 1;
+	//	}
 
 	/**
 	 * Simple main method for debugging.

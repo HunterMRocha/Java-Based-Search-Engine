@@ -61,6 +61,16 @@ public class QueryBuilder {
 		return Collections.unmodifiableMap(this.querySet);
 	}
 
+
+	/**
+	 * Function that checks if the map is empty.
+	 *
+	 * @return True if empty.
+	 */
+	public boolean isEmpty() {
+		return this.querySet.keySet().size() == 0;
+	}
+
 	/**
 	 * This function will open the query file, clean and stem the queries, and store them in a TreeSet.
 	 * @throws IOException
@@ -99,19 +109,24 @@ public class QueryBuilder {
 	}
 
 
-
-
 	/**
-	 * A simple main method to test the class.
-	 *
-	 * @param args
+	 * This function does Partial search.
 	 */
-	public static void main(String args[]) {
+	public void partialSearch() {
+		for (Query query : this.querySet.keySet()) {
+			ArrayList<Result> results = new ArrayList<>();
+			for (String queryWord : query.getWords()) {
+				for (String indexWord : invertedIndex.getWords()) {
+					if (indexWord.startsWith(queryWord) || indexWord.equals(queryWord)) {
+						results.addAll(this.invertedIndex.makeResult(indexWord));
+					}
+				}
+			}
+
+			results = InvertedIndex.mergeDuplicates(results);
+			Collections.sort(results);
+			this.querySet.put(query, results);
+		}
 
 	}
-
-
-
-
-
 }

@@ -71,6 +71,8 @@ public class Driver {
 
 				if (argumentParser.hasFlag("-exact")) {
 					queryBuilder.exactSearch();
+				} else {
+					queryBuilder.partialSearch();
 				}
 
 
@@ -81,13 +83,15 @@ public class Driver {
 						path = Path.of("results.json");
 					}
 
+
 					SimpleJsonWriter.asQuery(queryBuilder.getQuerySet(), path);
+
 				}
 
 			} catch (IOException e) {
 				System.out.println("There was an issue while reading the query file: " + queryPath.toString());
 			} catch (Exception r ) {
-
+				System.out.println("There was an issue while doing things with file: " + queryPath.toString());
 			}
 
 

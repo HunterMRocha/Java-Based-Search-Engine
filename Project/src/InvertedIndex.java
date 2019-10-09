@@ -3,6 +3,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -31,6 +32,13 @@ public class InvertedIndex {
 		this.counts = new TreeMap<>();
 	}
 
+
+	/**
+	 * @return Unmodifiable set of words.
+	 */
+	public Set<String> getWords(){
+		return Collections.unmodifiableSet(this.invertedIndex.keySet());
+	}
 
 	/**
 	 * Updates the invertedIndex with the necessary info like files it appears in
@@ -129,7 +137,7 @@ public class InvertedIndex {
 	 * @param initial
 	 * @return a merged TreeSet of Results.
 	 */
-	private ArrayList<Result> mergeDuplicates(ArrayList<Result> initial){
+	public static ArrayList<Result> mergeDuplicates(ArrayList<Result> initial){
 		ArrayList<Result> merged = new ArrayList<>();
 
 		for (Result result : initial) {
@@ -166,7 +174,6 @@ public class InvertedIndex {
 			}
 
 		}
-
 
 		results = mergeDuplicates(results);
 		Collections.sort(results);
