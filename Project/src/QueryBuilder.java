@@ -127,6 +127,5 @@ public class QueryBuilder {
 			Collections.sort(results);
 			this.querySet.put(query, results);
 		}
-
 	}
 }

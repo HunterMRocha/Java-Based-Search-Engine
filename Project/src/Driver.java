@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Collections;
 
 /**
  * Class responsible for running this project based on the provided command-line
@@ -62,6 +63,16 @@ public class Driver {
 			}
 		}
 
+		if (argumentParser.hasFlag("-results")) {
+			try {
+				SimpleJsonWriter.asQuery(Collections.emptyMap(), Path.of("results.json"));
+
+			} catch (IOException e) {
+				System.out.println("There was an issue writing an empty results file.");
+
+			}
+		}
+
 		if(argumentParser.hasFlag("-query") && argumentParser.getPath("-query") != null) {
 			Path queryPath = argumentParser.getPath("-query");
 			try {
@@ -75,26 +86,19 @@ public class Driver {
 					queryBuilder.partialSearch();
 				}
 
-
 				if (argumentParser.hasFlag("-results")) {
 					Path path = argumentParser.getPath("-results");
 
 					if (path == null) {
 						path = Path.of("results.json");
 					}
-
-
 					SimpleJsonWriter.asQuery(queryBuilder.getQuerySet(), path);
-
 				}
-
 			} catch (IOException e) {
 				System.out.println("There was an issue while reading the query file: " + queryPath.toString());
 			} catch (Exception r ) {
 				System.out.println("There was an issue while doing things with file: " + queryPath.toString());
 			}
-
-
 
 		}
 

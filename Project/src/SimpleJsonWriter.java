@@ -490,7 +490,6 @@ public class SimpleJsonWriter {
 	public static void asQuery(Map<Query, ArrayList<Result>> querySet, Path path)
 			throws IOException {
 		try (BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
-			System.out.println("PATHTHTH" + path.toString());
 			asQuery(querySet, path, writer, 0);
 		}
 	}

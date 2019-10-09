@@ -154,14 +154,6 @@ public class Result implements Comparable<Result>{
 		}
 	}
 
-	//	@Override
-	//	public int compareTo(Result o) {
-	//		double thisNumber = 100 * this.score + 10 * this.count;
-	//		double otherNumber = 100 * o.score + 10 * o.count;
-	//
-	//		return thisNumber >= otherNumber ?  this.location.toLowerCase().compareTo(o.location.toLowerCase()) == 0 ?  0 : -1 : 1;
-	//	}
-
 	/**
 	 * Simple main method for debugging.
 	 *
