@@ -179,4 +179,37 @@ public class InvertedIndex {
 		Collections.sort(results);
 		return results;
 	}
+	
+	/* TODO
+	public ArrayList<Result> exactSearch(Collection<String> queries) {
+		
+	}
+	
+	public ArrayList<Result> partialSearch(Collection<String> queries) { (from one line)
+		ArrayList<Result> results = 
+		Map<String (location), Result> lookup = new 
+		
+		for each query in queries
+				for each word in the inverted index
+					if that word starts with our query
+						for each location of that word
+							
+							if we have seen this location before
+							if lookup.containsKey(location)
+								update an existing location
+								lookup.get(location).addCount(...)
+							else
+								create a new result
+								add the result to the list
+								add the result to the lookup map 
+		
+		
+		Collections.sort(results);
+		return results;
+	}
+	
+	public ArrayList<Result> search(Collection<String> queries, boolean exact) {
+		
+	}
+	*/
 }
