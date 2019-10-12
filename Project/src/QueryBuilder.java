@@ -26,7 +26,7 @@ public class QueryBuilder {
 	/**
 	 * The set that will hold cleaned up queries.
 	 */
-	private TreeMap<Query, ArrayList<Result>> querySet;
+	private TreeMap<Query, ArrayList<Result>> querySet; // TODO TreeMap<String, ArrayList<InvertedIndex.Result>> querySet;
 
 	/**
 	 * This is the path to the file containing the queries.
@@ -71,6 +71,26 @@ public class QueryBuilder {
 		return this.querySet.keySet().size() == 0;
 	}
 
+	/* TODO
+	public void parseQueryFile(Path path, boolean exactSearch) {
+		Stemmer stemmer = new SnowballStemmer(DEFAULT);
+
+		try (BufferedReader reader = Files.newBufferedReader(this.queryPath, StandardCharsets.UTF_8);) {
+			String query;
+
+			while ((query = reader.readLine()) != null) {
+			  (inside the while loop could really be another parseLine(String queryLine)
+				TreeSet<String> queries = TextFileStemmer.uniqueStems(query);
+				String joined = String.join(" ", queries);
+				
+				if (queries.size() != 0 && !querySet.containsKey(joined)) {
+					this.querySet.put(joined, index.search(queries, exactSearch));
+				}
+			}
+		}
+	}
+	*/
+	
 	/**
 	 * This function will open the query file, clean and stem the queries, and store them in a TreeSet.
 	 * @throws IOException

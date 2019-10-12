@@ -1,17 +1,23 @@
 import java.util.Comparator;
 
+/*
+ * TODO Try to make this an inner class (public) in InvertedIndex
+ * 
+ * InvertedIndex.Result
+ */
+
 /**
  * Class that holds the result of a search. Every Query has a result pair.
  *
  * @author nedimazar
  *
  */
-public class Result implements Comparable<Result>{
+public class Result implements Comparable<Result> {
 
 	/**
 	 * This will hold the location of the search result.
 	 */
-	private String location;
+	private String location; // TODO make final
 	/**
 	 * This will hold the count of matches.
 	 */
@@ -25,7 +31,7 @@ public class Result implements Comparable<Result>{
 	 * Constructor for Result object.
 	 *
 	 */
-	public Result() {
+	public Result() { // TODO public Result(location)
 		this.location = "";
 		this.count = 0;
 		this.score = 0;
@@ -49,7 +55,7 @@ public class Result implements Comparable<Result>{
 	 *
 	 * @param location
 	 */
-	public void setLocation(String location) {
+	public void setLocation(String location) { // TODO Remove
 		this.location = location;
 	}
 
@@ -61,13 +67,19 @@ public class Result implements Comparable<Result>{
 	public void setCount(int count) {
 		this.count = count;
 	}
+	
+	/* TODO
+	public void addCount(int count) {
+		this.count += count;
+	}
+	*/
 
 	/**
 	 * Sets the score data member.
 	 *
 	 * @param d
 	 */
-	public void setScore(double d) {
+	public void setScore(double d) { // TODO Remove
 		this.score = d;
 	}
 
@@ -86,6 +98,9 @@ public class Result implements Comparable<Result>{
 	 * @return the score
 	 */
 	public double getScore() {
+		// TODO Get the total directly from the word count in your inverted index
+		// return (double) this.count / total
+		// --or-- calculate the score again every time you change the count
 		return this.score;
 	}
 
@@ -103,6 +118,7 @@ public class Result implements Comparable<Result>{
 
 	@Override
 	public String toString() {
+		// TODO Avoid string concatenation
 		String out = "";
 
 		out += "\"where\": ";
