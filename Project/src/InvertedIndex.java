@@ -269,8 +269,6 @@ public class InvertedIndex {
 			boolean mergeHappened = false;
 			for (Result mergedResult : merged) {
 				if (mergedResult.sameLocation(result)) {
-					//					mergedResult.setScore(mergedResult.getScore() + result.getScore());
-					//					mergedResult.setCount(mergedResult.getCount() + result.getCount());
 					mergedResult.addCount(result.getCount());
 					mergeHappened = true;
 				}
