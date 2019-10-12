@@ -17,15 +17,13 @@ import java.util.TreeSet;
  */
 public class InvertedIndex {
 
-
 	/**
-	 * Class that holds the result of a search. Every Query has a result pair.
+	 * Inner Class that holds the result of a search. Every Query has a collection of results associated with it.
 	 *
 	 * @author nedimazar
 	 *
 	 */
 	public class Result implements Comparable<Result> {
-
 		/**
 		 * This will hold the location of the search result.
 		 */
@@ -85,8 +83,6 @@ public class InvertedIndex {
 			this.score = (double) this.count / counts.get(this.location);
 		}
 
-
-
 		/**
 		 * Getter for the count data member.
 		 *
@@ -119,21 +115,21 @@ public class InvertedIndex {
 		 * @return A formatted string ready to write.
 		 */
 		public String getWhereString() {
-			return ("\"where\": " + "\"" + this.location + "\",");
+			return String.format("\"where\": \"%s\",", this.location);
 		}
 
 		/**
 		 * @return A formatted string ready to write.
 		 */
 		public String getCountString() {
-			return ("\"count\": " + this.count + ",");
+			return String.format("\"count\": %s,", this.count);
 		}
 
 		/**
 		 * @return A formatted string ready to write.
 		 */
 		public String getScoreString() {
-			return ("\"score\": " + String.format("%.8f", this.score));
+			return String.format("\"score\": %s", String.format("%.8f", this.score));
 		}
 
 
