@@ -34,36 +34,24 @@ public class InvertedIndexBuilder {
 		this.invertedIndex = invertedIndex;
 	}
 
+
 	/**
-	 * This function will add the given file to the inverted ndex structure.
+	 * Drives static method.
 	 *
-	 * @param inputFile The file that will be added into the structure
+	 * @param inputFile
 	 * @throws IOException
 	 */
 	public void addPath(Path inputFile) throws IOException {
-		Stemmer stemmer = new SnowballStemmer(DEFAULT);
-
-		try (BufferedReader reader = Files.newBufferedReader(inputFile, StandardCharsets.UTF_8);) {
-			String line = reader.readLine();
-			String location = inputFile.toString();
-			int i = 0;
-
-			while (line != null) {
-				String[] parsed = TextParser.parse(line);
-				for (String word : parsed) {
-					String stemmed = stemmer.stem(word).toString();
-					this.invertedIndex.add(stemmed, location, ++i);
-				}
-				line = reader.readLine();
-			}
-		}
-	}
-	
-	/* TODO for project 3
-	public void addPath(Path inputFile) throws IOException {
 		addPath(inputFile, this.invertedIndex);
 	}
-	
+
+	/**
+	 * Populates the inverted index.
+	 *
+	 * @param inputFile
+	 * @param index
+	 * @throws IOException
+	 */
 	public static void addPath(Path inputFile, InvertedIndex index) throws IOException {
 		Stemmer stemmer = new SnowballStemmer(DEFAULT);
 
@@ -76,12 +64,12 @@ public class InvertedIndexBuilder {
 				String[] parsed = TextParser.parse(line);
 				for (String word : parsed) {
 					String stemmed = stemmer.stem(word).toString();
-					this.invertedIndex.add(stemmed, location, ++i);
+					index.add(stemmed, location, ++i);
 				}
 				line = reader.readLine();
 			}
 		}
-	}*/
+	}
 
 	/**
 	 * Checks if path is a text file

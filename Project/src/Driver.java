@@ -2,7 +2,6 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Collections;
 
 /**
  * Class responsible for running this project based on the provided command-line
@@ -36,6 +35,10 @@ public class Driver {
 
 		InvertedIndexBuilder builder = new InvertedIndexBuilder(invertedIndex);
 
+		QueryBuilder queryBuilder = new QueryBuilder(invertedIndex, argumentParser.getPath("-query"));
+
+
+
 		if (argumentParser.hasFlag("-path") && argumentParser.getPath("-path") != null) {
 			Path path = argumentParser.getPath("-path");
 			try {
@@ -63,39 +66,11 @@ public class Driver {
 			}
 		}
 
-		if (argumentParser.hasFlag("-results")) { // TODO Remove
-			try {
-				SimpleJsonWriter.asQuery(Collections.emptyMap(), Path.of("results.json"));
-
-			} catch (IOException e) {
-				System.out.println("There was an issue writing an empty results file.");
-
-			}
-		}
-
 		if(argumentParser.hasFlag("-query") && argumentParser.getPath("-query") != null) {
 			Path queryPath = argumentParser.getPath("-query");
 			try {
-				QueryBuilder queryBuilder = new QueryBuilder(invertedIndex, queryPath); // TODO Move this outside next to the inverted index builder
-				queryBuilder.makeQueries();
-
-				// TODO queryBuilder.parseQueryFile(queryPath, argumentParser.hasFlag("-exact"))
-				
-
-				if (argumentParser.hasFlag("-exact")) {
-					queryBuilder.exactSearch();
-				} else {
-					queryBuilder.partialSearch();
-				}
-
-				if (argumentParser.hasFlag("-results")) { // TODO Move this after the if hasflag -query block
-					Path path = argumentParser.getPath("-results");
-
-					if (path == null) {
-						path = Path.of("results.json");
-					}
-					SimpleJsonWriter.asQuery(queryBuilder.getQuerySet(), path);
-				}
+				queryBuilder = new QueryBuilder(invertedIndex, queryPath);
+				queryBuilder.parseQueryFile(queryPath, argumentParser.hasFlag("-exact"));
 			} catch (IOException e) {
 				System.out.println("There was an issue while reading the query file: " + queryPath.toString());
 			} catch (Exception r ) {
@@ -103,6 +78,21 @@ public class Driver {
 			}
 
 		}
+
+		if (argumentParser.hasFlag("-results")) {
+			Path path = argumentParser.getPath("-results");
+
+			if (path == null) {
+				path = Path.of("results.json");
+			}
+			try {
+				SimpleJsonWriter.asQuery(queryBuilder.getQuerySet(), path);
+			} catch (IOException e) {
+				System.out.println("Something went wrong while writing search results to path: " + path);
+			}
+
+		}
+
 
 		/* Calculate time elapsed and output */
 		Duration elapsed = Duration.between(start, Instant.now());

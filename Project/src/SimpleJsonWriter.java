@@ -357,11 +357,11 @@ public class SimpleJsonWriter {
 	 * @param level How many initial indentations.
 	 * @throws IOException Could happen!
 	 */
-	public static void asQuery(Map<Query, ArrayList<Result>> querySet, Path path, Writer writer, int level) throws IOException {
-		Map<Query, ArrayList<Result>> temp = new TreeMap<>();
+	public static void asQuery(Map<String, ArrayList<InvertedIndex.Result>> querySet, Path path, Writer writer, int level) throws IOException {
+		Map<String, ArrayList<InvertedIndex.Result>> temp = new TreeMap<>();
 
-		for (Query q : querySet.keySet()) {
-			ArrayList<Result> innerTemp = new ArrayList<>();
+		for (String q : querySet.keySet()) {
+			ArrayList<InvertedIndex.Result> innerTemp = new ArrayList<>();
 			innerTemp.addAll(querySet.get(q));
 			temp.put(q, innerTemp);
 		}
@@ -374,7 +374,7 @@ public class SimpleJsonWriter {
 		var iterator = querySet.keySet().iterator();
 
 		if (iterator.hasNext()) {
-			Query nextQuery = iterator.next();
+			String nextQuery = iterator.next();
 			indent(writer, level +1);
 
 			writer.write("\"" + nextQuery.toString() + "\": [");
@@ -401,7 +401,7 @@ public class SimpleJsonWriter {
 		}
 
 		while (iterator.hasNext()) {
-			Query nextQuery = iterator.next();
+			String nextQuery = iterator.next();
 			writer.write(",\n");
 			indent(writer, level +1);
 
@@ -437,7 +437,7 @@ public class SimpleJsonWriter {
 	 * @param level
 	 * @throws IOException
 	 */
-	private static void withoutTab(Iterator<Result> innerIterator, Writer writer, int level) throws IOException {
+	private static void withoutTab(Iterator<InvertedIndex.Result> innerIterator, Writer writer, int level) throws IOException {
 		writer.write(",\n");
 		indent(writer, level + 2);
 		writer.write("{\n");
@@ -463,7 +463,7 @@ public class SimpleJsonWriter {
 	 * @param level
 	 * @throws IOException
 	 */
-	private static void withExtraTab(Iterator<Result> innerIterator, Writer writer, int level) throws IOException {
+	private static void withExtraTab(Iterator<InvertedIndex.Result> innerIterator, Writer writer, int level) throws IOException {
 		writer.write("\n");
 		indent(writer, level + 1);
 		writer.write("\t{\n");
@@ -488,7 +488,7 @@ public class SimpleJsonWriter {
 	 * @param path
 	 * @throws IOException
 	 */
-	public static void asQuery(Map<Query, ArrayList<Result>> querySet, Path path)
+	public static void asQuery(Map<String, ArrayList<InvertedIndex.Result>> querySet, Path path)
 			throws IOException {
 		try (BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
 			asQuery(querySet, path, writer, 0);
