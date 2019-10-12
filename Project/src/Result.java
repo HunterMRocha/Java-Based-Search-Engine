@@ -146,5 +146,4 @@ public class Result implements Comparable<Result>{
 				.thenComparing(Result::getWhereString)
 				.compare(this, o);
 	}
-
 }
