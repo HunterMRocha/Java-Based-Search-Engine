@@ -63,7 +63,7 @@ public class Driver {
 			}
 		}
 
-		if (argumentParser.hasFlag("-results")) {
+		if (argumentParser.hasFlag("-results")) { // TODO Remove
 			try {
 				SimpleJsonWriter.asQuery(Collections.emptyMap(), Path.of("results.json"));
 
@@ -76,9 +76,11 @@ public class Driver {
 		if(argumentParser.hasFlag("-query") && argumentParser.getPath("-query") != null) {
 			Path queryPath = argumentParser.getPath("-query");
 			try {
-				QueryBuilder queryBuilder = new QueryBuilder(invertedIndex, queryPath);
+				QueryBuilder queryBuilder = new QueryBuilder(invertedIndex, queryPath); // TODO Move this outside next to the inverted index builder
 				queryBuilder.makeQueries();
 
+				// TODO queryBuilder.parseQueryFile(queryPath, argumentParser.hasFlag("-exact"))
+				
 
 				if (argumentParser.hasFlag("-exact")) {
 					queryBuilder.exactSearch();
@@ -86,7 +88,7 @@ public class Driver {
 					queryBuilder.partialSearch();
 				}
 
-				if (argumentParser.hasFlag("-results")) {
+				if (argumentParser.hasFlag("-results")) { // TODO Move this after the if hasflag -query block
 					Path path = argumentParser.getPath("-results");
 
 					if (path == null) {
