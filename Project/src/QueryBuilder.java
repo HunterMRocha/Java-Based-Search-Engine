@@ -53,7 +53,6 @@ public class QueryBuilder {
 		return Collections.unmodifiableMap(this.querySet);
 	}
 
-
 	/**
 	 * Function that checks if the map is empty.
 	 *
@@ -63,7 +62,6 @@ public class QueryBuilder {
 		return this.querySet.keySet().size() == 0;
 	}
 
-
 	/**
 	 * Gets queries from the input path and performs the searches.
 	 *
@@ -72,7 +70,6 @@ public class QueryBuilder {
 	 * @throws IOException
 	 */
 	public void parseQueryFile(Path path, boolean exactSearch) throws IOException {
-
 		try (BufferedReader reader = Files.newBufferedReader(this.queryPath, StandardCharsets.UTF_8);) {
 			String query;
 			while ((query = reader.readLine()) != null) {
