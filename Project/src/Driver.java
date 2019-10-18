@@ -12,7 +12,7 @@ import java.time.Instant;
  * @version Fall 2019
  */
 public class Driver {
-	/*
+	/* TODO Remove old comment
 	 * Make sure Driver.main does not throw any exceptions... should catch and output
 	 * a user-friendly informative message instead.
 	 */
@@ -35,7 +35,7 @@ public class Driver {
 
 		InvertedIndexBuilder builder = new InvertedIndexBuilder(invertedIndex);
 
-		QueryBuilder queryBuilder = new QueryBuilder(invertedIndex, argumentParser.getPath("-query"));
+		QueryBuilder queryBuilder = new QueryBuilder(invertedIndex, argumentParser.getPath("-query")); // TODO Don't need path in constructor
 
 
 
@@ -69,7 +69,7 @@ public class Driver {
 		if(argumentParser.hasFlag("-query") && argumentParser.getPath("-query") != null) {
 			Path queryPath = argumentParser.getPath("-query");
 			try {
-				queryBuilder = new QueryBuilder(invertedIndex, queryPath);
+				queryBuilder = new QueryBuilder(invertedIndex, queryPath); // TODO Should be able to remove?
 				queryBuilder.parseQueryFile(queryPath, argumentParser.hasFlag("-exact"));
 			} catch (IOException e) {
 				System.out.println("There was an issue while reading the query file: " + queryPath.toString());
