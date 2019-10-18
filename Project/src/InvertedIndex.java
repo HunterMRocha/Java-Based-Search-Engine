@@ -68,8 +68,9 @@ public class InvertedIndex {
 		 *
 		 * @param count
 		 */
-		public void setCount(int count) { // TODO Remove this method (or update score here)
+		public void setCount(int count) {
 			this.count = count;
+			this.score = (double) this.count / counts.get(this.location);
 		}
 
 		/**
@@ -81,13 +82,18 @@ public class InvertedIndex {
 			this.count += count;
 			this.score = (double) this.count / counts.get(this.location);
 		}
-		
-		/* TODO 
+
+
+		/**
+		 * Updates the count and score associated to a word.
+		 *
+		 * @param word The word to be updated.
+		 */
 		public void updateCount(String word) {
 			this.count += invertedIndex.get(word).get(this.location).size();
 			this.score = (double) this.count / counts.get(this.location);
 		}
-		*/
+
 
 		/**
 		 * Getter for the count data member.
@@ -146,6 +152,7 @@ public class InvertedIndex {
 					.thenComparing(Result::getWhereString)
 					.compare(this, o);
 		}
+
 	}
 
 
@@ -323,18 +330,7 @@ public class InvertedIndex {
 		for (String query : queries) {
 			for (String word : this.invertedIndex.keySet()) { // TODO Fix this, see: https://github.com/usf-cs212-fall2019/lectures/blob/master/Data%20Structures/src/FindDemo.java#L146-L163
 				if (word.startsWith(query)) {
-					// TODO Call searchHelper
-					for (String location : this.invertedIndex.get(word).keySet()) {
-						if (lookup.containsKey(location)) {
-							// TODO lookup.get(location).updateCount(word);
-							lookup.get(location).addCount(this.invertedIndex.get(word).get(location).size());
-						} else {
-							Result result = new Result(location);
-							result.addCount(this.invertedIndex.get(word).get(location).size());
-							lookup.put(location, result);
-							results.add(result);
-						}
-					}
+					searchHelper(results, word, lookup);
 				}
 				// TODO else break
 			}
@@ -342,13 +338,17 @@ public class InvertedIndex {
 		Collections.sort(results);
 		return results;
 	}
-	
-	/* TODO
-	private void searchHelper(...) {
+
+
+	/**
+	 * @param results
+	 * @param word
+	 * @param lookup
+	 */
+	private void searchHelper(ArrayList<Result> results, String word, Map<String, Result> lookup) {
 		for (String location : this.invertedIndex.get(word).keySet()) {
 			if (lookup.containsKey(location)) {
-				// TODO lookup.get(location).updateCount(word);
-				lookup.get(location).addCount(this.invertedIndex.get(word).get(location).size());
+				lookup.get(location).updateCount(word);
 			} else {
 				Result result = new Result(location);
 				result.addCount(this.invertedIndex.get(word).get(location).size());
@@ -357,7 +357,7 @@ public class InvertedIndex {
 			}
 		}
 	}
-	*/
+
 
 	/**
 	 * Calls the necessary search algorithm.

@@ -24,24 +24,17 @@ public class QueryBuilder {
 	/**
 	 * The set that will hold cleaned up queries mapped to their results.
 	 */
-	private TreeMap<String, ArrayList<InvertedIndex.Result>> querySet; // TODO final
+	private final TreeMap<String, ArrayList<InvertedIndex.Result>> querySet;
 
-	/**
-	 * This is the path to the file containing the queries.
-	 */
-	private final Path queryPath; // TODO Remove
 
 	/**
 	 * Constructor for the QueryBuilder class.
 	 *
 	 * @param invertedIndex The inverted index to use for querying.
-	 * @param queryPath The path to the query input file.
-
 	 */
-	public QueryBuilder(InvertedIndex invertedIndex, Path queryPath) { // TODO Remove path 
+	public QueryBuilder(InvertedIndex invertedIndex) {
 		this.invertedIndex = invertedIndex;
 		this.querySet = new TreeMap<>();
-		this.queryPath = queryPath;
 	}
 
 	/**
@@ -52,16 +45,16 @@ public class QueryBuilder {
 	public Map<String, ArrayList<InvertedIndex.Result>> getQuerySet() { // TODO Remove
 		return Collections.unmodifiableMap(this.querySet);
 	}
-	
+
 	/* TODO
 	public Set<String> getQueries() {
-		returns the unmodifiable keyset of querySet 
+		returns the unmodifiable keyset of querySet
 	}
-	
+
 	public List<InvertedIndex.Result> getResults(String queryLine) {
 		return the unmodifiable list
 	}
-	*/
+	 */
 
 	/**
 	 * Function that checks if the map is empty.
@@ -75,26 +68,26 @@ public class QueryBuilder {
 	/**
 	 * Gets queries from the input path and performs the searches.
 	 *
-	 * @param path TODO Describe
-	 * @param exactSearch TODO Describe
+	 * @param path The path to the Query file.
+	 * @param exactSearch True if we are doing exact search.
 	 * @throws IOException
 	 */
 	public void parseQueryFile(Path path, boolean exactSearch) throws IOException {
-		// TODO use path not queryPath
-		try (BufferedReader reader = Files.newBufferedReader(this.queryPath, StandardCharsets.UTF_8);) {
+		try (BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8);) {
 			String query;
 			while ((query = reader.readLine()) != null) {
-				// TODO call parseQueryLine(...)
-				TreeSet<String> queries = TextFileStemmer.uniqueStems(query);
-				String joined = String.join(" ", queries);
-				if (queries.size() != 0 && !querySet.containsKey(joined)) {
-					this.querySet.put(joined, invertedIndex.search(queries, exactSearch));
-				}
+				parseQueryLine(query, exactSearch);
 			}
 		}
 	}
-	
-	/* TODO
+
+
+	/**
+	 * Parses a Query line made up of words.
+	 *
+	 * @param line The line we are parsing.
+	 * @param exactSearch Wether we are doing exact search or not.
+	 */
 	public void parseQueryLine(String line, boolean exactSearch) {
 		TreeSet<String> queries = TextFileStemmer.uniqueStems(line);
 		String joined = String.join(" ", queries);
@@ -102,5 +95,5 @@ public class QueryBuilder {
 			this.querySet.put(joined, invertedIndex.search(queries, exactSearch));
 		}
 	}
-	*/
+
 }
