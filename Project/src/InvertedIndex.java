@@ -293,12 +293,12 @@ public class InvertedIndex {
 		Map<String, Result> lookup = new TreeMap<>();
 
 		for (String query : queries) {
-			for (String word : this.invertedIndex.keySet()) { // TODO Fix this, see:
-				// https://github.com/usf-cs212-fall2019/lectures/blob/master/Data%20Structures/src/FindDemo.java#L146-L163
+			for (String word : this.invertedIndex.tailMap(query).keySet()) {
 				if (word.startsWith(query)) {
 					searchHelper(results, word, lookup);
+				} else {
+					break;
 				}
-				// TODO else break
 			}
 		}
 		Collections.sort(results);
