@@ -68,10 +68,9 @@ public class InvertedIndex {
 		 *
 		 * @param count
 		 */
-		public void setCount(int count) {
+		public void setCount(int count) { // TODO Remove this method (or update score here)
 			this.count = count;
 		}
-
 
 		/**
 		 * Adds the input count to the current count of a Result instance.
@@ -82,6 +81,13 @@ public class InvertedIndex {
 			this.count += count;
 			this.score = (double) this.count / counts.get(this.location);
 		}
+		
+		/* TODO 
+		public void updateCount(String word) {
+			this.count += invertedIndex.get(word).get(this.location).size();
+			this.score = (double) this.count / counts.get(this.location);
+		}
+		*/
 
 		/**
 		 * Getter for the count data member.
@@ -262,7 +268,7 @@ public class InvertedIndex {
 	 * @param initial
 	 * @return a merged TreeSet of Results.
 	 */
-	public static ArrayList<Result> mergeDuplicates(ArrayList<Result> initial) {
+	public static ArrayList<Result> mergeDuplicates(ArrayList<Result> initial) { // TODO Remove
 		ArrayList<Result> merged = new ArrayList<>();
 
 		for (Result result : initial) {
@@ -288,11 +294,17 @@ public class InvertedIndex {
 	 */
 	public ArrayList<Result> exactSearch(Collection<String> queries) {
 		ArrayList<Result> results = new ArrayList<>();
+		// TODO Create a lookup map here too
 		for (String query : queries) {
-			results.addAll(this.makeResult(query));
+			/*
+			 * if (invertedIndex.containsKey(query) {
+			 * 	call your search helper method on that query
+			 * }
+			 */
+			results.addAll(this.makeResult(query)); // TODO Remove
 		}
 
-		results = mergeDuplicates(results);
+		results = mergeDuplicates(results); // TODO Remove
 		Collections.sort(results);
 		return results;
 	}
@@ -309,10 +321,12 @@ public class InvertedIndex {
 		Map<String, Result> lookup = new TreeMap<>();
 
 		for (String query : queries) {
-			for (String word : this.invertedIndex.keySet()) {
+			for (String word : this.invertedIndex.keySet()) { // TODO Fix this, see: https://github.com/usf-cs212-fall2019/lectures/blob/master/Data%20Structures/src/FindDemo.java#L146-L163
 				if (word.startsWith(query)) {
+					// TODO Call searchHelper
 					for (String location : this.invertedIndex.get(word).keySet()) {
 						if (lookup.containsKey(location)) {
+							// TODO lookup.get(location).updateCount(word);
 							lookup.get(location).addCount(this.invertedIndex.get(word).get(location).size());
 						} else {
 							Result result = new Result(location);
@@ -322,11 +336,28 @@ public class InvertedIndex {
 						}
 					}
 				}
+				// TODO else break
 			}
 		}
 		Collections.sort(results);
 		return results;
 	}
+	
+	/* TODO
+	private void searchHelper(...) {
+		for (String location : this.invertedIndex.get(word).keySet()) {
+			if (lookup.containsKey(location)) {
+				// TODO lookup.get(location).updateCount(word);
+				lookup.get(location).addCount(this.invertedIndex.get(word).get(location).size());
+			} else {
+				Result result = new Result(location);
+				result.addCount(this.invertedIndex.get(word).get(location).size());
+				lookup.put(location, result);
+				results.add(result);
+			}
+		}
+	}
+	*/
 
 	/**
 	 * Calls the necessary search algorithm.
