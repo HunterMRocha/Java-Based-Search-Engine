@@ -5,7 +5,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -37,24 +39,40 @@ public class QueryBuilder {
 		this.querySet = new TreeMap<>();
 	}
 
+
 	/**
-	 * Getter for our querySet data structure.
+	 * Gets the unmodifiable Set of Queries.
 	 *
-	 * @return the map
+	 * @return An unmodifiable Set of Queries.
 	 */
-	public Map<String, ArrayList<InvertedIndex.Result>> getQuerySet() { // TODO Remove
-		return Collections.unmodifiableMap(this.querySet);
-	}
-
-	/* TODO
 	public Set<String> getQueries() {
-		returns the unmodifiable keyset of querySet
+		return Collections.unmodifiableSet(this.querySet.keySet());
 	}
 
-	public List<InvertedIndex.Result> getResults(String queryLine) {
-		return the unmodifiable list
-	}
+	/**
+	 * Gets the results associated to a specific query.
+	 *
+	 * @param queryLine The line that we are looking for.
+	 * @return An unmodifiable List of Results.
 	 */
+	public List<InvertedIndex.Result> getResults(String queryLine) {
+		return Collections.unmodifiableList(this.querySet.get(queryLine));
+	}
+
+	/**
+	 * Gets an unmodsifiable map of Queries to their results.
+	 *
+	 * @return An unmodifiable map of Queries to a List of Results.
+	 */
+	public Map<String, List<InvertedIndex.Result>> getUnmodifiableMap(){
+		TreeMap<String, List<InvertedIndex.Result>> map = new TreeMap<>();
+		for (String line : getQueries()) {
+			map.put(line, getResults(line));
+		}
+
+		return Collections.unmodifiableMap(map);
+	}
+
 
 	/**
 	 * Function that checks if the map is empty.
@@ -70,7 +88,7 @@ public class QueryBuilder {
 	 *
 	 * @param path The path to the Query file.
 	 * @param exactSearch True if we are doing exact search.
-	 * @throws IOException
+	 * @throws IOException Could happen.
 	 */
 	public void parseQueryFile(Path path, boolean exactSearch) throws IOException {
 		try (BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8);) {

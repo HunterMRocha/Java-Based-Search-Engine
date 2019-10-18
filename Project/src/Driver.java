@@ -81,7 +81,7 @@ public class Driver {
 				path = Path.of("results.json");
 			}
 			try {
-				SimpleJsonWriter.asQuery(queryBuilder.getQuerySet(), path);
+				SimpleJsonWriter.asQuery(queryBuilder.getUnmodifiableMap(), path);
 			} catch (IOException e) {
 				System.out.println("Something went wrong while writing search results to path: " + path);
 			}
