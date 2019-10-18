@@ -18,7 +18,8 @@ import java.util.TreeSet;
 public class InvertedIndex {
 
 	/**
-	 * Inner Class that holds the result of a search. Every Query has a collection of results associated with it.
+	 * Inner Class that holds the result of a search. Every Query has a collection
+	 * of results associated with it.
 	 *
 	 * @author nedimazar
 	 *
@@ -39,6 +40,7 @@ public class InvertedIndex {
 
 		/**
 		 * Constructor for Result object.
+		 *
 		 * @param location
 		 *
 		 */
@@ -52,16 +54,14 @@ public class InvertedIndex {
 		 * Debug constructor.
 		 *
 		 * @param location set
-		 * @param count set
-		 * @param score set
+		 * @param count    set
+		 * @param score    set
 		 */
 		public Result(String location, int count, double score) {
 			this.location = location;
 			this.count = count;
 			this.score = score;
 		}
-
-
 
 		/**
 		 * Sets the count data member.
@@ -83,7 +83,6 @@ public class InvertedIndex {
 			this.score = (double) this.count / counts.get(this.location);
 		}
 
-
 		/**
 		 * Updates the count and score associated to a word.
 		 *
@@ -93,7 +92,6 @@ public class InvertedIndex {
 			this.count += invertedIndex.get(word).get(this.location).size();
 			this.score = (double) this.count / counts.get(this.location);
 		}
-
 
 		/**
 		 * Getter for the count data member.
@@ -144,20 +142,14 @@ public class InvertedIndex {
 			return String.format("\"score\": %s", String.format("%.8f", this.score));
 		}
 
-
 		@Override
 		public int compareTo(Result o) {
 			return Comparator.comparing(Result::getScore, Comparator.reverseOrder())
-					.thenComparing(Result::getCount, Comparator.reverseOrder())
-					.thenComparing(Result::getWhereString)
+					.thenComparing(Result::getCount, Comparator.reverseOrder()).thenComparing(Result::getWhereString)
 					.compare(this, o);
 		}
 
 	}
-
-
-
-
 
 	/**
 	 * The data structure that will store the inverted index info.
@@ -269,53 +261,26 @@ public class InvertedIndex {
 		return results;
 	}
 
-	/**
-	 * Given a TreeSet of results will merge duplicates by file.
-	 *
-	 * @param initial
-	 * @return a merged TreeSet of Results.
-	 */
-	public static ArrayList<Result> mergeDuplicates(ArrayList<Result> initial) { // TODO Remove
-		ArrayList<Result> merged = new ArrayList<>();
-
-		for (Result result : initial) {
-			boolean mergeHappened = false;
-			for (Result mergedResult : merged) {
-				if (mergedResult.sameLocation(result)) {
-					mergedResult.addCount(result.getCount());
-					mergeHappened = true;
-				}
-			}
-			if (!mergeHappened) {
-				merged.add(result);
-			}
-		}
-		return merged;
-	}
 
 	/**
 	 * Returns TreeSet of Results given a query.
+	 *
 	 * @param queries
 	 *
 	 * @return A set of Results associated to a query.
 	 */
 	public ArrayList<Result> exactSearch(Collection<String> queries) {
 		ArrayList<Result> results = new ArrayList<>();
-		// TODO Create a lookup map here too
+		Map<String, Result> lookup = new TreeMap<>();
 		for (String query : queries) {
-			/*
-			 * if (invertedIndex.containsKey(query) {
-			 * 	call your search helper method on that query
-			 * }
-			 */
-			results.addAll(this.makeResult(query)); // TODO Remove
+			if (invertedIndex.containsKey(query)) {
+				searchHelper(results, query, lookup);
+			}
 		}
 
-		results = mergeDuplicates(results); // TODO Remove
 		Collections.sort(results);
 		return results;
 	}
-
 
 	/**
 	 * Performs Partial search on a collection of queries.
@@ -328,7 +293,8 @@ public class InvertedIndex {
 		Map<String, Result> lookup = new TreeMap<>();
 
 		for (String query : queries) {
-			for (String word : this.invertedIndex.keySet()) { // TODO Fix this, see: https://github.com/usf-cs212-fall2019/lectures/blob/master/Data%20Structures/src/FindDemo.java#L146-L163
+			for (String word : this.invertedIndex.keySet()) { // TODO Fix this, see:
+				// https://github.com/usf-cs212-fall2019/lectures/blob/master/Data%20Structures/src/FindDemo.java#L146-L163
 				if (word.startsWith(query)) {
 					searchHelper(results, word, lookup);
 				}
@@ -338,7 +304,6 @@ public class InvertedIndex {
 		Collections.sort(results);
 		return results;
 	}
-
 
 	/**
 	 * @param results
@@ -357,7 +322,6 @@ public class InvertedIndex {
 			}
 		}
 	}
-
 
 	/**
 	 * Calls the necessary search algorithm.
