@@ -75,7 +75,7 @@ public class Driver {
 		}
 
 		if (argumentParser.hasFlag("-results")) {
-			Path path = argumentParser.getPath("-results");
+			Path path = argumentParser.getPath("-results"); // TODO Use the version that takes a default
 
 			if (path == null) {
 				path = Path.of("results.json");
