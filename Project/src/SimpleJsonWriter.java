@@ -8,7 +8,6 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -35,19 +34,19 @@ public class SimpleJsonWriter {
 	 * @throws IOException
 	 *
 	 */
-	public static void asArray(Collection<Integer> elements, Writer writer, int level) throws IOException{
+	public static void asArray(Collection<Integer> elements, Writer writer, int level) throws IOException {
 		writer.write("[\n");
 
 		Iterator<Integer> integers = elements.iterator();
 
 		if (integers.hasNext()) {
-			indent(writer, level +1);
+			indent(writer, level + 1);
 			writer.write(integers.next().toString());
 		}
 
 		while (integers.hasNext()) {
 			writer.write(",\n");
-			indent(writer, level +1);
+			indent(writer, level + 1);
 			writer.write(integers.next().toString());
 		}
 
@@ -97,7 +96,7 @@ public class SimpleJsonWriter {
 	 * @param level    the initial indent level
 	 * @throws IOException
 	 */
-	public static void asObject(Map<String, Integer> elements, Writer writer, int level) throws IOException{
+	public static void asObject(Map<String, Integer> elements, Writer writer, int level) throws IOException {
 		writer.write("{\n");
 
 		Iterator<Map.Entry<String, Integer>> entries = elements.entrySet().iterator();
@@ -231,6 +230,7 @@ public class SimpleJsonWriter {
 
 	/**
 	 * Writes the invertedIndex provided with a writer.
+	 *
 	 * @param invertedIndex
 	 * @param writer
 	 * @param level
@@ -265,6 +265,7 @@ public class SimpleJsonWriter {
 
 	/**
 	 * Calls the other invertedIndex method
+	 *
 	 * @param invertedIndex
 	 * @param path
 	 * @throws IOException
@@ -352,14 +353,15 @@ public class SimpleJsonWriter {
 	/**
 	 * This beast will write the Query-Result pairs to a file.
 	 *
-	 * @param map Set of queries that will be written.
-	 * @param path The path where it will be written.
+	 * @param map    Set of queries that will be written.
+	 * @param path   The path where it will be written.
 	 * @param writer The writer to use.
-	 * @param level How many initial indentations.
+	 * @param level  How many initial indentations.
 	 * @throws IOException Could happen!
 	 */
-	public static void asQuery(Map<String, List<InvertedIndex.Result>> map, Path path, Writer writer, int level) throws IOException {
-		Map<String, List<InvertedIndex.Result>> temp = new TreeMap<>();
+	public static void asQuery(Map<String, ArrayList<InvertedIndex.Result>> map, Path path, Writer writer, int level)
+			throws IOException {
+		Map<String, ArrayList<InvertedIndex.Result>> temp = new TreeMap<>();
 
 		for (String q : map.keySet()) {
 			ArrayList<InvertedIndex.Result> innerTemp = new ArrayList<>();
@@ -369,19 +371,16 @@ public class SimpleJsonWriter {
 
 		map = temp;
 
-
-
 		writer.write("{\n");
 		var iterator = map.keySet().iterator();
 
 		if (iterator.hasNext()) {
 			String nextQuery = iterator.next();
-			indent(writer, level +1);
+			indent(writer, level + 1);
 
 			writer.write("\"" + nextQuery.toString() + "\": [");
 
 			indent(writer, level + 1);
-
 
 			var innerIterator = map.get(nextQuery).iterator();
 
@@ -404,12 +403,11 @@ public class SimpleJsonWriter {
 		while (iterator.hasNext()) {
 			String nextQuery = iterator.next();
 			writer.write(",\n");
-			indent(writer, level +1);
+			indent(writer, level + 1);
 
 			writer.write("\"" + nextQuery.toString() + "\": [");
 
 			indent(writer, level + 1);
-
 
 			var innerIterator = map.get(nextQuery).iterator();
 
@@ -422,7 +420,9 @@ public class SimpleJsonWriter {
 				withoutTab(innerIterator, writer, level);
 			}
 
-			if(!bob) {indent(writer, level +1);}
+			if (!bob) {
+				indent(writer, level + 1);
+			}
 			writer.write("\n\t]");
 			indent(writer, level);
 		}
@@ -438,7 +438,8 @@ public class SimpleJsonWriter {
 	 * @param level
 	 * @throws IOException
 	 */
-	private static void withoutTab(Iterator<InvertedIndex.Result> innerIterator, Writer writer, int level) throws IOException {
+	private static void withoutTab(Iterator<InvertedIndex.Result> innerIterator, Writer writer, int level)
+			throws IOException {
 		writer.write(",\n");
 		indent(writer, level + 2);
 		writer.write("{\n");
@@ -464,7 +465,8 @@ public class SimpleJsonWriter {
 	 * @param level
 	 * @throws IOException
 	 */
-	private static void withExtraTab(Iterator<InvertedIndex.Result> innerIterator, Writer writer, int level) throws IOException {
+	private static void withExtraTab(Iterator<InvertedIndex.Result> innerIterator, Writer writer, int level)
+			throws IOException {
 		writer.write("\n");
 		indent(writer, level + 1);
 		writer.write("\t{\n");
@@ -478,7 +480,7 @@ public class SimpleJsonWriter {
 		indent(writer, level + 2);
 
 		writer.write("}");
-		indent(writer, level );
+		indent(writer, level);
 
 	}
 
@@ -489,12 +491,23 @@ public class SimpleJsonWriter {
 	 * @param path
 	 * @throws IOException
 	 */
-	public static void asQuery(Map<String, List<InvertedIndex.Result>> map, Path path)
-			throws IOException {
+	public static void asQuery(Map<String, ArrayList<InvertedIndex.Result>> map, Path path) throws IOException {
 		try (BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
 			asQuery(map, path, writer, 0);
 		}
 	}
 
+	/**
+	 * Overloader.
+	 *
+	 * @param querySet Set of queries and results
+	 * @param outputFile Output file.
+	 * @throws IOException
+	 */
+	public static void asQuery(TreeMap<String, ArrayList<InvertedIndex.Result>> querySet, Path outputFile) throws IOException {
+
+		asQuery((Map<String, ArrayList<InvertedIndex.Result>>) querySet, outputFile);
+
+	}
 
 }

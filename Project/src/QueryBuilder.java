@@ -6,7 +6,6 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -59,23 +58,16 @@ public class QueryBuilder {
 		return Collections.unmodifiableList(this.querySet.get(queryLine));
 	}
 
-	/*
-	 * TODO Remove this---should not be necessary with getQueries and getResults
-	 * And it causes a copy so not ideal. Put a write method in this class just like
-	 * you did to write the inverted index.
-	 */
-	/**
-	 * Gets an unmodsifiable map of Queries to their results.
-	 *
-	 * @return An unmodifiable map of Queries to a List of Results.
-	 */
-	public Map<String, List<InvertedIndex.Result>> getUnmodifiableMap(){
-		TreeMap<String, List<InvertedIndex.Result>> map = new TreeMap<>();
-		for (String line : getQueries()) {
-			map.put(line, getResults(line));
-		}
 
-		return Collections.unmodifiableMap(map);
+
+	/**
+	 * Method that writes the queries.
+	 *
+	 * @param outputFile Output file.
+	 * @throws IOException Possible?
+	 */
+	public void writeQuery(Path outputFile) throws IOException {
+		SimpleJsonWriter.asQuery(this.querySet, outputFile);
 	}
 
 

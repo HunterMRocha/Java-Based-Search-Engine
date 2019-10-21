@@ -75,13 +75,10 @@ public class Driver {
 		}
 
 		if (argumentParser.hasFlag("-results")) {
-			Path path = argumentParser.getPath("-results"); // TODO Use the version that takes a default
+			Path path = argumentParser.getPath("-results", Path.of("results.json"));
 
-			if (path == null) {
-				path = Path.of("results.json");
-			}
 			try {
-				SimpleJsonWriter.asQuery(queryBuilder.getUnmodifiableMap(), path);
+				queryBuilder.writeQuery(path);
 			} catch (IOException e) {
 				System.out.println("Something went wrong while writing search results to path: " + path);
 			}
