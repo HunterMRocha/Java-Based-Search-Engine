@@ -49,11 +49,13 @@ public class InvertedIndex {
 			this.count = 0;
 			this.score = 0;
 		}
+		
+		// TODO Give better descriptions to your javadoc parameters for this class.
 
 		/**
 		 * Debug constructor.
 		 *
-		 * @param location set
+		 * @param location set 
 		 * @param count    set
 		 * @param score    set
 		 */
@@ -247,7 +249,7 @@ public class InvertedIndex {
 	 * @param word
 	 * @return treeset of words.
 	 */
-	public ArrayList<Result> makeResult(String word) {
+	public ArrayList<Result> makeResult(String word) { // TODO Can delete this method now
 		ArrayList<Result> results = new ArrayList<>();
 
 		if (this.hasWord(word)) {
@@ -261,6 +263,7 @@ public class InvertedIndex {
 		return results;
 	}
 
+	// TODO Fix formatting in search methods to be consistent.
 
 	/**
 	 * Returns TreeSet of Results given a query.
@@ -271,7 +274,7 @@ public class InvertedIndex {
 	 */
 	public ArrayList<Result> exactSearch(Collection<String> queries) {
 		ArrayList<Result> results = new ArrayList<>();
-		Map<String, Result> lookup = new TreeMap<>();
+		Map<String, Result> lookup = new TreeMap<>(); // TODO Why a TreeMap???
 		for (String query : queries) {
 			if (invertedIndex.containsKey(query)) {
 				searchHelper(results, query, lookup);
@@ -290,7 +293,7 @@ public class InvertedIndex {
 	 */
 	public ArrayList<Result> partialSearch(Collection<String> queries) {
 		ArrayList<Result> results = new ArrayList<>();
-		Map<String, Result> lookup = new TreeMap<>();
+		Map<String, Result> lookup = new TreeMap<>(); // TODO Why a TreeMap???
 
 		for (String query : queries) {
 			for (String word : this.invertedIndex.tailMap(query).keySet()) {
@@ -305,6 +308,8 @@ public class InvertedIndex {
 		return results;
 	}
 
+	// TODO JAVADOC!
+	
 	/**
 	 * @param results
 	 * @param word

@@ -59,6 +59,11 @@ public class QueryBuilder {
 		return Collections.unmodifiableList(this.querySet.get(queryLine));
 	}
 
+	/*
+	 * TODO Remove this---should not be necessary with getQueries and getResults
+	 * And it causes a copy so not ideal. Put a write method in this class just like
+	 * you did to write the inverted index.
+	 */
 	/**
 	 * Gets an unmodsifiable map of Queries to their results.
 	 *
