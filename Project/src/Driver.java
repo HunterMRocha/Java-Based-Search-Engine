@@ -29,11 +29,26 @@ public class Driver {
 
 		ArgumentParser argumentParser = new ArgumentParser(args);
 
+		// TODO
+		// InvertedIndexBuilder builder = new InvertedIndexBuilder(invertedIndex);
 		InvertedIndexBuilder builder = new InvertedIndexBuilder(invertedIndex);
 
+		// TODO
+		// QueryBuilder queryBuilder = new QueryBuilder(invertedIndex);
 		QueryBuilder queryBuilder = new QueryBuilder(invertedIndex);
 
+		if (argumentParser.hasFlag("-threads")) {
+			int numThreads;
 
+			try {
+				numThreads = Integer.parseInt(argumentParser.getString("-threads"));
+			} catch (Exception e) {
+				numThreads = 5;
+			}
+			invertedIndex = new ThreadSafeInvertedIndex(numThreads);
+			builder = new ThreadSafeIndexBuilder((ThreadSafeInvertedIndex) invertedIndex);
+			queryBuilder = new ThreadSafeQueryBuilder((ThreadSafeInvertedIndex) invertedIndex);
+		}
 
 		if (argumentParser.hasFlag("-path") && argumentParser.getPath("-path") != null) {
 			Path path = argumentParser.getPath("-path");
@@ -53,7 +68,7 @@ public class Driver {
 			}
 		}
 
-		if(argumentParser.hasFlag("-counts")) {
+		if (argumentParser.hasFlag("-counts")) {
 			Path path = argumentParser.getPath("-counts", Path.of("counts.json"));
 			try {
 				SimpleJsonWriter.asObject(invertedIndex.getUnmodifiableCounts(), path);
@@ -62,16 +77,15 @@ public class Driver {
 			}
 		}
 
-		if(argumentParser.hasFlag("-query") && argumentParser.getPath("-query") != null) {
+		if (argumentParser.hasFlag("-query") && argumentParser.getPath("-query") != null) {
 			Path queryPath = argumentParser.getPath("-query");
 			try {
 				queryBuilder.parseQueryFile(queryPath, argumentParser.hasFlag("-exact"));
 			} catch (IOException e) {
 				System.out.println("There was an issue while reading the query file: " + queryPath.toString());
-			} catch (Exception r ) {
+			} catch (Exception r) {
 				System.out.println("There was an issue while doing things with file: " + queryPath.toString());
 			}
-
 		}
 
 		if (argumentParser.hasFlag("-results")) {
@@ -84,7 +98,6 @@ public class Driver {
 			}
 
 		}
-
 
 		/* Calculate time elapsed and output */
 		Duration elapsed = Duration.between(start, Instant.now());

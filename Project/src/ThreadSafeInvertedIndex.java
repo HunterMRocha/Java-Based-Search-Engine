@@ -8,33 +8,33 @@ import java.util.Set;
 /**
  * @author nedimazar
  *
- *This is a Threadsafe version of the InvertedIndex class
+ *         This is a Threadsafe version of the InvertedIndex class.
  *
  */
 public class ThreadSafeInvertedIndex extends InvertedIndex {
-
 	/**
 	 * The lock object that will be used for multithreading.
 	 */
 	private final SimpleReadWriteLock lock;
+	//TODO
+	public final int numThreads;
 
 	/**
 	 * Initializes an instance of the ThreadSafeInvertedIndex class.
+	 * @param numThreads Number of Threads
 	 */
-	public ThreadSafeInvertedIndex() {
-		// NOTE: DO NOT MODIFY THIS METHOD
+	public ThreadSafeInvertedIndex(int numThreads) {
 		super();
+		this.numThreads = numThreads;
 		lock = new SimpleReadWriteLock();
 	}
-
 
 	@Override
 	public Set<String> getWords() {
 		lock.readLock().lock();
 		try {
 			return super.getWords();
-		}
-		finally {
+		} finally {
 			lock.readLock().unlock();
 		}
 	}
@@ -44,8 +44,7 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 		lock.writeLock().lock();
 		try {
 			return super.add(word, filename, position);
-		}
-		finally {
+		} finally {
 			lock.writeLock().unlock();
 		}
 	}
@@ -55,20 +54,17 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 		lock.readLock().lock();
 		try {
 			super.writeIndex(outputFile);
-		}
-		finally {
+		} finally {
 			lock.readLock().unlock();
 		}
 	}
-
 
 	@Override
 	public Map<String, Integer> getUnmodifiableCounts() {
 		lock.readLock().lock();
 		try {
 			return super.getUnmodifiableCounts();
-		}
-		finally {
+		} finally {
 			lock.readLock().unlock();
 		}
 	}
@@ -78,8 +74,7 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 		lock.readLock().lock();
 		try {
 			return super.hasWord(word);
-		}
-		finally {
+		} finally {
 			lock.readLock().unlock();
 		}
 	}
@@ -89,8 +84,7 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 		lock.readLock().lock();
 		try {
 			return super.hasLocation(word, location);
-		}
-		finally {
+		} finally {
 			lock.readLock().unlock();
 		}
 	}
@@ -100,8 +94,7 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 		lock.readLock().lock();
 		try {
 			return super.exactSearch(queries);
-		}
-		finally {
+		} finally {
 			lock.readLock().unlock();
 		}
 	}
@@ -111,24 +104,18 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 		lock.readLock().lock();
 		try {
 			return super.partialSearch(queries);
-		}
-		finally {
+		} finally {
 			lock.readLock().unlock();
 		}
 	}
-
 
 	@Override
 	public ArrayList<Result> search(Collection<String> queries, boolean exact) {
 		lock.readLock().lock();
 		try {
 			return super.search(queries, exact);
-		}
-		finally {
+		} finally {
 			lock.readLock().unlock();
 		}
 	}
-
-
-
 }
