@@ -17,6 +17,9 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 	 */
 	private final SimpleReadWriteLock lock;
 	//TODO
+	/**
+	 *
+	 */
 	public final int numThreads;
 
 	/**

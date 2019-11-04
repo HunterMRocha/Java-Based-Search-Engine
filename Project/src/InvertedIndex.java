@@ -65,26 +65,6 @@ public class InvertedIndex {
 		}
 
 		/**
-		 * Sets the count data member.
-		 *
-		 * @param count New count.
-		 */
-		public void setCount(int count) {
-			this.count = count;
-			this.score = (double) this.count / counts.get(this.location);
-		}
-
-		/**
-		 * Adds the input count to the current count of a Result instance.
-		 *
-		 * @param count The count to be added.
-		 */
-		public void addCount(int count) {
-			this.count += count;
-			this.score = (double) this.count / counts.get(this.location);
-		}
-
-		/**
 		 * Updates the count and score associated to a word.
 		 *
 		 * @param word The word to be updated.
@@ -299,7 +279,7 @@ public class InvertedIndex {
 				lookup.get(location).updateCount(word);
 			} else {
 				Result result = new Result(location);
-				result.addCount(this.invertedIndex.get(word).get(location).size());
+				result.updateCount(word);
 				lookup.put(location, result);
 				results.add(result);
 			}

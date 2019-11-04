@@ -10,8 +10,15 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+/**
+ * @author nedimazar
+ *
+ */
 public class ThreadSafeQueryBuilder extends QueryBuilder{
 	//TODO
+	/**
+	 *
+	 */
 	private final ThreadSafeInvertedIndex invertedIndex;
 
 	/**
@@ -109,6 +116,7 @@ public class ThreadSafeQueryBuilder extends QueryBuilder{
 			}
 		}
 		queue.shutdown();
+
 	}
 
 	private class Task implements Runnable {
@@ -118,6 +126,11 @@ public class ThreadSafeQueryBuilder extends QueryBuilder{
 
 		private final ThreadSafeInvertedIndex invertedIndex;
 
+		/**
+		 * @param line
+		 * @param invertedIndex
+		 * @param exact
+		 */
 		public Task(String line, ThreadSafeInvertedIndex invertedIndex, boolean exact) {
 			this.line = line;
 			this.invertedIndex = invertedIndex;

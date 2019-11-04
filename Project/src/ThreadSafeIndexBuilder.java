@@ -3,6 +3,10 @@ import java.nio.file.Path;
 
 import opennlp.tools.stemmer.snowball.SnowballStemmer;
 
+/**
+ * @author nedimazar
+ *
+ */
 public class ThreadSafeIndexBuilder extends InvertedIndexBuilder {
 
 
@@ -33,18 +37,26 @@ public class ThreadSafeIndexBuilder extends InvertedIndexBuilder {
 		for (Path currentPath : getTextFiles(path)) {
 			if (isTextFile(currentPath)) {
 				queue.execute(new Task(currentPath, this.invertedIndex));
-				addPath(currentPath);
+				//addPath(currentPath);
 			}
 		}
 		queue.shutdown();
 	}
 
+	/**
+	 * @author nedimazar
+	 *
+	 */
 	private static class Task implements Runnable {
 		/** The prime number to add or list. */
 		private final Path path;
 
 		private final ThreadSafeInvertedIndex invertedIndex;
 
+		/**
+		 * @param path
+		 * @param invertedIndex
+		 */
 		public Task(Path path, ThreadSafeInvertedIndex invertedIndex) {
 			this.path = path;
 			this.invertedIndex = invertedIndex;
