@@ -22,6 +22,7 @@ public class Driver {
 	 *
 	 */
 	public static void main(String[] args) {
+		int numThreads = 1;
 		/* Store initial start time */
 		Instant start = Instant.now();
 
@@ -29,23 +30,22 @@ public class Driver {
 
 		ArgumentParser argumentParser = new ArgumentParser(args);
 
-		// TODO
-		// InvertedIndexBuilder builder = new InvertedIndexBuilder(invertedIndex);
 		InvertedIndexBuilder builder = new InvertedIndexBuilder(invertedIndex);
 
-		// TODO
-		// QueryBuilder queryBuilder = new QueryBuilder(invertedIndex);
 		QueryBuilder queryBuilder = new QueryBuilder(invertedIndex);
 
 		if (argumentParser.hasFlag("-threads")) {
-			int numThreads;
+
 
 			try {
 				numThreads = Integer.parseInt(argumentParser.getString("-threads"));
+				if (numThreads == 0) {
+					numThreads = 5;
+				}
 			} catch (Exception e) {
 				numThreads = 5;
 			}
-			invertedIndex = new ThreadSafeInvertedIndex(numThreads);
+			invertedIndex = new ThreadSafeInvertedIndex();
 			builder = new ThreadSafeIndexBuilder((ThreadSafeInvertedIndex) invertedIndex);
 			queryBuilder = new ThreadSafeQueryBuilder((ThreadSafeInvertedIndex) invertedIndex);
 		}
@@ -53,7 +53,7 @@ public class Driver {
 		if (argumentParser.hasFlag("-path") && argumentParser.getPath("-path") != null) {
 			Path path = argumentParser.getPath("-path");
 			try {
-				builder.traversePath(path);
+				builder.traversePath(path, numThreads);
 			} catch (IOException e) {
 				System.out.println("Path can not be traversed: " + path.toString());
 			}
@@ -80,7 +80,7 @@ public class Driver {
 		if (argumentParser.hasFlag("-query") && argumentParser.getPath("-query") != null) {
 			Path queryPath = argumentParser.getPath("-query");
 			try {
-				queryBuilder.parseQueryFile(queryPath, argumentParser.hasFlag("-exact"));
+				queryBuilder.parseQueryFile(queryPath, argumentParser.hasFlag("-exact"), numThreads);
 			} catch (IOException e) {
 				System.out.println("There was an issue while reading the query file: " + queryPath.toString());
 			} catch (Exception r) {

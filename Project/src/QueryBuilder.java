@@ -86,9 +86,10 @@ public class QueryBuilder {
 	 *
 	 * @param path The path to the Query file.
 	 * @param exactSearch True if we are doing exact search.
+	 * @param numThreads
 	 * @throws IOException Could happen.
 	 */
-	public void parseQueryFile(Path path, boolean exactSearch) throws IOException {
+	public void parseQueryFile(Path path, boolean exactSearch, int numThreads) throws IOException {
 		try (BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8);) {
 			String query;
 			while ((query = reader.readLine()) != null) {

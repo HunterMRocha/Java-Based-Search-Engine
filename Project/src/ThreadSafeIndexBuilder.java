@@ -1,8 +1,6 @@
 import java.io.IOException;
 import java.nio.file.Path;
 
-import opennlp.tools.stemmer.snowball.SnowballStemmer;
-
 /**
  * @author nedimazar
  *
@@ -18,7 +16,7 @@ public class ThreadSafeIndexBuilder extends InvertedIndexBuilder {
 	/**
 	 * The default stemming algorithm.
 	 */
-	private static final SnowballStemmer.ALGORITHM DEFAULT = SnowballStemmer.ALGORITHM.ENGLISH;
+	//private static final SnowballStemmer.ALGORITHM DEFAULT = SnowballStemmer.ALGORITHM.ENGLISH;
 
 
 	/**
@@ -32,13 +30,17 @@ public class ThreadSafeIndexBuilder extends InvertedIndexBuilder {
 
 	//PUT WORK QUEUE
 	@Override
-	public void traversePath(Path path) throws IOException {
-		WorkQueue queue = new WorkQueue(this.invertedIndex.numThreads);
+	public void traversePath(Path path, int numThreads) throws IOException {
+		WorkQueue queue = new WorkQueue(numThreads);
 		for (Path currentPath : getTextFiles(path)) {
 			if (isTextFile(currentPath)) {
 				queue.execute(new Task(currentPath, this.invertedIndex));
-				//addPath(currentPath);
 			}
+		}
+		try {
+			queue.finish();
+		} catch (Exception e) {
+
 		}
 		queue.shutdown();
 	}
@@ -51,6 +53,9 @@ public class ThreadSafeIndexBuilder extends InvertedIndexBuilder {
 		/** The prime number to add or list. */
 		private final Path path;
 
+		/**
+		 * The invertedIndex to use
+		 */
 		private final ThreadSafeInvertedIndex invertedIndex;
 
 		/**

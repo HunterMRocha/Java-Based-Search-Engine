@@ -4,20 +4,17 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
 
 /**
  * @author nedimazar
  *
  */
 public class ThreadSafeQueryBuilder extends QueryBuilder{
-	//TODO
 	/**
-	 *
+	 * The Thread Safe index
 	 */
 	private final ThreadSafeInvertedIndex invertedIndex;
 
@@ -26,8 +23,10 @@ public class ThreadSafeQueryBuilder extends QueryBuilder{
 	 */
 	private final TreeMap<String, ArrayList<InvertedIndex.Result>> querySet;
 
+	WorkQueue workQueue;
+
 	/**
-	 * @param invertedIndex
+	 * @param invertedIndex the index to use
 	 */
 	public ThreadSafeQueryBuilder(ThreadSafeInvertedIndex invertedIndex) {
 		super(invertedIndex);
@@ -43,9 +42,10 @@ public class ThreadSafeQueryBuilder extends QueryBuilder{
 	 */
 	@Override
 	public Set<String> getQueries() {
-		synchronized(querySet) {
-			return Collections.unmodifiableSet(this.querySet.keySet());
-		}
+		//		synchronized(querySet) {
+		//			return Collections.unmodifiableSet(this.querySet.keySet());
+		//		}
+		return super.getQueries();
 	}
 
 	/**
@@ -56,9 +56,10 @@ public class ThreadSafeQueryBuilder extends QueryBuilder{
 	 */
 	@Override
 	public List<InvertedIndex.Result> getResults(String queryLine) {
-		synchronized (querySet) {
-			return Collections.unmodifiableList(this.querySet.get(queryLine));
-		}
+		//		synchronized (querySet) {
+		//			return Collections.unmodifiableList(this.querySet.get(queryLine));
+		//		}
+		return super.getResults(queryLine);
 	}
 
 
@@ -71,9 +72,10 @@ public class ThreadSafeQueryBuilder extends QueryBuilder{
 	 */
 	@Override
 	public void writeQuery(Path outputFile) throws IOException {
-		synchronized(querySet) {
-			SimpleJsonWriter.asQuery(this.querySet, outputFile);
-		}
+		//		//synchronized(querySet) {
+		//		SimpleJsonWriter.asQuery(this.querySet, outputFile);
+		//		//}
+		super.writeQuery(outputFile);
 	}
 
 
@@ -84,9 +86,7 @@ public class ThreadSafeQueryBuilder extends QueryBuilder{
 	 */
 	@Override
 	public boolean isEmpty() {
-		synchronized (querySet) {
-			return this.querySet.keySet().size() == 0;
-		}
+		return super.isEmpty();
 	}
 
 
@@ -98,42 +98,59 @@ public class ThreadSafeQueryBuilder extends QueryBuilder{
 	 */
 	@Override
 	public void parseQueryLine(String line, boolean exactSearch) {
-		TreeSet<String> queries = TextFileStemmer.uniqueStems(line);
-		String joined = String.join(" ", queries);
-		if (queries.size() != 0 && !querySet.containsKey(joined)) {
-			this.querySet.put(joined, invertedIndex.search(queries, exactSearch));
-		}
+		//		//synchronized(querySet) {
+		//		TreeSet<String> queries = TextFileStemmer.uniqueStems(line);
+		//		String joined = String.join(" ", queries);
+		//		if (queries.size() != 0 && !querySet.containsKey(joined)) {
+		//			this.querySet.put(joined, invertedIndex.search(queries, exactSearch));
+		//		}
+		//		//}
+
+		super.parseQueryLine(line, exactSearch);
 	}
 
 
 	@Override
-	public void parseQueryFile(Path path, boolean exactSearch) throws IOException {
-		WorkQueue queue = new WorkQueue(this.invertedIndex.numThreads);
+	public void parseQueryFile(Path path, boolean exactSearch, int numThreads) throws IOException {
+		//synchronized(querySet) {
+		this.workQueue = new WorkQueue(numThreads);
 		try (BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8);) {
 			String query;
 			while ((query = reader.readLine()) != null) {
-				queue.execute(new Task(query, this.invertedIndex, exactSearch));
+				workQueue.execute(new Task(query/*, this.invertedIndex,*/, exactSearch));
 			}
 		}
-		queue.shutdown();
+		try {
+			workQueue.finish();
+		} catch (Exception e) {
 
+		}
+		workQueue.shutdown();
 	}
 
+	/**
+	 * @author nedimazar
+	 *
+	 * The inner runnable task class
+	 */
 	private class Task implements Runnable {
 		/** The prime number to add or list. */
 		private final String line;
+		/**
+		 * Exact search or not
+		 */
 		private final boolean exact;
 
-		private final ThreadSafeInvertedIndex invertedIndex;
+		//private final ThreadSafeInvertedIndex invertedIndex;
 
 		/**
-		 * @param line
-		 * @param invertedIndex
+		 * @param line line to parse
+		 * param invertedIndex index to use
 		 * @param exact
 		 */
-		public Task(String line, ThreadSafeInvertedIndex invertedIndex, boolean exact) {
+		public Task(String line,/* ThreadSafeInvertedIndex invertedIndex,*/ boolean exact) {
 			this.line = line;
-			this.invertedIndex = invertedIndex;
+			//this.invertedIndex = invertedIndex;
 			this.exact = exact;
 		}
 
@@ -141,7 +158,9 @@ public class ThreadSafeQueryBuilder extends QueryBuilder{
 
 		@Override
 		public void run() {
-			parseQueryLine(line, exact);
+			synchronized(workQueue) {
+				parseQueryLine(line, exact);
+			}
 		}
 	}
 

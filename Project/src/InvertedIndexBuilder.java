@@ -98,9 +98,10 @@ public class InvertedIndexBuilder {
 	 * This function calls addpath on every subfile starting from a given directory
 	 *
 	 * @param path Starting point of traversal
+	 * @param numThreads
 	 * @throws IOException could happen
 	 */
-	public void traversePath(Path path) throws IOException {
+	public void traversePath(Path path, int numThreads) throws IOException {
 		for (Path currentPath : getTextFiles(path)) {
 			if (isTextFile(currentPath)) {
 				addPath(currentPath);
