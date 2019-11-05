@@ -13,11 +13,6 @@ public class ThreadSafeIndexBuilder extends InvertedIndexBuilder {
 	 */
 	private final ThreadSafeInvertedIndex invertedIndex;
 
-	/**
-	 * The default stemming algorithm.
-	 */
-	//private static final SnowballStemmer.ALGORITHM DEFAULT = SnowballStemmer.ALGORITHM.ENGLISH;
-
 
 	/**
 	 * @param invertedIndex
@@ -28,7 +23,6 @@ public class ThreadSafeIndexBuilder extends InvertedIndexBuilder {
 	}
 
 
-	//PUT WORK QUEUE
 	@Override
 	public void traversePath(Path path, int numThreads) throws IOException {
 		WorkQueue queue = new WorkQueue(numThreads);
@@ -40,7 +34,7 @@ public class ThreadSafeIndexBuilder extends InvertedIndexBuilder {
 		try {
 			queue.finish();
 		} catch (Exception e) {
-
+			System.out.println("The work queue encountered an error.");
 		}
 		queue.shutdown();
 	}
@@ -50,7 +44,10 @@ public class ThreadSafeIndexBuilder extends InvertedIndexBuilder {
 	 *
 	 */
 	private static class Task implements Runnable {
-		/** The prime number to add or list. */
+
+		/**
+		 * Path to the file in question.
+		 */
 		private final Path path;
 
 		/**
@@ -67,14 +64,12 @@ public class ThreadSafeIndexBuilder extends InvertedIndexBuilder {
 			this.invertedIndex = invertedIndex;
 		}
 
-		//this function should actually check for prime numbers
-
 		@Override
 		public void run() {
 			try {
 				addPath(path, invertedIndex);
 			} catch (IOException e) {
-				//TODO
+				System.out.println("Problem encountered while adding file: " + path.toString());
 			}
 		}
 	}

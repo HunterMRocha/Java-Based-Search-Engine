@@ -50,7 +50,6 @@ public class SimpleReadWriteLock {
 	 * @return the reader lock
 	 */
 	public SimpleLock readLock() {
-		// NOTE: DO NOT MODIFY THIS METHOD
 		return readerLock;
 	}
 
@@ -60,7 +59,6 @@ public class SimpleReadWriteLock {
 	 * @return the writer lock
 	 */
 	public SimpleLock writeLock() {
-		// NOTE: DO NOT MODIFY THIS METHOD
 		return writerLock;
 	}
 
@@ -76,7 +74,6 @@ public class SimpleReadWriteLock {
 	 * @see Thread#currentThread()
 	 */
 	public static boolean sameThread(Thread other) {
-		// NOTE: DO NOT MODIFY THIS METHOD
 		return other != null && other.getId() == Thread.currentThread().getId();
 	}
 
