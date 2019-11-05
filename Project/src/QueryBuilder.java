@@ -80,7 +80,6 @@ public class QueryBuilder {
 	}
 
 
-	//TODO Override multithread by line
 	/**
 	 * Gets queries from the input path and performs the searches.
 	 *

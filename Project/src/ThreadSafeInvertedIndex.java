@@ -16,11 +16,6 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 	 * The lock object that will be used for multithreading.
 	 */
 	private final SimpleReadWriteLock lock;
-	//TODO
-	/**
-	 *
-	 */
-	//public final int numThreads;
 
 	/**
 	 * Initializes an instance of the ThreadSafeInvertedIndex class.
