@@ -13,16 +13,18 @@ public class ThreadSafeIndexBuilder extends InvertedIndexBuilder {
 	 */
 	private final ThreadSafeInvertedIndex invertedIndex;
 
+	// TODO private final int threads;
 
 	/**
 	 * @param invertedIndex
 	 */
+	// TODO public ThreadSafeIndexBuilder (ThreadSafeInvertedIndex invertedIndex, int numThreads){
 	public ThreadSafeIndexBuilder (ThreadSafeInvertedIndex invertedIndex){
 		super(invertedIndex);
 		this.invertedIndex = invertedIndex;
 	}
 
-
+	// TODO Remove numThreads as a parameter from traversePath
 	@Override
 	public void traversePath(Path path, int numThreads) throws IOException {
 		WorkQueue queue = new WorkQueue(numThreads);
@@ -56,8 +58,9 @@ public class ThreadSafeIndexBuilder extends InvertedIndexBuilder {
 		private final ThreadSafeInvertedIndex invertedIndex;
 
 		/**
-		 * @param path
-		 * @param invertedIndex
+		 * TODO 
+		 * @param path TODO
+		 * @param invertedIndex TODO
 		 */
 		public Task(Path path, ThreadSafeInvertedIndex invertedIndex) {
 			this.path = path;
@@ -68,6 +71,13 @@ public class ThreadSafeIndexBuilder extends InvertedIndexBuilder {
 		public void run() {
 			try {
 				addPath(path, invertedIndex);
+				
+				/* TODO
+				InvertedIndex local = new InvertedIndex();
+				addPath(path, local);
+				invertedIndex.addAll(local);
+				*/
+				
 			} catch (IOException e) {
 				System.out.println("Problem encountered while adding file: " + path.toString());
 			}
