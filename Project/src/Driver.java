@@ -49,6 +49,27 @@ public class Driver {
 			builder = new ThreadSafeIndexBuilder((ThreadSafeInvertedIndex) invertedIndex);
 			queryBuilder = new ThreadSafeQueryBuilder((ThreadSafeInvertedIndex) invertedIndex);
 		}
+		
+		/* TODO
+		ArgumentParser argumentParser = new ArgumentParser(args);
+
+		InvertedIndex invertedIndex;
+
+		InvertedIndexBuilder builder;
+
+		QueryBuilder queryBuilder;
+		
+		if multithreading
+			parse # of threads
+			ThreadSafeInvertedIndex threadSafe = new ThreadSafeInvertedIndex(); 
+			invertedIndex = threadSafe;
+			builder = new ThreadSafeIndexBuilder(threadSafe, threads);
+			queryBuilder = new ThreadSafeQueryBuilder(threadSafe, threads);
+		
+		else
+			init to single threaded versions
+		
+		*/
 
 		if (argumentParser.hasFlag("-path") && argumentParser.getPath("-path") != null) {
 			Path path = argumentParser.getPath("-path");
