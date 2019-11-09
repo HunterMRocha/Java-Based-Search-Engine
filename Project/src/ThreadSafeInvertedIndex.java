@@ -20,9 +20,8 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 	/**
 	 * Initializes an instance of the ThreadSafeInvertedIndex class.
 	 */
-	public ThreadSafeInvertedIndex(/*int numThreads*/) {
+	public ThreadSafeInvertedIndex() {
 		super();
-		//this.numThreads = numThreads;
 		lock = new SimpleReadWriteLock();
 	}
 
