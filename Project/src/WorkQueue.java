@@ -18,9 +18,9 @@ public class WorkQueue {
 	private final PoolWorker[] workers;
 
 	/**
-	 *
+	 * TODO
 	 */
-	public Integer pending;
+	public Integer pending; // TODO private
 
 	/** Queue of pending work requests. */
 	private final LinkedList<Runnable> queue;
@@ -69,10 +69,12 @@ public class WorkQueue {
 		synchronized (queue) {
 			queue.addLast(r);
 			queue.notifyAll();
-			incrementPending();
+			incrementPending(); // TODO Move this to BEFORE the synchronized (queue) block
 		}
 	}
 
+	// TODO Javadoc before code review!
+	
 	/**
 	 *
 	 */
@@ -156,7 +158,7 @@ public class WorkQueue {
 				}
 				try {
 					r.run();
-					decrementPending();
+					decrementPending(); // TODO Move to a finally block
 				} catch (RuntimeException ex) {
 					// catch runtime exceptions to avoid leaking threads
 					System.err.println("Warning: Work queue encountered an exception while running.");
