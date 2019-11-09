@@ -105,6 +105,7 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 		}
 	}
 
+	// TODO Remove
 	@Override
 	public ArrayList<Result> search(Collection<String> queries, boolean exact) {
 		lock.readLock().lock();

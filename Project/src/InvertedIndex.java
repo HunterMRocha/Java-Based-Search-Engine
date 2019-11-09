@@ -69,7 +69,7 @@ public class InvertedIndex {
 		 *
 		 * @param word The word to be updated.
 		 */
-		public void updateCount(String word) {
+		public void updateCount(String word) { // TODO Make private
 			this.count += invertedIndex.get(word).get(this.location).size();
 			this.score = (double) this.count / counts.get(this.location);
 		}
@@ -180,6 +180,22 @@ public class InvertedIndex {
 
 		return added;
 	}
+	
+	/* TODO Create this method
+	public void addAll(InvertedIndex other) {
+		// combine results of invertedIndex
+		for (String key : other.invertedIndex.keySet()) {
+			if (this.invertedIndex.containsKey(key) == false) {
+				this.invertedIndex.put(key, other.invertedIndex.get(key));
+			}
+			else {
+				
+			}
+		}
+		
+		// combine results of counts
+	}
+	*/
 
 	/**
 	 * Writes the invertedIndex in a pretty Json format to the specified output file

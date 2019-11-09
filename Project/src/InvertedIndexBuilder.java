@@ -94,6 +94,7 @@ public class InvertedIndexBuilder {
 		return list;
 	}
 
+	// TODO Delete numThreads
 	/**
 	 * This function calls addpath on every subfile starting from a given directory
 	 *
