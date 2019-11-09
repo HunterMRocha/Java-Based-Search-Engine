@@ -93,7 +93,7 @@ public class ThreadSafeQueryBuilder extends QueryBuilder{
 		try {
 			workQueue.finish();
 		} catch (Exception e) {
-			// TODO Fix
+			System.out.println("An InterruptedException happened while locking.");
 		}
 		workQueue.shutdown();
 	}
@@ -123,15 +123,15 @@ public class ThreadSafeQueryBuilder extends QueryBuilder{
 
 		@Override
 		public void run() {
-			synchronized(workQueue) { // TODO Prevents all multithreading
+			synchronized(workQueue){ //TODO Dont do this
 				parseQueryLine(line, exact);
 			}
 		}
 	}
-	
+
 	/*
-	 * TODO 
-	 * 
+	 * TODO
+	 *
 	 * Create a QueryBuilderInterface with the common methods between these two classes
 	 * Implement this interface in both QueryBuilder and ThreadSafeQueryBuilder, each of
 	 * these classes need their own parseQueryLine implementation.

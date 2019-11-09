@@ -13,20 +13,29 @@ public class ThreadSafeIndexBuilder extends InvertedIndexBuilder {
 	 */
 	private final ThreadSafeInvertedIndex invertedIndex;
 
-	// TODO private final int threads;
+	private final int numThreads;
 
 	/**
-	 * @param invertedIndex
+	 * Constructor for the builder class
+	 *
+	 * @param invertedIndex The index to use
+	 * @param numThreads the number of threads to use
 	 */
-	// TODO public ThreadSafeIndexBuilder (ThreadSafeInvertedIndex invertedIndex, int numThreads){
-	public ThreadSafeIndexBuilder (ThreadSafeInvertedIndex invertedIndex){
+	public ThreadSafeIndexBuilder (ThreadSafeInvertedIndex invertedIndex, int numThreads){
 		super(invertedIndex);
 		this.invertedIndex = invertedIndex;
+		this.numThreads = numThreads;
 	}
 
-	// TODO Remove numThreads as a parameter from traversePath
-	@Override
-	public void traversePath(Path path, int numThreads) throws IOException {
+
+
+	/**
+	 * Adds all files in the path to the index.
+	 *
+	 * @param path start path
+	 * @throws IOException could happen
+	 */
+	public void traversePath(Path path) throws IOException {
 		WorkQueue queue = new WorkQueue(numThreads);
 		for (Path currentPath : getTextFiles(path)) {
 			if (isTextFile(currentPath)) {
@@ -58,9 +67,9 @@ public class ThreadSafeIndexBuilder extends InvertedIndexBuilder {
 		private final ThreadSafeInvertedIndex invertedIndex;
 
 		/**
-		 * TODO 
-		 * @param path TODO
-		 * @param invertedIndex TODO
+		 * Constructor for the Task.
+		 * @param path the path to work on.
+		 * @param invertedIndex the index to use
 		 */
 		public Task(Path path, ThreadSafeInvertedIndex invertedIndex) {
 			this.path = path;
@@ -71,13 +80,13 @@ public class ThreadSafeIndexBuilder extends InvertedIndexBuilder {
 		public void run() {
 			try {
 				addPath(path, invertedIndex);
-				
+
 				/* TODO
 				InvertedIndex local = new InvertedIndex();
 				addPath(path, local);
 				invertedIndex.addAll(local);
-				*/
-				
+				 */
+
 			} catch (IOException e) {
 				System.out.println("Problem encountered while adding file: " + path.toString());
 			}

@@ -90,8 +90,7 @@ public class SimpleReadWriteLock {
 						lock.wait();
 					}
 					catch (InterruptedException e) {
-						e.printStackTrace(); // TODO Fix
-					}
+						System.out.println("An InterruptedException happened wile locking.");					}
 				}
 				reader++;
 			}
@@ -127,7 +126,7 @@ public class SimpleReadWriteLock {
 						lock.wait();
 					}
 					catch (InterruptedException e) {
-						e.printStackTrace(); // TODO Fix
+						System.out.println("An InterruptedException happened while locking.");
 					}
 				}
 				writeThread = Thread.currentThread();
@@ -141,10 +140,8 @@ public class SimpleReadWriteLock {
 			if(sameThread(writeThread)) {
 				synchronized(lock) {
 					writer--;
-					if (writer == 0) { // TODO Remove...
-						writeThread = null;
-						lock.notifyAll();
-					}
+					writeThread = null;
+					lock.notifyAll();
 				}
 			}
 			else {
