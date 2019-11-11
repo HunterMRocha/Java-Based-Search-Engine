@@ -26,31 +26,6 @@ public class Driver {
 		/* Store initial start time */
 		Instant start = Instant.now();
 
-		InvertedIndex invertedIndex = new InvertedIndex();
-
-		ArgumentParser argumentParser = new ArgumentParser(args);
-
-		InvertedIndexBuilder builder = new InvertedIndexBuilder(invertedIndex);
-
-		QueryBuilder queryBuilder = new QueryBuilder(invertedIndex);
-
-		if (argumentParser.hasFlag("-threads")) {
-
-
-			try {
-				numThreads = Integer.parseInt(argumentParser.getString("-threads"));
-				if (numThreads == 0) {
-					numThreads = 5;
-				}
-			} catch (Exception e) {
-				numThreads = 5;
-			}
-			invertedIndex = new ThreadSafeInvertedIndex();
-			builder = new ThreadSafeIndexBuilder((ThreadSafeInvertedIndex) invertedIndex, numThreads);
-			queryBuilder = new ThreadSafeQueryBuilder((ThreadSafeInvertedIndex) invertedIndex);
-		}
-
-		/* TODO
 		ArgumentParser argumentParser = new ArgumentParser(args);
 
 		InvertedIndex invertedIndex;
@@ -59,22 +34,31 @@ public class Driver {
 
 		QueryBuilder queryBuilder;
 
-		if multithreading
-			parse # of threads
+		if (argumentParser.hasFlag("-threads")) {
+			try {
+				numThreads = Integer.parseInt(argumentParser.getString("-threads"));
+				if (numThreads == 0) {
+					numThreads = 5;
+				}
+			} catch (Exception e) {
+				numThreads = 5;
+			}
+
 			ThreadSafeInvertedIndex threadSafe = new ThreadSafeInvertedIndex();
 			invertedIndex = threadSafe;
-			builder = new ThreadSafeIndexBuilder(threadSafe, threads);
-			queryBuilder = new ThreadSafeQueryBuilder(threadSafe, threads);
+			builder = new ThreadSafeIndexBuilder(threadSafe, numThreads);
+			queryBuilder = new ThreadSafeQueryBuilder(threadSafe);
 
-		else
-			init to single threaded versions
-
-		 */
+		}else {
+			invertedIndex = new InvertedIndex();
+			builder = new InvertedIndexBuilder(invertedIndex);
+			queryBuilder = new QueryBuilder(invertedIndex);
+		}
 
 		if (argumentParser.hasFlag("-path") && argumentParser.getPath("-path") != null) {
 			Path path = argumentParser.getPath("-path");
 			try {
-				builder.traversePath(path, numThreads);
+				builder.traversePath(path);
 			} catch (IOException e) {
 				System.out.println("Path can not be traversed: " + path.toString());
 			}

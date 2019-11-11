@@ -94,15 +94,13 @@ public class InvertedIndexBuilder {
 		return list;
 	}
 
-	// TODO Delete numThreads
 	/**
 	 * This function calls addpath on every subfile starting from a given directory
 	 *
 	 * @param path Starting point of traversal
-	 * @param numThreads
 	 * @throws IOException could happen
 	 */
-	public void traversePath(Path path, int numThreads) throws IOException {
+	public void traversePath(Path path) throws IOException {
 		for (Path currentPath : getTextFiles(path)) {
 			if (isTextFile(currentPath)) {
 				addPath(currentPath);

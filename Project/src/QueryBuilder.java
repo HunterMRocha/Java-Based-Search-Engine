@@ -15,7 +15,7 @@ import java.util.TreeSet;
  *
  *A class to build beautiful search queries for inverted index objects.
  */
-public class QueryBuilder {
+public class QueryBuilder implements QBuilderInterface {
 
 	/**
 	 * This is the inverted index that the search query will be performed on.

@@ -13,6 +13,9 @@ public class ThreadSafeIndexBuilder extends InvertedIndexBuilder {
 	 */
 	private final ThreadSafeInvertedIndex invertedIndex;
 
+	/**
+	 * Number of Threads
+	 */
 	private final int numThreads;
 
 	/**
@@ -35,6 +38,7 @@ public class ThreadSafeIndexBuilder extends InvertedIndexBuilder {
 	 * @param path start path
 	 * @throws IOException could happen
 	 */
+	@Override
 	public void traversePath(Path path) throws IOException {
 		WorkQueue queue = new WorkQueue(numThreads);
 		for (Path currentPath : getTextFiles(path)) {
@@ -81,7 +85,7 @@ public class ThreadSafeIndexBuilder extends InvertedIndexBuilder {
 			try {
 				addPath(path, invertedIndex);
 
-				/* TODO
+				/*
 				InvertedIndex local = new InvertedIndex();
 				addPath(path, local);
 				invertedIndex.addAll(local);
