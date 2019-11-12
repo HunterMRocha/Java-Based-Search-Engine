@@ -43,6 +43,7 @@ public class QueryBuilder implements QBuilderInterface {
 	 *
 	 * @return An unmodifiable Set of Queries.
 	 */
+	@Override
 	public Set<String> getQueries() {
 		return Collections.unmodifiableSet(this.querySet.keySet());
 	}
@@ -53,6 +54,7 @@ public class QueryBuilder implements QBuilderInterface {
 	 * @param queryLine The line that we are looking for.
 	 * @return An unmodifiable List of Results.
 	 */
+	@Override
 	public List<InvertedIndex.Result> getResults(String queryLine) {
 		return Collections.unmodifiableList(this.querySet.get(queryLine));
 	}
@@ -65,6 +67,7 @@ public class QueryBuilder implements QBuilderInterface {
 	 * @param outputFile Output file.
 	 * @throws IOException Possible?
 	 */
+	@Override
 	public void writeQuery(Path outputFile) throws IOException {
 		SimpleJsonWriter.asQuery(this.querySet, outputFile);
 	}
@@ -75,6 +78,7 @@ public class QueryBuilder implements QBuilderInterface {
 	 *
 	 * @return True if empty.
 	 */
+	@Override
 	public boolean isEmpty() {
 		return this.querySet.keySet().size() == 0;
 	}
@@ -88,6 +92,7 @@ public class QueryBuilder implements QBuilderInterface {
 	 * @param numThreads
 	 * @throws IOException Could happen.
 	 */
+	@Override
 	public void parseQueryFile(Path path, boolean exactSearch, int numThreads) throws IOException {
 		try (BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8);) {
 			String query;

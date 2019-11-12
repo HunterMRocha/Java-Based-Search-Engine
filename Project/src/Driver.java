@@ -32,7 +32,7 @@ public class Driver {
 
 		InvertedIndexBuilder builder;
 
-		QueryBuilder queryBuilder;
+		QBuilderInterface queryBuilder;
 
 		if (argumentParser.hasFlag("-threads")) {
 			try {
@@ -86,8 +86,6 @@ public class Driver {
 			Path queryPath = argumentParser.getPath("-query");
 			try {
 				queryBuilder.parseQueryFile(queryPath, argumentParser.hasFlag("-exact"), numThreads);
-			} catch (IOException e) {
-				System.out.println("There was an issue while reading the query file: " + queryPath.toString());
 			} catch (Exception r) {
 				System.out.println("There was an issue while doing things with file: " + queryPath.toString());
 			}

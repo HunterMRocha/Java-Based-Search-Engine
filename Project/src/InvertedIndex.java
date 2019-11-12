@@ -181,33 +181,6 @@ public class InvertedIndex {
 		return added;
 	}
 
-	/* TODO */
-	/**
-	 * Merges two inverted indexes.
-	 *
-	 * @param other The other inverted index
-	 */
-	public void addAll1(InvertedIndex other) {
-		// combine results of invertedIndex
-		for (String key : other.invertedIndex.keySet()) {
-			if (this.invertedIndex.containsKey(key) == false) {
-				this.invertedIndex.put(key, other.invertedIndex.get(key));
-			}
-			else {
-				for (var x : other.invertedIndex.get(key).keySet()) {
-					if (this.invertedIndex.get(key).get(x) == null) {
-						this.invertedIndex.get(key).put(x, other.invertedIndex.get(key).get(x));
-					} else {
-						this.invertedIndex.get(key).get(x).addAll(other.invertedIndex.get(key).get(x));
-					}
-				}
-			}
-		}
-
-		// combine results of counts
-	}
-	/**/
-
 	/**
 	 * Add all method for going through the inverted index
 	 *
@@ -236,7 +209,6 @@ public class InvertedIndex {
 			}
 		}
 	}
-
 
 	/**
 	 * Writes the invertedIndex in a pretty Json format to the specified output file
