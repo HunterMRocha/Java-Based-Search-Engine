@@ -20,12 +20,12 @@ public class QueryBuilder implements QBuilderInterface {
 	/**
 	 * This is the inverted index that the search query will be performed on.
 	 */
-	private final InvertedIndex invertedIndex;
+	protected final InvertedIndex invertedIndex;
 
 	/**
 	 * The set that will hold cleaned up queries mapped to their results.
 	 */
-	private final TreeMap<String, ArrayList<InvertedIndex.Result>> querySet;
+	public final TreeMap<String, ArrayList<InvertedIndex.Result>> querySet;
 
 	/**
 	 * Constructor for the QueryBuilder class.

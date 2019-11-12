@@ -83,13 +83,13 @@ public class ThreadSafeIndexBuilder extends InvertedIndexBuilder {
 		@Override
 		public void run() {
 			try {
-				addPath(path, invertedIndex);
+				//addPath(path, invertedIndex);
 
-				/*
+
 				InvertedIndex local = new InvertedIndex();
 				addPath(path, local);
 				invertedIndex.addAll(local);
-				 */
+
 
 			} catch (IOException e) {
 				System.out.println("Problem encountered while adding file: " + path.toString());

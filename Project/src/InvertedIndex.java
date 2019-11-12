@@ -187,7 +187,7 @@ public class InvertedIndex {
 	 *
 	 * @param other The other inverted index
 	 */
-	public void addAll(InvertedIndex other) {
+	public void addAll1(InvertedIndex other) {
 		// combine results of invertedIndex
 		for (String key : other.invertedIndex.keySet()) {
 			if (this.invertedIndex.containsKey(key) == false) {
@@ -207,6 +207,36 @@ public class InvertedIndex {
 		// combine results of counts
 	}
 	/**/
+
+	/**
+	 * Add all method for going through the inverted index
+	 *
+	 * @param other is the other inverted index
+	 */
+	public void addAll(InvertedIndex other) {
+		for (String word : other.invertedIndex.keySet()) {
+			if (this.invertedIndex.containsKey(word) == false) {
+				this.invertedIndex.put(word, other.invertedIndex.get(word));
+			} else {
+				for (String location : other.invertedIndex.get(word).keySet()) {
+					if (this.invertedIndex.get(word).containsKey(location) == false) {
+						this.invertedIndex.get(word).put(location, other.invertedIndex.get(word).get(location));
+					} else {
+						this.invertedIndex.get(word).get(location).addAll(other.invertedIndex.get(word).get(location));
+					}
+				}
+			}
+		}
+
+		for (String location : other.counts.keySet()) {
+			if (this.counts.containsKey(location) == false) {
+				this.counts.put(location, other.counts.get(location));
+			} else {
+				this.counts.put(location, Math.max(this.counts.get(location), other.counts.get(location)));
+			}
+		}
+	}
+
 
 	/**
 	 * Writes the invertedIndex in a pretty Json format to the specified output file

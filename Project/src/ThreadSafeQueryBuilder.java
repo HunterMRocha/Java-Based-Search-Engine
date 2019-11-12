@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 /**
  * @author nedimazar
@@ -77,7 +78,13 @@ public class ThreadSafeQueryBuilder extends QueryBuilder{
 	 */
 	@Override
 	public void parseQueryLine(String line, boolean exactSearch) {
-		super.parseQueryLine(line, exactSearch);
+		TreeSet<String> queries = TextFileStemmer.uniqueStems(line);
+		String joined = String.join(" ", queries);
+		if (queries.size() != 0 && !querySet.containsKey(joined)) {
+			synchronized (workQueue) {
+				this.querySet.put(joined, invertedIndex.search(queries, exactSearch));
+			}
+		}
 	}
 
 
@@ -123,9 +130,9 @@ public class ThreadSafeQueryBuilder extends QueryBuilder{
 
 		@Override
 		public void run() {
-			synchronized(workQueue){ //TODO Dont do this
-				parseQueryLine(line, exact);
-			}
+			//synchronized(workQueue) { //TODO
+			parseQueryLine(line, exact);
+			//}
 		}
 	}
 
