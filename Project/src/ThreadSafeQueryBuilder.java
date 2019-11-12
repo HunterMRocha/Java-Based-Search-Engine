@@ -108,6 +108,7 @@ public class ThreadSafeQueryBuilder implements QBuilderInterface {
 	 * @param numThreads the number of threads
 	 * @throws IOException could happen
 	 */
+	@Override
 	public void parseQueryFile(Path path, boolean exactSearch, int numThreads) throws IOException {
 		this.workQueue = new WorkQueue(numThreads);
 		try (BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8);) {
@@ -152,13 +153,4 @@ public class ThreadSafeQueryBuilder implements QBuilderInterface {
 			parseQueryLine(line, exact);
 		}
 	}
-
-	/*
-	 * TODO
-	 *
-	 * Create a QueryBuilderInterface with the common methods between these two classes
-	 * Implement this interface in both QueryBuilder and ThreadSafeQueryBuilder, each of
-	 * these classes need their own parseQueryLine implementation.
-	 */
-
 }
