@@ -14,29 +14,35 @@ import java.util.TreeSet;
  * @author nedimazar
  *
  */
-public class ThreadSafeQueryBuilder implements QBuilderInterface {
+public class ThreadSafeQueryBuilder implements QueryBuilderInterface {
 	/**
 	 * Our workQueue
 	 */
-	WorkQueue workQueue; // TODO Remove, make this a local variable where you need it... save the number of threads to use instead
 
 	/**
 	 * This is the inverted index that the search query will be performed on.
 	 */
-	protected final InvertedIndex invertedIndex; // TODO private
+	private final InvertedIndex invertedIndex;
 
 	/**
 	 * The set that will hold cleaned up queries mapped to their results.
 	 */
-	public final TreeMap<String, ArrayList<InvertedIndex.Result>> querySet; // TODO private
+	private final TreeMap<String, ArrayList<InvertedIndex.Result>> querySet;
+
+	/**
+	 * Number of Threads
+	 */
+	private final int numThreads;
 
 
 	/**
 	 * @param invertedIndex the index to use
+	 * @param numThreads number of threads
 	 */
-	public ThreadSafeQueryBuilder(ThreadSafeInvertedIndex invertedIndex) { // TODO int threads
+	public ThreadSafeQueryBuilder(ThreadSafeInvertedIndex invertedIndex, int numThreads) {
 		this.invertedIndex = invertedIndex;
 		this.querySet = new TreeMap<>();
+		this.numThreads = numThreads;
 	}
 
 	/**
@@ -89,36 +95,27 @@ public class ThreadSafeQueryBuilder implements QBuilderInterface {
 	 * @param line The line we are parsing.
 	 * @param exactSearch Wether we are doing exact search or not.
 	 */
+	@Override
 	public void parseQueryLine(String line, boolean exactSearch) {
 		TreeSet<String> queries = TextFileStemmer.uniqueStems(line);
-		String joined = String.join(" ", queries);
-		if (queries.size() != 0 && !querySet.containsKey(joined)) {
-			synchronized (workQueue) {
-				this.querySet.put(joined, invertedIndex.search(queries, exactSearch));
-			}
-		}
 
-		/* TODO
-		TreeSet<String> queries = TextFileStemmer.uniqueStems(line);
-		
 		if (queries.size() == 0) {
 			return;
 		}
-		
+
 		String joined = String.join(" ", queries);
-		
+
 		synchronized (querySet) {
 			if (querySet.containsKey(joined)) {
 				return;
 			}
 		}
-		
+
 		ArrayList<InvertedIndex.Result> local = invertedIndex.search(queries, exactSearch);
-		
+
 		synchronized (querySet) {
 			this.querySet.put(joined, local);
 		}
-		*/
 	}
 
 
@@ -127,12 +124,11 @@ public class ThreadSafeQueryBuilder implements QBuilderInterface {
 	 *
 	 * @param path the path to start at
 	 * @param exactSearch the kind of search
-	 * @param numThreads the number of threads
 	 * @throws IOException could happen
 	 */
 	@Override
-	public void parseQueryFile(Path path, boolean exactSearch, int numThreads) throws IOException {
-		this.workQueue = new WorkQueue(numThreads);
+	public void parseQueryFile(Path path, boolean exactSearch) throws IOException {
+		WorkQueue workQueue = new WorkQueue(this.numThreads);
 		try (BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8);) {
 			String query;
 			while ((query = reader.readLine()) != null) {

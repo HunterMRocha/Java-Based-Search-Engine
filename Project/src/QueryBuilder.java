@@ -1,7 +1,4 @@
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,7 +12,7 @@ import java.util.TreeSet;
  *
  *A class to build beautiful search queries for inverted index objects.
  */
-public class QueryBuilder implements QBuilderInterface {
+public class QueryBuilder implements QueryBuilderInterface {
 
 	/**
 	 * This is the inverted index that the search query will be performed on.
@@ -56,8 +53,11 @@ public class QueryBuilder implements QBuilderInterface {
 	 */
 	@Override
 	public List<InvertedIndex.Result> getResults(String queryLine) {
-		// TODO test if queryLine is a key first
-		return Collections.unmodifiableList(this.querySet.get(queryLine));
+		if (this.querySet.get(queryLine) != null){
+			return Collections.unmodifiableList(this.querySet.get(queryLine));
+		} else {
+			return Collections.emptyList();
+		}
 	}
 
 
@@ -86,52 +86,27 @@ public class QueryBuilder implements QBuilderInterface {
 
 
 	/**
-	 * Gets queries from the input path and performs the searches.
-	 *
-	 * @param path The path to the Query file.
-	 * @param exactSearch True if we are doing exact search.
-	 * @param numThreads
-	 * @throws IOException Could happen.
-	 */
-	@Override
-	public void parseQueryFile(Path path, boolean exactSearch, int numThreads) throws IOException {
-		try (BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8);) {
-			String query;
-			while ((query = reader.readLine()) != null) {
-				parseQueryLine(query, exactSearch);
-			}
-		}
-	}
-
-	/**
 	 * Parses a Query line made up of words.
 	 *
 	 * @param line The line we are parsing.
 	 * @param exactSearch Wether we are doing exact search or not.
 	 */
+	@Override
 	public void parseQueryLine(String line, boolean exactSearch) {
 		TreeSet<String> queries = TextFileStemmer.uniqueStems(line);
-		String joined = String.join(" ", queries);
-		if (queries.size() != 0 && !querySet.containsKey(joined)) {
-			this.querySet.put(joined, invertedIndex.search(queries, exactSearch));
-		}
-		
-		/* TODO
-		TreeSet<String> queries = TextFileStemmer.uniqueStems(line);
-		
+
 		if (queries.size() == 0) {
 			return;
 		}
-		
+
 		String joined = String.join(" ", queries);
-		
+
 		if (querySet.containsKey(joined)) {
 			return;
 		}
-		
+
 		ArrayList<InvertedIndex.Result> local = invertedIndex.search(queries, exactSearch);
 		this.querySet.put(joined, local);
-		*/
 	}
 
 }

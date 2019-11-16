@@ -1,4 +1,7 @@
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
@@ -10,7 +13,7 @@ import java.util.Set;
  * The interface that querybuilders will implement.
  *
  */
-public interface QBuilderInterface { // TODO QueryInterface
+public interface QueryBuilderInterface {
 	/**
 	 * Get Queries
 	 *
@@ -41,18 +44,23 @@ public interface QBuilderInterface { // TODO QueryInterface
 	 */
 	public boolean isEmpty();
 
+
+	/**
+	 * Parses a line of query
+	 *
+	 * @param query query in question
+	 * @param exactSearch exact search?
+	 */
+	public void parseQueryLine(String query, boolean exactSearch);
+
 	/**
 	 * Parses a query file
 	 *
-	 * @param queryPath The path to start at
-	 * @param hasFlag checks for flag
-	 * @param numThreads number of threads
+	 * @param path the path to the file
+	 * @param exactSearch true if exact search
 	 * @throws IOException could happen
 	 */
-	public void parseQueryFile(Path queryPath, boolean hasFlag, int numThreads) throws IOException;
-	
-	/* TODO Add this, then do not need to override in QueryBuilder
-	public default void parseQueryFile(Path path, boolean exactSearch) throws IOException {
+	default void parseQueryFile(Path path, boolean exactSearch) throws IOException {
 		try (BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8);) {
 			String query;
 			while ((query = reader.readLine()) != null) {
@@ -60,8 +68,4 @@ public interface QBuilderInterface { // TODO QueryInterface
 			}
 		}
 	}
-	*/
-
-	// TODO public void parseQueryLine(String line, boolean exactSearch)
-
 }

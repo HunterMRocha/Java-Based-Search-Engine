@@ -32,7 +32,7 @@ public class Driver {
 
 		InvertedIndexBuilder builder;
 
-		QBuilderInterface queryBuilder;
+		QueryBuilderInterface queryBuilder;
 
 		if (argumentParser.hasFlag("-threads")) {
 			try {
@@ -47,7 +47,7 @@ public class Driver {
 			ThreadSafeInvertedIndex threadSafe = new ThreadSafeInvertedIndex();
 			invertedIndex = threadSafe;
 			builder = new ThreadSafeIndexBuilder(threadSafe, numThreads);
-			queryBuilder = new ThreadSafeQueryBuilder(threadSafe);
+			queryBuilder = new ThreadSafeQueryBuilder(threadSafe, numThreads);
 
 		}else {
 			invertedIndex = new InvertedIndex();
@@ -85,7 +85,7 @@ public class Driver {
 		if (argumentParser.hasFlag("-query") && argumentParser.getPath("-query") != null) {
 			Path queryPath = argumentParser.getPath("-query");
 			try {
-				queryBuilder.parseQueryFile(queryPath, argumentParser.hasFlag("-exact"), numThreads);
+				queryBuilder.parseQueryFile(queryPath, argumentParser.hasFlag("-exact"));
 			} catch (Exception r) {
 				System.out.println("There was an issue while doing things with file: " + queryPath.toString());
 			}
