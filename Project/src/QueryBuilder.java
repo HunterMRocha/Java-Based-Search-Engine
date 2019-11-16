@@ -56,6 +56,7 @@ public class QueryBuilder implements QBuilderInterface {
 	 */
 	@Override
 	public List<InvertedIndex.Result> getResults(String queryLine) {
+		// TODO test if queryLine is a key first
 		return Collections.unmodifiableList(this.querySet.get(queryLine));
 	}
 
@@ -114,6 +115,23 @@ public class QueryBuilder implements QBuilderInterface {
 		if (queries.size() != 0 && !querySet.containsKey(joined)) {
 			this.querySet.put(joined, invertedIndex.search(queries, exactSearch));
 		}
+		
+		/* TODO
+		TreeSet<String> queries = TextFileStemmer.uniqueStems(line);
+		
+		if (queries.size() == 0) {
+			return;
+		}
+		
+		String joined = String.join(" ", queries);
+		
+		if (querySet.containsKey(joined)) {
+			return;
+		}
+		
+		ArrayList<InvertedIndex.Result> local = invertedIndex.search(queries, exactSearch);
+		this.querySet.put(joined, local);
+		*/
 	}
 
 }

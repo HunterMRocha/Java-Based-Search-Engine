@@ -18,23 +18,23 @@ public class ThreadSafeQueryBuilder implements QBuilderInterface {
 	/**
 	 * Our workQueue
 	 */
-	WorkQueue workQueue;
+	WorkQueue workQueue; // TODO Remove, make this a local variable where you need it... save the number of threads to use instead
 
 	/**
 	 * This is the inverted index that the search query will be performed on.
 	 */
-	protected final InvertedIndex invertedIndex;
+	protected final InvertedIndex invertedIndex; // TODO private
 
 	/**
 	 * The set that will hold cleaned up queries mapped to their results.
 	 */
-	public final TreeMap<String, ArrayList<InvertedIndex.Result>> querySet;
+	public final TreeMap<String, ArrayList<InvertedIndex.Result>> querySet; // TODO private
 
 
 	/**
 	 * @param invertedIndex the index to use
 	 */
-	public ThreadSafeQueryBuilder(ThreadSafeInvertedIndex invertedIndex) {
+	public ThreadSafeQueryBuilder(ThreadSafeInvertedIndex invertedIndex) { // TODO int threads
 		this.invertedIndex = invertedIndex;
 		this.querySet = new TreeMap<>();
 	}
@@ -97,6 +97,28 @@ public class ThreadSafeQueryBuilder implements QBuilderInterface {
 				this.querySet.put(joined, invertedIndex.search(queries, exactSearch));
 			}
 		}
+
+		/* TODO
+		TreeSet<String> queries = TextFileStemmer.uniqueStems(line);
+		
+		if (queries.size() == 0) {
+			return;
+		}
+		
+		String joined = String.join(" ", queries);
+		
+		synchronized (querySet) {
+			if (querySet.containsKey(joined)) {
+				return;
+			}
+		}
+		
+		ArrayList<InvertedIndex.Result> local = invertedIndex.search(queries, exactSearch);
+		
+		synchronized (querySet) {
+			this.querySet.put(joined, local);
+		}
+		*/
 	}
 
 

@@ -10,7 +10,7 @@ import java.util.Set;
  * The interface that querybuilders will implement.
  *
  */
-public interface QBuilderInterface {
+public interface QBuilderInterface { // TODO QueryInterface
 	/**
 	 * Get Queries
 	 *
@@ -50,7 +50,18 @@ public interface QBuilderInterface {
 	 * @throws IOException could happen
 	 */
 	public void parseQueryFile(Path queryPath, boolean hasFlag, int numThreads) throws IOException;
+	
+	/* TODO Add this, then do not need to override in QueryBuilder
+	public default void parseQueryFile(Path path, boolean exactSearch) throws IOException {
+		try (BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8);) {
+			String query;
+			while ((query = reader.readLine()) != null) {
+				parseQueryLine(query, exactSearch);
+			}
+		}
+	}
+	*/
 
-
+	// TODO public void parseQueryLine(String line, boolean exactSearch)
 
 }

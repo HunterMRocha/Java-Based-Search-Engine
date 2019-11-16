@@ -43,6 +43,7 @@ public class ThreadSafeIndexBuilder extends InvertedIndexBuilder {
 		WorkQueue queue = new WorkQueue(numThreads);
 		for (Path currentPath : getTextFiles(path)) {
 			if (isTextFile(currentPath)) {
+				// TODO queue.execute(new Task(currentPath));
 				queue.execute(new Task(currentPath, this.invertedIndex));
 			}
 		}
@@ -58,7 +59,7 @@ public class ThreadSafeIndexBuilder extends InvertedIndexBuilder {
 	 * @author nedimazar
 	 *
 	 */
-	private static class Task implements Runnable {
+	private static class Task implements Runnable { // TODO private class Task (not static)
 
 		/**
 		 * Path to the file in question.
@@ -68,7 +69,7 @@ public class ThreadSafeIndexBuilder extends InvertedIndexBuilder {
 		/**
 		 * The invertedIndex to use
 		 */
-		private final ThreadSafeInvertedIndex invertedIndex;
+		private final ThreadSafeInvertedIndex invertedIndex; // TODO Remove
 
 		/**
 		 * Constructor for the Task.
@@ -83,13 +84,12 @@ public class ThreadSafeIndexBuilder extends InvertedIndexBuilder {
 		@Override
 		public void run() {
 			try {
+				// TODO Clean up old code
 				//addPath(path, invertedIndex);
-
 
 				InvertedIndex local = new InvertedIndex();
 				addPath(path, local);
 				invertedIndex.addAll(local);
-
 
 			} catch (IOException e) {
 				System.out.println("Problem encountered while adding file: " + path.toString());
