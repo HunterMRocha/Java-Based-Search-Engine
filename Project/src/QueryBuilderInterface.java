@@ -60,7 +60,7 @@ public interface QueryBuilderInterface {
 	 * @param exactSearch true if exact search
 	 * @throws IOException could happen
 	 */
-	default void parseQueryFile(Path path, boolean exactSearch) throws IOException {
+	public default void parseQueryFile(Path path, boolean exactSearch) throws IOException {
 		try (BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8);) {
 			String query;
 			while ((query = reader.readLine()) != null) {

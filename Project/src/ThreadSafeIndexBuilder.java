@@ -55,6 +55,7 @@ public class ThreadSafeIndexBuilder extends InvertedIndexBuilder {
 	}
 
 	/**
+	 * TODO Fill in
 	 * @author nedimazar
 	 *
 	 */

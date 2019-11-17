@@ -151,11 +151,22 @@ public class InvertedIndex {
 	}
 
 	/**
+	 * TODO
 	 * @return Unmodifiable set of words.
 	 */
 	public Set<String> getWords() {
 		return Collections.unmodifiableSet(this.invertedIndex.keySet());
 	}
+	
+	/*
+	 * TODO I am now realizing you never addressed all of the project 1 comments,
+	 * or if you did they did not make it into project 2 and 3. See these:
+	 * 
+	 * https://github.com/usf-cs212-fall2019/project-nedimazar/blob/0a34ac6db7288cde2b3c4c0ffa357355b7e7e048/Project/src/InvertedIndex.java#L99-L135
+	 * 
+	 * You need more get methods. Fix it now before moving on (also have to override
+	 * safely in thread-safe version).
+	 */
 
 	/**
 	 * Updates the invertedIndex with the necessary info like files it appears in
