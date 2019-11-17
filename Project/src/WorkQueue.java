@@ -161,7 +161,6 @@ public class WorkQueue {
 					System.err.println("Warning: Work queue encountered an exception while running.");
 				} finally {
 					decrementPending();
-
 				}
 			}
 		}
