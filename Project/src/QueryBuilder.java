@@ -17,12 +17,12 @@ public class QueryBuilder implements QueryBuilderInterface {
 	/**
 	 * This is the inverted index that the search query will be performed on.
 	 */
-	protected final InvertedIndex invertedIndex; // TODO private
+	private final InvertedIndex invertedIndex;
 
 	/**
 	 * The set that will hold cleaned up queries mapped to their results.
 	 */
-	public final TreeMap<String, ArrayList<InvertedIndex.Result>> querySet;  // TODO private
+	private final TreeMap<String, ArrayList<InvertedIndex.Result>> querySet;
 
 	/**
 	 * Constructor for the QueryBuilder class.

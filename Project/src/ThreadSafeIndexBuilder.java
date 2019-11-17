@@ -55,7 +55,7 @@ public class ThreadSafeIndexBuilder extends InvertedIndexBuilder {
 	}
 
 	/**
-	 * TODO Fill in
+	 * A task class for multithreadig.
 	 * @author nedimazar
 	 *
 	 */

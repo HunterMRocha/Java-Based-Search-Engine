@@ -36,7 +36,7 @@ public class ThreadSafeQueryBuilder implements QueryBuilderInterface {
 
 
 	/**
-	 * TODO describe 
+	 * Constructor for the Thread Safe QueryBuilderz
 	 * @param invertedIndex the index to use
 	 * @param numThreads number of threads
 	 */
@@ -53,8 +53,9 @@ public class ThreadSafeQueryBuilder implements QueryBuilderInterface {
 	 */
 	@Override
 	public Set<String> getQueries() {
-		// TODO Must protect access to querySet
-		return Collections.unmodifiableSet(this.querySet.keySet());
+		synchronized(querySet) {
+			return Collections.unmodifiableSet(this.querySet.keySet());
+		}
 	}
 
 	/**
@@ -65,9 +66,13 @@ public class ThreadSafeQueryBuilder implements QueryBuilderInterface {
 	 */
 	@Override
 	public List<InvertedIndex.Result> getResults(String queryLine) {
-		// TODO Must protect access to querySet
-		// TODO Make this match logic of single-threaded, test if queryLine exists first
-		return Collections.unmodifiableList(this.querySet.get(queryLine));
+		synchronized(querySet) {
+			if (this.querySet.get(queryLine) != null){
+				return Collections.unmodifiableList(this.querySet.get(queryLine));
+			} else {
+				return Collections.emptyList();
+			}
+		}
 	}
 
 	/**
@@ -78,8 +83,9 @@ public class ThreadSafeQueryBuilder implements QueryBuilderInterface {
 	 */
 	@Override
 	public void writeQuery(Path outputFile) throws IOException {
-		// TODO Must protect access to querySet
-		SimpleJsonWriter.asQuery(this.querySet, outputFile);
+		synchronized(querySet) {
+			SimpleJsonWriter.asQuery(this.querySet, outputFile);
+		}
 	}
 
 
@@ -90,9 +96,11 @@ public class ThreadSafeQueryBuilder implements QueryBuilderInterface {
 	 */
 	@Override
 	public boolean isEmpty() {
-		// TODO Must protect access to querySet
-		return this.querySet.keySet().size() == 0;
+		synchronized(querySet) {
+			return this.querySet.keySet().size() == 0;
+		}
 	}
+
 
 
 	/**
@@ -163,7 +171,7 @@ public class ThreadSafeQueryBuilder implements QueryBuilderInterface {
 		private final boolean exact;
 
 		/**
-		 * TODO Fix Javadoc
+		 * The constructor for the Task class.
 		 * @param line line to parse
 		 * param invertedIndex index to use
 		 * @param exact

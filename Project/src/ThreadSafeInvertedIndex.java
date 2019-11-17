@@ -46,6 +46,16 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 	}
 
 	@Override
+	public Set<String> getLocations(String word) {
+		lock.readLock().lock();
+		try {
+			return super.getLocations(word);
+		} finally {
+			lock.readLock().unlock();
+		}
+	}
+
+	@Override
 	public void writeIndex(Path outputFile) throws IOException {
 		lock.readLock().lock();
 		try {
