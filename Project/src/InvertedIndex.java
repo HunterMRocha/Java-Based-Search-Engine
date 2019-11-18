@@ -159,6 +159,28 @@ public class InvertedIndex {
 	}
 
 	/**
+	 * This function returns the number of stems in the index.
+	 * @return size of inverted index.
+	 */
+	public int size() {
+		return invertedIndex.size();
+	}
+
+	/**
+	 * This function gets a collevtion of positions for a given word and location.
+	 * @param word the word
+	 * @param location the locastion in question
+	 * @return the collection of positions
+	 */
+	public Set<Integer> getPositions(String word, String location) {
+		if (this.invertedIndex.get(word).get(location) == null) {
+			return Collections.emptySet();
+		} else {
+			return Collections.unmodifiableSet(this.invertedIndex.get(word).get(location));
+		}
+	}
+
+	/**
 	 * Returns the set of locations for a given word
 	 *
 	 * @param word The word we are looking for.

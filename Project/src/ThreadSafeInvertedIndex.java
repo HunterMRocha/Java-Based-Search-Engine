@@ -36,6 +36,16 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 	}
 
 	@Override
+	public int size() {
+		lock.readLock().lock();
+		try {
+			return super.size();
+		} finally {
+			lock.readLock().unlock();
+		}
+	}
+
+	@Override
 	public boolean add(String word, String filename, int position) {
 		lock.writeLock().lock();
 		try {
@@ -50,6 +60,16 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 		lock.readLock().lock();
 		try {
 			return super.getLocations(word);
+		} finally {
+			lock.readLock().unlock();
+		}
+	}
+
+	@Override
+	public Set<Integer> getPositions(String word, String location){
+		lock.readLock().lock();
+		try {
+			return super.getPositions(word, location);
 		} finally {
 			lock.readLock().unlock();
 		}
