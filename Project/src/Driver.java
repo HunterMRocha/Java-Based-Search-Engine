@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.time.Instant;
@@ -25,16 +26,16 @@ public class Driver {
 		int numThreads = 1;
 		/* Store initial start time */
 		Instant start = Instant.now();
-
 		ArgumentParser argumentParser = new ArgumentParser(args);
-
 		InvertedIndex invertedIndex;
-
 		InvertedIndexBuilder builder;
-
 		QueryBuilderInterface queryBuilder;
+		WebCrawler webCrawler;
 
-		if (argumentParser.hasFlag("-threads")) {
+
+
+		if (argumentParser.hasFlag("-threads") || argumentParser.hasFlag("-url")) {
+
 			try {
 				numThreads = Integer.parseInt(argumentParser.getString("-threads"));
 				if (numThreads == 0) {
@@ -48,6 +49,21 @@ public class Driver {
 			invertedIndex = threadSafe;
 			builder = new ThreadSafeIndexBuilder(threadSafe, numThreads);
 			queryBuilder = new ThreadSafeQueryBuilder(threadSafe, numThreads);
+
+			if (argumentParser.hasFlag("-limit")) {
+				webCrawler = new WebCrawler(threadSafe, numThreads, Integer.parseInt(argumentParser.getString("-limit")));
+			} else {
+				webCrawler = new WebCrawler(threadSafe, numThreads, 50);
+			}
+
+			if (argumentParser.hasFlag("-url")) {
+				try {
+					URL seedURL = new URL(argumentParser.getString("-url"));
+					webCrawler.traverse(seedURL);
+				} catch (Exception e) {
+					System.out.println("Something went wrong while creating a URL from: " + argumentParser.getString("-url") );
+				}
+			}
 
 		}else {
 			invertedIndex = new InvertedIndex();
