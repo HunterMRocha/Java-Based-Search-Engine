@@ -120,7 +120,6 @@ public class WebCrawler  {
 
 		@Override
 		public void run() {
-			System.out.println("START: " + this.url);
 			HtmlCleaner htmlCleaner = new HtmlCleaner(this.url, HtmlFetcher.fetch(url, 3));
 			try {
 				if (HtmlFetcher.fetch(url, 3) == null) {
@@ -129,7 +128,6 @@ public class WebCrawler  {
 
 				InvertedIndex local = new InvertedIndex();
 				addStemmed(htmlCleaner.getHtml(), url.toString(), local);
-
 				invertedIndex.addAll(local);
 
 				synchronized(links) {
@@ -146,8 +144,6 @@ public class WebCrawler  {
 			} catch (Exception e){
 				System.out.println("Something went wrong while adding the cleaned HTML to the index.");
 			}
-			System.out.println("END: " + this.url);
-
 		}
 	}
 

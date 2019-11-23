@@ -17,7 +17,7 @@ public class HtmlCleaner {
 	/**
 	 * The passed html.
 	 */
-	private final String html;
+	private String html;
 
 
 
@@ -52,8 +52,6 @@ public class HtmlCleaner {
 	 * @param html given HTML
 	 */
 	public HtmlCleaner(URL base, String html) {
-		this.html = html;
-
 		if (html != null) {
 			html = stripComments(html);
 
@@ -67,7 +65,7 @@ public class HtmlCleaner {
 
 			html = stripTags(html);
 			html = stripEntities(html);
-
+			this.html = html;
 		} else {
 			this.urlList = Collections.emptyList();
 		}
@@ -204,6 +202,6 @@ public class HtmlCleaner {
 	 * @return text without that HTML element
 	 */
 	public static String stripElement(String html, String name) {
-		return html.replaceAll("(?is)<" + name + ".*?>.*?<\\/" + name + ".*?>", " ");
+		return html.replaceAll("(?is)<" + name + "\\b.*?>.*?<\\/" + name + ".*?>", " ");
 	}
 }
