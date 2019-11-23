@@ -23,7 +23,7 @@ public class Driver {
 	 *
 	 */
 	public static void main(String[] args) {
-		int numThreads = 1;
+		int numThreads;
 		/* Store initial start time */
 		Instant start = Instant.now();
 		ArgumentParser argumentParser = new ArgumentParser(args);

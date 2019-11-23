@@ -73,10 +73,28 @@ public class WebCrawler  {
 			while ((line = reader.readLine()) != null) {
 				for (String word : TextParser.parse(line)) {
 					position++;
-					index.add(location, stemmer.stem(word).toString(), position);
+					index.add(stemmer.stem(word).toString(),location , position);
 				}
 			}
 		}
+	}
+
+
+	/**
+	 * This traverses the URLs and does all the hard work
+	 * @param seed the seed url
+	 * @throws IOException could happen
+	 */
+	public void traverse(URL seed) throws IOException {
+		workQueue = new WorkQueue(numThreads);
+		links.add(seed);
+		workQueue.execute(new Task(seed));
+		try {
+			workQueue.finish();
+		} catch (Exception e) {
+			System.out.println("The work queue encountered an error.");
+		}
+		workQueue.shutdown();
 	}
 
 	/**
@@ -102,6 +120,7 @@ public class WebCrawler  {
 
 		@Override
 		public void run() {
+			System.out.println("START: " + this.url);
 			HtmlCleaner htmlCleaner = new HtmlCleaner(this.url, HtmlFetcher.fetch(url, 3));
 			try {
 				if (HtmlFetcher.fetch(url, 3) == null) {
@@ -110,6 +129,7 @@ public class WebCrawler  {
 
 				InvertedIndex local = new InvertedIndex();
 				addStemmed(htmlCleaner.getHtml(), url.toString(), local);
+
 				invertedIndex.addAll(local);
 
 				synchronized(links) {
@@ -126,19 +146,10 @@ public class WebCrawler  {
 			} catch (Exception e){
 				System.out.println("Something went wrong while adding the cleaned HTML to the index.");
 			}
+			System.out.println("END: " + this.url);
+
 		}
 	}
 
-	/**
-	 * This traverses the URLs and does all the hard work
-	 * @param seed the seed url
-	 * @throws IOException could happen
-	 */
-	public void traverse(URL seed) throws IOException {
-		workQueue = new WorkQueue(numThreads);
-		links.add(seed);
-		workQueue.execute(new Task(seed));
-		workQueue.shutdown();
-	}
 }
 

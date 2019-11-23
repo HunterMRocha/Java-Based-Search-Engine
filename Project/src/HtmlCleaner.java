@@ -13,10 +13,6 @@ import java.util.regex.Pattern;
  */
 public class HtmlCleaner {
 
-	/**
-	 * The base usrl.
-	 */
-	private final URL base;
 
 	/**
 	 * The passed html.
@@ -56,7 +52,6 @@ public class HtmlCleaner {
 	 * @param html given HTML
 	 */
 	public HtmlCleaner(URL base, String html) {
-		this.base = base;
 		this.html = html;
 
 		if (html != null) {
