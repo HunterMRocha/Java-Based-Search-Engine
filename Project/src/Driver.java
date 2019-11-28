@@ -4,6 +4,9 @@ import java.nio.file.Path;
 import java.time.Duration;
 import java.time.Instant;
 
+import org.eclipse.jetty.server.Server;
+
+
 /**
  * Class responsible for running this project based on the provided command-line
  * arguments. See the README for details.
@@ -32,9 +35,7 @@ public class Driver {
 		QueryBuilderInterface queryBuilder;
 		WebCrawler webCrawler;
 
-
-
-		if (argumentParser.hasFlag("-threads") || argumentParser.hasFlag("-url")) {
+		if (argumentParser.hasFlag("-threads") || argumentParser.hasFlag("-url") || argumentParser.hasFlag("-port")) {
 
 			try {
 				numThreads = Integer.parseInt(argumentParser.getString("-threads"));
@@ -51,7 +52,8 @@ public class Driver {
 			queryBuilder = new ThreadSafeQueryBuilder(threadSafe, numThreads);
 
 			if (argumentParser.hasFlag("-limit")) {
-				webCrawler = new WebCrawler(threadSafe, numThreads, Integer.parseInt(argumentParser.getString("-limit")));
+				webCrawler = new WebCrawler(threadSafe, numThreads,
+						Integer.parseInt(argumentParser.getString("-limit")));
 			} else {
 				webCrawler = new WebCrawler(threadSafe, numThreads, 50);
 			}
@@ -61,11 +63,27 @@ public class Driver {
 					URL seedURL = new URL(argumentParser.getString("-url"));
 					webCrawler.traverse(seedURL);
 				} catch (Exception e) {
-					System.out.println("Something went wrong while creating a URL from: " + argumentParser.getString("-url") );
+					System.out.println(
+							"Something went wrong while creating a URL from: " + argumentParser.getString("-url"));
 				}
 			}
 
-		}else {
+			if (argumentParser.hasFlag("-port")) {
+				int port;
+				try {
+					port = Integer.parseInt(argumentParser.getString("-port"));
+				} catch (Exception e){
+					port = 8080;
+				}
+
+				Server server = new Server(port);
+
+			}
+
+
+
+
+		} else {
 			invertedIndex = new InvertedIndex();
 			builder = new InvertedIndexBuilder(invertedIndex);
 			queryBuilder = new QueryBuilder(invertedIndex);
