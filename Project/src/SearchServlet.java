@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 import opennlp.tools.stemmer.snowball.SnowballStemmer;
 
@@ -20,7 +20,6 @@ import opennlp.tools.stemmer.snowball.SnowballStemmer;
  * Search engine front end class hello.
  *
  */
-@SuppressWarnings("deprecation")
 public class SearchServlet extends HttpServlet {
 
 	/**
@@ -37,7 +36,7 @@ public class SearchServlet extends HttpServlet {
 	private static final String TITLE = "NedSearch";
 
 	/** Everything that will be output after a search is carried out. */
-	private ConcurrentLinkedQueue<String> outputQueue;
+	private ConcurrentLinkedQueue<String> outputQueue; // TODO Dangerous as a member, remember this stuff is multithreaded
 
 	/**
 	 * The crawler of the web.
