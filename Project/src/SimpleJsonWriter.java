@@ -40,7 +40,7 @@ public class SimpleJsonWriter {
 		Iterator<Integer> integers = elements.iterator();
 
 		if (integers.hasNext()) {
-			indent(writer, level + 1);
+			indent(writer, level +1);
 			writer.write(integers.next().toString());
 		}
 

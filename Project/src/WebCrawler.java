@@ -2,6 +2,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -95,6 +97,17 @@ public class WebCrawler  {
 			System.out.println("The work queue encountered an error.");
 		}
 		workQueue.shutdown();
+	}
+
+	/**
+	 * Does a search oof.
+	 *
+	 * @param queries the queries
+	 * @param exact exat search?
+	 * @return a lisgt of results.
+	 */
+	public ArrayList<InvertedIndex.Result> search (Collection<String> queries, boolean exact){
+		return this.invertedIndex.search(queries, exact);
 	}
 
 	/**

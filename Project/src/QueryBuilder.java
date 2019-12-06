@@ -3,6 +3,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -32,6 +33,15 @@ public class QueryBuilder implements QueryBuilderInterface {
 	public QueryBuilder(InvertedIndex invertedIndex) {
 		this.invertedIndex = invertedIndex;
 		this.querySet = new TreeMap<>();
+	}
+
+	/**
+	 * Gets the queryset
+	 *
+	 * @return the queryset
+	 */
+	public Map<String, ArrayList<InvertedIndex.Result>> getQuerySet() {
+		return Collections.unmodifiableMap(this.querySet);
 	}
 
 

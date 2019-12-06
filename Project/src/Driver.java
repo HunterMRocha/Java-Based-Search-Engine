@@ -5,6 +5,11 @@ import java.time.Duration;
 import java.time.Instant;
 
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.ContextHandler;
+import org.eclipse.jetty.server.handler.DefaultHandler;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
 
 
 /**
@@ -34,6 +39,7 @@ public class Driver {
 		InvertedIndexBuilder builder;
 		QueryBuilderInterface queryBuilder;
 		WebCrawler webCrawler;
+		SearchServlet searchServlet;
 
 		if (argumentParser.hasFlag("-threads") || argumentParser.hasFlag("-url") || argumentParser.hasFlag("-port")) {
 
@@ -69,20 +75,43 @@ public class Driver {
 			}
 
 			if (argumentParser.hasFlag("-port")) {
+				searchServlet = new SearchServlet(queryBuilder, threadSafe, webCrawler);
+
 				int port;
+
 				try {
 					port = Integer.parseInt(argumentParser.getString("-port"));
-				} catch (Exception e){
-					port = 8080;
+				} catch (Exception e) {
+					port = 8081;
 				}
 
-				Server server = new Server(port);
+				try {
+					ServletContextHandler servletContextHandler = null;
+
+					servletContextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
+					servletContextHandler.setContextPath("/");
+
+					DefaultHandler defaultHandler = new DefaultHandler();
+					defaultHandler.setServeIcon(true);
+
+					ContextHandler contextHandler = new ContextHandler("/favicon.ico");
+					contextHandler.setHandler(defaultHandler);
+
+					ServletHolder servletHolder = new ServletHolder(searchServlet);
+
+					ServletHandler servletHandler = new ServletHandler();
+					servletHandler.addServletWithMapping(servletHolder, "/");
+
+					Server server = new Server(port);
+					server.setHandler(servletHandler);
+					server.start();
+					server.join();
+
+				} catch (Exception e) {
+					System.err.println("Jetty server Did not work");
+				}
 
 			}
-
-
-
-
 		} else {
 			invertedIndex = new InvertedIndex();
 			builder = new InvertedIndexBuilder(invertedIndex);

@@ -7,6 +7,8 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/opennlp-tools"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/jetty"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/commons-lang3"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/commons-text"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

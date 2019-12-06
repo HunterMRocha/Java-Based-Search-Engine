@@ -110,6 +110,15 @@ public class InvertedIndex {
 		}
 
 		/**
+		 * Returns the location of a result without any formatting.
+		 *
+		 * @return a string of the location of the result
+		 */
+		public String getLocation() {
+			return this.location;
+		}
+
+		/**
 		 * @return A formatted string ready to write.
 		 */
 		public String getCountString() {
@@ -148,6 +157,15 @@ public class InvertedIndex {
 	public InvertedIndex() {
 		this.invertedIndex = new TreeMap<>();
 		this.counts = new TreeMap<>();
+	}
+
+	/**
+	 * Gets the unmodifiable index.
+	 *
+	 * @return the inverted index.
+	 */
+	public Map<String, TreeMap<String, TreeSet<Integer>>> getIndex(){
+		return Collections.unmodifiableMap(this.invertedIndex);
 	}
 
 	/**
