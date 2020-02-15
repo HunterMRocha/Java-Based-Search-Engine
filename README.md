@@ -1,7 +1,5 @@
-# Project 
+A Search Engine I built for my Software Development course.
 
-The project is broken into two separate GitHub repositories and Eclipse Java projects. This is the private individual repository for your project source code. Unlike the test repository which is shared, this repository will only be accessible by you, the instructor, and the teacher assistants.
+The engine cleans and stems words from files or a seed url and stores them in an inverted index data structure. It can search partial or exact words in the index.
 
-For more details, see the project guides at:
-
-<https://usf-cs212-fall2019.github.io/guides/>
+The engine is concurrent and does not break encapsulation in any way.
